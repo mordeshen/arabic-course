@@ -1,0 +1,479 @@
+{
+  "meta": {
+    "title": "משחק קריאת שלטי כבישים בערבית",
+    "description": "השחקן רואה שלט כביש ישראלי כשהעברית והאנגלית מוסתרות. עליו לקרוא את הערבית ולזהות את היישוב. תשובה נכונה מסירה את המסכה.",
+    "game_flow": [
+      "1. הצג תמונת שלט עם מסכות (masks) על העברית והאנגלית",
+      "2. השחקן רואה רק את הטקסט הערבי",
+      "3. השחקן מקליד את שם היישוב (בעברית או באנגלית)",
+      "4. תשובה נכונה → המסכות נעלמות באנימציה",
+      "5. תשובה שגויה → רמז (transliteration) → ניסיון שני"
+    ],
+    "total_signs": 12,
+    "mask_coordinate_system": "כל הקואורדינטות הן באחוזים (0-100) ביחס לגודל התמונה. x,y = פינה שמאלית עליונה של המסכה. w,h = רוחב וגובה המסכה. זה מאפשר התאמה לכל גודל תצוגה."
+  },
+
+  "signs": [
+    {
+      "id": "sign_01",
+      "image_file": "Screenshot_2026-03-17_at_4_35_00.png",
+      "image_size": {"w": 366, "h": 262},
+      "locations": [
+        {
+          "name_hebrew": "כרמיאל",
+          "name_arabic": "كرميئيل",
+          "name_english": "Karmi'el",
+          "transliteration": "karmīʾīl",
+          "answer_accepts": ["כרמיאל", "karmi'el", "karmiel", "carmiel"],
+          "road_number": "7",
+          "masks": {
+            "hebrew": {
+              "x_pct": 15, "y_pct": 5, "w_pct": 70, "h_pct": 35,
+              "description": "שורה עליונה - כרמיאל בעברית"
+            },
+            "english": {
+              "x_pct": 25, "y_pct": 68, "w_pct": 55, "h_pct": 25,
+              "description": "שורה תחתונה - Karmi'el"
+            }
+          }
+        }
+      ],
+      "difficulty": "easy",
+      "hint": "עיר בגליל. הערבית היא תעתיק ישיר של העברית.",
+      "learning_note": "שים לב: كرميئيل - זה תעתיק פונטי של השם העברי. האות ئ מייצגת את האות א."
+    },
+
+    {
+      "id": "sign_02",
+      "image_file": "Screenshot_2026-03-17_at_4_34_36.png",
+      "image_size": {"w": 712, "h": 398},
+      "locations": [
+        {
+          "name_hebrew": "מרום גולן",
+          "name_arabic": "مروم جولان",
+          "name_english": "Merom Golan",
+          "transliteration": "marūm jūlān",
+          "answer_accepts": ["מרום גולן", "merom golan"],
+          "road_number": "959",
+          "masks": {
+            "hebrew": {
+              "x_pct": 8, "y_pct": 3, "w_pct": 55, "h_pct": 35,
+              "description": "שורה עליונה - מרום גולן בעברית"
+            },
+            "english": {
+              "x_pct": 5, "y_pct": 68, "w_pct": 60, "h_pct": 28,
+              "description": "שורה תחתונה - Merom Golan"
+            }
+          }
+        }
+      ],
+      "difficulty": "medium",
+      "hint": "יישוב ברמת הגולן. مروم = מרום, جولان = גולן.",
+      "learning_note": "האות ج (ג'ים) בערבית מקבילה ל-ג בעברית. جولان = גולן."
+    },
+
+    {
+      "id": "sign_03",
+      "image_file": "Screenshot_2026-03-17_at_4_34_19.png",
+      "image_size": {"w": 378, "h": 164},
+      "locations": [
+        {
+          "name_hebrew": "מצפה רמון",
+          "name_arabic": "متسبي رمون",
+          "name_english": "Mizpe Ramon",
+          "transliteration": "mitsbi ramōn",
+          "answer_accepts": ["מצפה רמון", "mizpe ramon", "mitzpe ramon"],
+          "road_number": "40",
+          "masks": {
+            "hebrew": {
+              "x_pct": 5, "y_pct": 5, "w_pct": 40, "h_pct": 40,
+              "description": "חלק שמאלי עליון - מצפה רמון בעברית"
+            },
+            "english": {
+              "x_pct": 5, "y_pct": 60, "w_pct": 40, "h_pct": 30,
+              "description": "חלק שמאלי תחתון - Mizpe Ramon"
+            }
+          }
+        },
+        {
+          "name_hebrew": "אילת",
+          "name_arabic": "ايلات",
+          "name_english": "Eilat",
+          "transliteration": "īlāt",
+          "answer_accepts": ["אילת", "eilat", "elat"],
+          "road_number": "40",
+          "masks": {
+            "hebrew": {
+              "x_pct": 55, "y_pct": 5, "w_pct": 40, "h_pct": 40,
+              "description": "חלק ימני עליון - אילת בעברית"
+            },
+            "english": {
+              "x_pct": 55, "y_pct": 60, "w_pct": 40, "h_pct": 30,
+              "description": "חלק ימני תחתון - Eilat"
+            }
+          }
+        }
+      ],
+      "difficulty": "medium",
+      "hint": "שני יישובים בנגב, שלט דו-כיווני על כביש 40.",
+      "learning_note": "ايلات - תעתיק ישיר. שים לב שאין פ בערבית, ולכן מצפה הפכה ל-متسبي (עם ب במקום פ)."
+    },
+
+    {
+      "id": "sign_04",
+      "image_file": "Screenshot_2026-03-17_at_4_33_15.png",
+      "image_size": {"w": 362, "h": 230},
+      "locations": [
+        {
+          "name_hebrew": "שדרות",
+          "name_arabic": "سديروت",
+          "name_english": "Sderot",
+          "transliteration": "sdērūt",
+          "answer_accepts": ["שדרות", "sderot"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 15, "y_pct": 5, "w_pct": 55, "h_pct": 35,
+              "description": "שורה עליונה - שדרות בעברית"
+            },
+            "english": {
+              "x_pct": 15, "y_pct": 65, "w_pct": 45, "h_pct": 25,
+              "description": "שורה תחתונה - Sderot"
+            }
+          }
+        }
+      ],
+      "difficulty": "easy",
+      "hint": "עיר בעוטף עזה. הערבית היא תעתיק ישיר.",
+      "learning_note": "سديروت - שים לב: ש הפכה ל-س (סין). בערבית אין אות שׁ (שין ימנית), אז משתמשים ב-س أو ش."
+    },
+
+    {
+      "id": "sign_05",
+      "image_file": "Screenshot_2026-03-17_at_4_32_33.png",
+      "image_size": {"w": 286, "h": 334},
+      "locations": [
+        {
+          "name_hebrew": "נצרת",
+          "name_arabic": "الناصره",
+          "name_english": "Nazareth",
+          "transliteration": "en-nāṣra",
+          "answer_accepts": ["נצרת", "nazareth", "natzeret", "natzrat"],
+          "road_number": "75",
+          "masks": {
+            "hebrew": {
+              "x_pct": 15, "y_pct": 3, "w_pct": 55, "h_pct": 22,
+              "description": "שורה עליונה - נצרת בעברית"
+            },
+            "english": {
+              "x_pct": 10, "y_pct": 72, "w_pct": 65, "h_pct": 22,
+              "description": "שורה תחתונה - Nazareth"
+            }
+          }
+        }
+      ],
+      "difficulty": "easy",
+      "hint": "עיר ערבית גדולה בגליל. בערבית: الناصره עם ال הידיעה.",
+      "learning_note": "נצרת = الناصره. שים לב: בערבית השם מתחיל ב-ال (הידיעה) ויש ص (צאד) = צ. זה שם ערבי מקורי, לא תעתיק!"
+    },
+
+    {
+      "id": "sign_06",
+      "image_file": "Screenshot_2026-03-17_at_4_32_15.png",
+      "image_size": {"w": 750, "h": 448},
+      "locations": [
+        {
+          "name_hebrew": "ירושלים",
+          "name_arabic": "اورشليم (القدس)",
+          "name_arabic_official": "القدس",
+          "name_english": "Jerusalem",
+          "transliteration": "ūrshalīm (el-quds)",
+          "answer_accepts": ["ירושלים", "jerusalem", "אל-קודס", "القدس"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 10, "y_pct": 2, "w_pct": 80, "h_pct": 35,
+              "description": "שורה עליונה - ירושלים בעברית"
+            },
+            "english": {
+              "x_pct": 15, "y_pct": 68, "w_pct": 60, "h_pct": 25,
+              "description": "שורה תחתונה - Jerusalem"
+            }
+          }
+        }
+      ],
+      "difficulty": "hard",
+      "hint": "בירת ישראל. בשלט: שני שמות בערבית - התעתיק العبري والשם הערבי המסורתי בסוגריים.",
+      "learning_note": "שלט מיוחד! اورشليم = תעתיק של ירושלים. (القدس) = אל-קודס, השם הערבי המסורתי שמשמעותו 'הקדושה'. בשיח יומיומי ערבים אומרים القدس."
+    },
+
+    {
+      "id": "sign_07",
+      "image_file": "Screenshot_2026-03-17_at_4_32_01.png",
+      "image_size": {"w": 740, "h": 414},
+      "locations": [
+        {
+          "name_hebrew": "עתיר ידע",
+          "name_arabic": "صناعات متقدمة",
+          "name_english": "Atir Yeda",
+          "transliteration": "ṣināʿāt mutaqaddime",
+          "answer_accepts": ["עתיר ידע", "atir yeda"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 20, "y_pct": 2, "w_pct": 65, "h_pct": 32,
+              "description": "שורה עליונה - עתיר ידע בעברית"
+            },
+            "english": {
+              "x_pct": 25, "y_pct": 68, "w_pct": 55, "h_pct": 25,
+              "description": "שורה תחתונה - Atir Yeda"
+            }
+          }
+        }
+      ],
+      "difficulty": "hard",
+      "hint": "אזור תעשייה. הערבית כאן היא תרגום של המשמעות, לא תעתיק! صناعات متقدمة = תעשיות מתקדמות.",
+      "learning_note": "מקרה מיוחד! בעברית: עתיר ידע (שם מותג). בערבית: صناعات متقدمة (= תעשיות מתקדמות) - תרגום של המשמעות. صناعات = תעשיות, متقدمة = מתקדמות."
+    },
+
+    {
+      "id": "sign_08",
+      "image_file": "Screenshot_2026-03-17_at_4_31_50.png",
+      "image_size": {"w": 350, "h": 336},
+      "locations": [
+        {
+          "name_hebrew": "כפר כנא",
+          "name_arabic": "كفر كنا",
+          "name_english": "Kafar Kanna",
+          "transliteration": "kfar kanna",
+          "answer_accepts": ["כפר כנא", "kafar kanna", "kfar kana", "כפר כנה"],
+          "road_number": "754",
+          "masks": {
+            "hebrew": {
+              "x_pct": 10, "y_pct": 3, "w_pct": 60, "h_pct": 25,
+              "description": "חלק עליון - כפר כנא בעברית"
+            },
+            "english": {
+              "x_pct": 10, "y_pct": 32, "w_pct": 65, "h_pct": 18,
+              "description": "מתחת - Kafar Kanna"
+            }
+          }
+        },
+        {
+          "name_hebrew": "נצרת",
+          "name_arabic": "الناصره",
+          "name_english": "Nazareth",
+          "transliteration": "en-nāṣra",
+          "answer_accepts": ["נצרת", "nazareth"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 10, "y_pct": 55, "w_pct": 45, "h_pct": 18,
+              "description": "שלט תחתון - נצרת בעברית"
+            },
+            "english": {
+              "x_pct": 10, "y_pct": 78, "w_pct": 55, "h_pct": 18,
+              "description": "שלט תחתון - Nazareth"
+            }
+          }
+        }
+      ],
+      "difficulty": "medium",
+      "hint": "כפר ערבי ליד נצרת, ידוע כקנה של הגליל. שלט כפול.",
+      "learning_note": "كفر = כפר - מילה זהה בשתי השפות! كنا = כנא. زוהי דוגמה למילים משותפות לעברית ולערבית."
+    },
+
+    {
+      "id": "sign_09",
+      "image_file": "Screenshot_2026-03-17_at_4_31_40.png",
+      "image_size": {"w": 710, "h": 362},
+      "locations": [
+        {
+          "name_hebrew": "תל אביב-יפו",
+          "name_arabic": "تل ابيب-يافا",
+          "name_english": "Tel Aviv-Yafo",
+          "transliteration": "tall abīb-yāfa",
+          "answer_accepts": ["תל אביב", "תל אביב יפו", "tel aviv", "tel aviv yafo"],
+          "road_number": "65",
+          "masks": {
+            "hebrew": {
+              "x_pct": 10, "y_pct": 5, "w_pct": 80, "h_pct": 38,
+              "description": "שורה עליונה - תל אביב-יפו בעברית"
+            },
+            "english": {
+              "x_pct": 10, "y_pct": 68, "w_pct": 75, "h_pct": 25,
+              "description": "שורה תחתונה - Tel Aviv-Yafo"
+            }
+          }
+        }
+      ],
+      "difficulty": "easy",
+      "hint": "העיר הגדולה ביותר בישראל. يافا = יפו - שם ערבי מקורי!",
+      "learning_note": "تل ابيب = תעתיק של תל אביב. אבל يافا = יפו - זה השם הערבי המקורי! יפו (יפה) = يافا."
+    },
+
+    {
+      "id": "sign_10",
+      "image_file": "Screenshot_2026-03-17_at_4_31_31.png",
+      "image_size": {"w": 280, "h": 422},
+      "locations": [
+        {
+          "name_hebrew": "פתח תקווה",
+          "name_arabic": "بيتح تكفا",
+          "name_english": "Petah Tiqwa",
+          "transliteration": "bētaḥ tikva",
+          "answer_accepts": ["פתח תקווה", "פתח תקוה", "petah tikva", "petach tikva"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 22, "y_pct": 3, "w_pct": 60, "h_pct": 15,
+              "description": "שורה עליונה - פתח תקווה בעברית"
+            },
+            "english": {
+              "x_pct": 15, "y_pct": 20, "w_pct": 65, "h_pct": 8,
+              "description": "Petah Tiqwa"
+            }
+          }
+        },
+        {
+          "name_hebrew": "יהוד",
+          "name_arabic": "يهود",
+          "name_english": "Yehud",
+          "transliteration": "yahūd",
+          "answer_accepts": ["יהוד", "yehud"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 50, "y_pct": 35, "w_pct": 35, "h_pct": 12,
+              "description": "שלט אמצעי - יהוד בעברית"
+            },
+            "english": {
+              "x_pct": 50, "y_pct": 50, "w_pct": 35, "h_pct": 8,
+              "description": "Yehud"
+            }
+          }
+        },
+        {
+          "name_hebrew": "ירושלים",
+          "name_arabic": "اورشليم (القدس)",
+          "name_english": "Jerusalem",
+          "transliteration": "ūrshalīm (el-quds)",
+          "answer_accepts": ["ירושלים", "jerusalem"],
+          "road_number": null,
+          "masks": {
+            "hebrew": {
+              "x_pct": 42, "y_pct": 65, "w_pct": 45, "h_pct": 12,
+              "description": "שלט תחתון - ירושלים בעברית"
+            },
+            "english": {
+              "x_pct": 35, "y_pct": 82, "w_pct": 50, "h_pct": 8,
+              "description": "Jerusalem"
+            }
+          }
+        }
+      ],
+      "difficulty": "hard",
+      "hint": "שלט עם 3 יעדים: עיר במרכז, עיר קטנה, ובירה. כולל סמל שדה תעופה.",
+      "learning_note": "פ אין בערבית! פתח הפכה ל-بيتح (עם ب). תקווה → تكفا. יהוד = يهود - תעתיק ישיר."
+    },
+
+    {
+      "id": "sign_11",
+      "image_file": "Screenshot_2026-03-17_at_4_31_23.png",
+      "image_size": {"w": 408, "h": 294},
+      "locations": [
+        {
+          "name_hebrew": "כרם שלום",
+          "name_arabic": "كيرم شالوم",
+          "name_english": "Kerem Shalom",
+          "transliteration": "kērem shālōm",
+          "answer_accepts": ["כרם שלום", "kerem shalom"],
+          "road_number": "232",
+          "masks": {
+            "hebrew": {
+              "x_pct": 15, "y_pct": 5, "w_pct": 65, "h_pct": 28,
+              "description": "שורה עליונה - כרם שלום בעברית"
+            },
+            "english": {
+              "x_pct": 12, "y_pct": 72, "w_pct": 70, "h_pct": 22,
+              "description": "שורה תחתונה - Kerem Shalom"
+            }
+          }
+        }
+      ],
+      "difficulty": "medium",
+      "hint": "מעבר גבול ליד עזה, כביש 232. كيرم = כרם, شالوم = שלום.",
+      "learning_note": "كيرم شالوم - תעתיק ישיר. שים לב: שלום = شالوم. המילה שלום/سلام קיימת בשתי השפות אבל בשלט השתמשו בתעתיק של העברית."
+    },
+
+    {
+      "id": "sign_12",
+      "image_file": "Screenshot_2026-03-17_at_4_34_26.png",
+      "image_size": {"w": 250, "h": 372},
+      "note": "תמונה חלקית של שלט מרום גולן - קרופ. אפשר להשתמש כשלט בונוס או לדלג.",
+      "locations": [
+        {
+          "name_hebrew": "מרום גולן",
+          "name_arabic": "مروم جولان",
+          "name_english": "Merom Golan",
+          "transliteration": "marūm jūlān",
+          "answer_accepts": ["מרום גולן", "merom golan"],
+          "is_cropped": true,
+          "masks": {
+            "hebrew": {
+              "x_pct": 0, "y_pct": 0, "w_pct": 85, "h_pct": 40,
+              "description": "חלק עליון - גולן בעברית (חתוך)"
+            },
+            "english": {
+              "x_pct": 0, "y_pct": 70, "w_pct": 70, "h_pct": 25,
+              "description": "חלק תחתון - erom G... (חתוך)"
+            }
+          }
+        }
+      ],
+      "difficulty": "hard",
+      "hint": "אותו שלט כמו sign_02, אבל חתוך - אתגר נוסף!"
+    }
+  ],
+
+  "game_config": {
+    "mask_style": {
+      "color": "rgba(40, 40, 40, 0.92)",
+      "border_radius": "4px",
+      "blur": "8px",
+      "transition_on_reveal": "opacity 0.6s ease-out",
+      "question_mark_overlay": true
+    },
+    "scoring": {
+      "correct_first_try": 10,
+      "correct_second_try": 5,
+      "used_hint": -2,
+      "bonus_arabic_name": 5,
+      "bonus_meaning": 3
+    },
+    "difficulty_order": ["easy", "medium", "hard"],
+    "total_possible_score": 150
+  },
+
+  "arabic_reading_tips": {
+    "common_letter_mappings_hebrew_to_arabic": [
+      {"hebrew": "כ", "arabic": "ك", "name": "כאף", "note": "זהה"},
+      {"hebrew": "ר", "arabic": "ر", "name": "רא", "note": "זהה"},
+      {"hebrew": "מ", "arabic": "م", "name": "מים", "note": "זהה"},
+      {"hebrew": "ש (שין)", "arabic": "ش", "name": "שין", "note": "זהה"},
+      {"hebrew": "ש (סין)", "arabic": "س", "name": "סין", "note": "שדרות = سديروت"},
+      {"hebrew": "ל", "arabic": "ل", "name": "לאם", "note": "זהה"},
+      {"hebrew": "נ", "arabic": "ن", "name": "נון", "note": "זהה"},
+      {"hebrew": "ת", "arabic": "ت", "name": "תא", "note": "זהה"},
+      {"hebrew": "צ", "arabic": "ص", "name": "צאד", "note": "נצרת = الناصره"},
+      {"hebrew": "פ", "arabic": "ב/ف", "name": "פא→בא", "note": "אין פ בערבית! פתח→بيتح"}
+    ],
+    "sign_reading_strategies": [
+      "התחל מזיהוי אותיות שאתה מכיר: ا (אלף), ل (לאם), م (מים)",
+      "חפש את ال (אל) בהתחלה - זו ה הידיעה: الناصره = ה-נצרת",
+      "רוב שמות הערים הן תעתיק של העברית - נסה לקרוא פונטית",
+      "חריגים חשובים: القدس (ירושלים), الناصره (נצרת), يافا (יפו) - שמות ערביים מקוריים",
+      "اين פ? בערבית אין פ! מחפשים ب (ב) במקומה: פתח → بيتح"
+    ]
+  }
+}

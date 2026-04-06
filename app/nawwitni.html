@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نوّطني — משחק ניווט בערבית</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Noto+Sans+Arabic:wght@400;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-road: #1a1f35;
+  --sign-green: #006B3F;
+  --sign-blue: #1565C0;
+  --sign-brown: #5D4037;
+  --sign-white: #F5F5F5;
+  --waze-blue: #33CCFF;
+  --fuel-yellow: #FFA500;
+  --fuel-danger: #E53935;
+  --success: #66BB6A;
+  --error: #EF5350;
+  --text-primary: #E8E8E8;
+  --text-muted: #9CA3AF;
+  --neon-glow: 0 0 20px rgba(51, 204, 255, 0.3);
+  --road-line: #FFC107;
+}
+html { font-size: 16px; }
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  direction: rtl;
+}
+/* Road lines background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--road-line) 0px, var(--road-line) 30px,
+    transparent 30px, transparent 70px
+  );
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.arabic { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
+.arabic-sign { font-family: 'Noto Sans Arabic', sans-serif; font-size: 2.5rem; font-weight: 700; direction: rtl; }
+.arabic-large { font-family: 'Noto Sans Arabic', sans-serif; font-size: 2rem; font-weight: 600; direction: rtl; }
+.arabic-medium { font-family: 'Noto Sans Arabic', sans-serif; font-size: 1.5rem; font-weight: 600; direction: rtl; }
+.mono { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+/* ===== LAYOUT ===== */
+.screen { display: none; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; position: relative; z-index: 1; }
+.screen.active { display: flex; }
+.back-link {
+  position: fixed; top: 12px; right: 12px; z-index: 100;
+  color: var(--waze-blue); text-decoration: none; font-size: 0.9rem;
+  opacity: 0.7; transition: opacity 0.2s;
+}
+.back-link:hover { opacity: 1; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px; border: none; border-radius: 12px;
+  font-family: 'Heebo', sans-serif; font-size: 1.1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; min-width: 48px; min-height: 48px;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: linear-gradient(135deg, #33CCFF, #1565C0); color: white; box-shadow: var(--neon-glow); }
+.btn-primary:hover { box-shadow: 0 0 30px rgba(51,204,255,0.5); }
+.btn-success { background: linear-gradient(135deg, #66BB6A, #2E7D32); color: white; }
+.btn-danger { background: linear-gradient(135deg, #EF5350, #C62828); color: white; }
+.btn-outline { background: transparent; border: 2px solid var(--waze-blue); color: var(--waze-blue); }
+.btn-outline:hover { background: rgba(51,204,255,0.1); }
+.btn-game-mode {
+  background: var(--bg-road); border: 2px solid rgba(51,204,255,0.2);
+  color: var(--text-primary); width: 100%; max-width: 400px;
+  padding: 18px 24px; border-radius: 16px; text-align: right;
+  font-size: 1rem;
+}
+.btn-game-mode:hover { border-color: var(--waze-blue); box-shadow: var(--neon-glow); }
+.btn-game-mode .mode-icon { font-size: 1.8rem; }
+.btn-game-mode .mode-title { font-weight: 700; font-size: 1.15rem; }
+.btn-game-mode .mode-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+.btn-dir {
+  background: var(--bg-road); border: 2px solid rgba(255,255,255,0.15);
+  color: white; padding: 18px 32px; border-radius: 16px;
+  font-size: 1.3rem; min-width: 120px; transition: all 0.2s;
+}
+.btn-dir:hover { border-color: var(--waze-blue); box-shadow: var(--neon-glow); }
+.btn-dir.correct { background: var(--success); border-color: var(--success); animation: pulse-green 0.4s; }
+.btn-dir.wrong { background: var(--error); border-color: var(--error); animation: shake 0.4s; }
+
+/* ===== VIRTUAL SIGNS ===== */
+.virtual-sign {
+  border-radius: 8px; padding: 20px 30px; text-align: center;
+  position: relative; min-width: 200px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  transition: transform 0.3s;
+}
+.virtual-sign:hover { transform: scale(1.02); }
+.highway-green { background: var(--sign-green); color: white; border: 3px solid white; }
+.city-blue { background: var(--sign-blue); color: white; border: 3px solid white; }
+.brown-tourist { background: var(--sign-brown); color: white; border: 3px solid #FFD54F; }
+.waze-style { background: white; color: #333; border: 1px solid #E0E0E0; border-radius: 16px; }
+.sign-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 2.5rem; font-weight: 700; direction: rtl; line-height: 1.4; }
+.sign-road-number {
+  position: absolute; top: 8px; left: 8px;
+  background: white; color: var(--sign-green);
+  padding: 2px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px;
+}
+.sign-arrow { font-size: 1.5rem; margin-top: 8px; }
+.sign-hebrew-small { font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.waze-style .sign-arabic { font-size: 1.8rem; color: #333; }
+.waze-style .waze-icon { color: var(--waze-blue); font-size: 1.5rem; }
+
+/* ===== REAL SIGN IMAGE ===== */
+.real-sign-container {
+  position: relative; max-width: min(90vw, 500px);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.6), var(--neon-glow);
+}
+.real-sign-container img { width: 100%; display: block; border-radius: 12px; }
+
+/* ===== FUEL GAUGE ===== */
+.fuel-gauge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.05); border-radius: 20px;
+  padding: 8px 14px;
+}
+.fuel-icon { font-size: 1.3rem; }
+.fuel-drops { display: flex; gap: 4px; }
+.fuel-drop {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--fuel-yellow); transition: all 0.3s;
+  box-shadow: 0 0 6px rgba(255,165,0,0.4);
+}
+.fuel-drop.half { background: linear-gradient(to top, var(--fuel-yellow) 50%, rgba(255,165,0,0.2) 50%); }
+.fuel-drop.empty { background: rgba(255,255,255,0.1); box-shadow: none; }
+.fuel-drop.danger { background: var(--fuel-danger); animation: pulse-red 1s infinite; }
+
+/* ===== GAME HEADER ===== */
+.game-header {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; max-width: 600px; padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
+}
+.game-header .mission-info { font-size: 0.9rem; color: var(--text-muted); }
+.game-header .score-display { font-size: 1rem; color: var(--waze-blue); font-weight: 700; }
+
+/* ===== TIMER ===== */
+.timer-bar {
+  width: 100%; max-width: 400px; height: 8px;
+  background: rgba(255,255,255,0.1); border-radius: 4px;
+  overflow: hidden; margin: 10px 0;
+}
+.timer-fill {
+  height: 100%; background: var(--waze-blue); border-radius: 4px;
+  transition: width 0.1s linear;
+}
+.timer-fill.danger { background: var(--fuel-danger); animation: pulse-red 0.5s infinite; }
+.timer-text { font-size: 1.5rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.timer-text.danger { color: var(--fuel-danger); }
+
+/* ===== MEMORY MATCH ===== */
+.match-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 10px; max-width: 400px; width: 100%;
+}
+.match-card {
+  aspect-ratio: 1; border-radius: 12px; cursor: pointer;
+  perspective: 600px; min-height: 70px;
+}
+.match-card-inner {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d; transition: transform 0.4s ease-in-out;
+}
+.match-card.flipped .match-card-inner { transform: rotateY(180deg); }
+.match-card.matched .match-card-inner { transform: rotateY(180deg); }
+.match-card.matched { animation: pulse-green 0.4s; }
+.match-card-front, .match-card-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px; text-align: center; font-weight: 700;
+}
+.match-card-front {
+  background: var(--bg-road); border: 2px solid rgba(51,204,255,0.2);
+  color: var(--waze-blue); font-size: 1.8rem;
+}
+.match-card-back { transform: rotateY(180deg); }
+.match-card-back.card-arabic {
+  background: var(--sign-green); border: 2px solid white; color: white;
+  font-family: 'Noto Sans Arabic', sans-serif; font-size: 1.2rem; direction: rtl;
+}
+.match-card-back.card-hebrew {
+  background: var(--sign-blue); border: 2px solid white; color: white;
+  font-family: 'Heebo', sans-serif; font-size: 1.1rem;
+}
+
+/* ===== QUIZ OPTIONS ===== */
+.quiz-options { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; }
+.quiz-option {
+  background: var(--bg-road); border: 2px solid rgba(255,255,255,0.1);
+  color: var(--text-primary); padding: 14px 20px; border-radius: 12px;
+  font-family: 'Heebo', sans-serif; font-size: 1.05rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; text-align: right;
+  min-height: 48px;
+}
+.quiz-option:hover { border-color: var(--waze-blue); }
+.quiz-option.correct { background: var(--success); border-color: var(--success); color: white; }
+.quiz-option.wrong { background: var(--error); border-color: var(--error); color: white; animation: shake 0.3s; }
+.quiz-option:disabled { cursor: default; opacity: 0.7; }
+
+/* ===== CELEBRATION ===== */
+.celebration {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 200;
+}
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px;
+  top: -20px; animation: confetti-fall 3s ease-out forwards;
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(102,187,106,0.7); }
+  100% { box-shadow: 0 0 20px 10px rgba(102,187,106,0); }
+}
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes slide-in {
+  from { transform: translateX(60px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: var(--neon-glow); }
+  50% { box-shadow: 0 0 40px rgba(51,204,255,0.5); }
+}
+.animate-slide { animation: slide-in 0.4s ease-out; }
+.animate-fade { animation: fade-in 0.4s ease-out; }
+.animate-shake { animation: shake 0.4s ease-out; }
+
+/* ===== FEEDBACK OVERLAY ===== */
+.feedback {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  padding: 20px 40px; border-radius: 20px; font-size: 1.5rem;
+  font-weight: 700; z-index: 150; animation: fade-in 0.3s;
+  text-align: center;
+}
+.feedback.correct-fb { background: rgba(46,125,50,0.95); color: white; }
+.feedback.wrong-fb { background: rgba(198,40,40,0.95); color: white; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .sign-arabic { font-size: 2rem; }
+  .virtual-sign { padding: 14px 18px; min-width: 150px; }
+  .match-grid { gap: 6px; }
+  .match-card-back.card-arabic { font-size: 1rem; }
+  .match-card-back.card-hebrew { font-size: 0.95rem; }
+  .btn-dir { padding: 14px 20px; font-size: 1.1rem; min-width: 90px; }
+  .junction-signs { flex-direction: column !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ===== STARS ===== */
+.stars { font-size: 2rem; letter-spacing: 4px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 350px; }
+.stat-box {
+  background: var(--bg-road); border-radius: 12px; padding: 12px;
+  text-align: center; border: 1px solid rgba(255,255,255,0.05);
+}
+.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--waze-blue); }
+.stat-label { font-size: 0.8rem; color: var(--text-muted); }
+
+/* ===== PROGRESS ROAD ===== */
+.progress-road {
+  display: flex; align-items: center; gap: 0; width: 100%; max-width: 400px;
+  margin: 16px 0;
+}
+.progress-node {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0; transition: all 0.3s;
+}
+.progress-node.done { background: var(--success); border-color: var(--success); }
+.progress-node.current { background: var(--waze-blue); border-color: var(--waze-blue); animation: glow-pulse 2s infinite; }
+.progress-line {
+  flex: 1; height: 3px; background: rgba(255,255,255,0.1);
+}
+.progress-line.done { background: var(--success); }
+
+/* ===== HINT BUBBLE ===== */
+.hint-bubble {
+  background: rgba(51,204,255,0.1); border: 1px solid var(--waze-blue);
+  border-radius: 12px; padding: 12px 18px; margin-top: 10px;
+  font-size: 0.95rem; color: var(--waze-blue);
+  animation: fade-in 0.3s;
+}
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">→ חזרה לקורס</a>
+
+<!-- ============================================== -->
+<!-- SCREEN 1: TITLE -->
+<!-- ============================================== -->
+<div id="screen-title" class="screen active">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;max-width:500px;text-align:center;">
+    <div style="font-size:4rem;margin-bottom:-10px;">🚗</div>
+    <h1 class="arabic" style="font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,#33CCFF,#66BB6A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">نوّطني</h1>
+    <p style="font-size:1.1rem;color:var(--text-muted);line-height:1.7;max-width:380px;">
+      שלום נהג! ה-GPS התקלקל.<br>
+      הדרך היחידה שלך הביתה — <strong style="color:var(--text-primary);">לקרוא את השלטים</strong>.
+    </p>
+    <div style="width:60px;height:2px;background:var(--waze-blue);opacity:0.5;margin:8px 0;"></div>
+    <div style="display:flex;flex-direction:column;gap:12px;width:100%;">
+      <button class="btn btn-game-mode" onclick="startNavigation()">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="mode-icon">🧭</span>
+          <div>
+            <div class="mode-title">ניווט — הדרך לים</div>
+            <div class="mode-desc">3 צמתים, קרא שלטים והגע לתל אביב</div>
+          </div>
+        </div>
+      </button>
+      <button class="btn btn-game-mode" onclick="startSpeedReading()">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="mode-icon">⚡</span>
+          <div>
+            <div class="mode-title">קריאה מהירה</div>
+            <div class="mode-desc">15 שלטים, 10 שניות לכל אחד</div>
+          </div>
+        </div>
+      </button>
+      <button class="btn btn-game-mode" onclick="startWazeQuiz()">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="mode-icon">📱</span>
+          <div>
+            <div class="mode-title">חידון ווייז</div>
+            <div class="mode-desc">הוראות ניווט בערבית — מה הן אומרות?</div>
+          </div>
+        </div>
+      </button>
+      <button class="btn btn-game-mode" onclick="startMemoryMatch()">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="mode-icon">🃏</span>
+          <div>
+            <div class="mode-title">התאם שמות</div>
+            <div class="mode-desc">ערבית ↔ עברית — מצא את הזוגות</div>
+          </div>
+        </div>
+      </button>
+    </div>
+    <p class="arabic-medium" style="margin-top:16px;opacity:0.5;">يالله ننطلق!</p>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- SCREEN 2: NAVIGATION MODE -->
+<!-- ============================================== -->
+<div id="screen-navigation" class="screen">
+  <div class="game-header">
+    <div class="fuel-gauge">
+      <span class="fuel-icon">⛽</span>
+      <div class="fuel-drops" id="fuelDrops"></div>
+    </div>
+    <div class="mission-info" id="missionInfo">צומת 1/3</div>
+    <div class="score-display" id="navScore">🎯 0</div>
+  </div>
+
+  <div id="progressRoad" class="progress-road" style="margin-bottom:12px;"></div>
+
+  <div id="junctionContent" class="animate-slide" style="display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:600px;">
+    <!-- Dynamically filled -->
+  </div>
+
+  <div id="navFeedback" style="display:none;" class="feedback"></div>
+</div>
+
+<!-- ============================================== -->
+<!-- SCREEN 3: SPEED READING -->
+<!-- ============================================== -->
+<div id="screen-speed" class="screen">
+  <div class="game-header">
+    <div class="timer-text" id="speedTimer">10.0</div>
+    <div class="mission-info" id="speedProgress">1 / 15</div>
+    <div class="score-display" id="speedScore">🎯 0</div>
+  </div>
+  <div class="timer-bar"><div class="timer-fill" id="speedTimerBar" style="width:100%"></div></div>
+
+  <div id="speedSignArea" style="margin:30px 0;animation:fade-in 0.3s;">
+    <!-- Virtual sign rendered here -->
+  </div>
+
+  <div id="speedOptions" class="quiz-options" style="margin-top:10px;">
+    <!-- 4 Hebrew options -->
+  </div>
+
+  <div id="speedFeedbackText" style="margin-top:16px;font-size:1.1rem;min-height:30px;text-align:center;"></div>
+</div>
+
+<!-- ============================================== -->
+<!-- SCREEN 4: WAZE QUIZ -->
+<!-- ============================================== -->
+<div id="screen-waze" class="screen">
+  <div class="game-header">
+    <div class="mission-info" id="wazeProgress">1 / 10</div>
+    <div class="score-display" id="wazeScore">🎯 0</div>
+  </div>
+
+  <div id="wazeSignArea" style="margin:30px 0;">
+    <!-- Waze instruction sign -->
+  </div>
+
+  <p style="font-size:1rem;color:var(--text-muted);margin-bottom:10px;">?מה ההוראה אומרת</p>
+
+  <div id="wazeOptions" class="quiz-options">
+    <!-- 4 Hebrew options -->
+  </div>
+
+  <div id="wazeFeedbackText" style="margin-top:16px;font-size:1.1rem;min-height:30px;text-align:center;"></div>
+</div>
+
+<!-- ============================================== -->
+<!-- SCREEN 5: MEMORY MATCH -->
+<!-- ============================================== -->
+<div id="screen-match" class="screen">
+  <div class="game-header">
+    <div class="mission-info" id="matchMoves">מהלכים: 0</div>
+    <div class="score-display" id="matchPairs">זוגות: 0 / 8</div>
+  </div>
+  <p style="color:var(--text-muted);margin-bottom:16px;">התאם שמות ערים: ערבית ↔ עברית</p>
+  <div id="matchGrid" class="match-grid">
+    <!-- 16 cards -->
+  </div>
+  <div id="matchFeedback" style="margin-top:20px;font-size:1.1rem;min-height:30px;text-align:center;"></div>
+</div>
+
+<!-- ============================================== -->
+<!-- SCREEN: RESULTS -->
+<!-- ============================================== -->
+<div id="screen-results" class="screen">
+  <div id="resultsContent" style="display:flex;flex-direction:column;align-items:center;gap:16px;max-width:400px;text-align:center;margin-top:40px;">
+    <!-- Filled dynamically -->
+  </div>
+</div>
+
+<!-- CELEBRATION OVERLAY -->
+<div id="celebration" class="celebration" style="display:none;"></div>
+
+<script>
+// ===== GAME DATA =====
+const CITIES = [
+  { id:'vs_001', ar:'حيفا', he:'חיפה', style:'highway-green', road:[2,4], diff:'easy' },
+  { id:'vs_002', ar:'بئر السبع', he:'באר שבע', style:'highway-green', road:[25,40], diff:'medium' },
+  { id:'vs_003', ar:'عكا', he:'עכו', style:'highway-green', road:[4], diff:'easy' },
+  { id:'vs_004', ar:'يافا', he:'יפו', style:'city-blue', road:[1], diff:'easy' },
+  { id:'vs_005', ar:'الخليل', he:'חברון', style:'highway-green', road:[60], diff:'hard' },
+  { id:'vs_006', ar:'نابلس', he:'שכם', style:'highway-green', road:[60], diff:'hard' },
+  { id:'vs_007', ar:'اللد', he:'לוד', style:'city-blue', road:[40], diff:'easy' },
+  { id:'vs_008', ar:'الرملة', he:'רמלה', style:'city-blue', road:[44], diff:'easy' },
+  { id:'vs_009', ar:'طبريا', he:'טבריה', style:'highway-green', road:[77,90], diff:'medium' },
+  { id:'vs_010', ar:'صفد', he:'צפת', style:'highway-green', road:[89], diff:'medium' },
+  { id:'vs_011', ar:'بيت لحم', he:'בית לחם', style:'highway-green', road:[60], diff:'easy' },
+  { id:'vs_012', ar:'أريحا', he:'יריחו', style:'highway-green', road:[90], diff:'medium' },
+  { id:'vs_013', ar:'رام الله', he:'רמאללה', style:'highway-green', road:[60], diff:'medium' },
+  { id:'vs_014', ar:'غزة', he:'עזה', style:'highway-green', road:[4], diff:'medium' },
+  { id:'vs_020', ar:'أم الفحم', he:'אום אל-פחם', style:'city-blue', road:[65], diff:'medium' },
+  { id:'vs_021', ar:'سخنين', he:'סח\'נין', style:'city-blue', road:[805], diff:'medium' },
+  { id:'vs_022', ar:'الطيبة', he:'טייבה', style:'city-blue', road:[444], diff:'easy' },
+  { id:'vs_009b', ar:'الناصره', he:'נצרת', style:'highway-green', road:[60,75], diff:'easy' },
+  { id:'vs_040', ar:'البحر الميت', he:'ים המלח', style:'brown-tourist', road:[90], diff:'medium' },
+  { id:'vs_041', ar:'بحيرة طبريا', he:'הכנרת', style:'brown-tourist', road:[90], diff:'hard' },
+  { id:'vs_042', ar:'جبل الشيخ', he:'הר חרמון', style:'brown-tourist', road:[98], diff:'hard' },
+];
+
+const REAL_SIGNS = [
+  {
+    id: 'sign_08', img: 'sign_images/sign_08_kafar_kanna_nazareth_كفر_كنا_الناصره_road754.png',
+    cities: [
+      { ar:'كفر كنا', he:'כפר כנא', dir:'left' },
+      { ar:'الناصره', he:'נצרת', dir:'right' }
+    ],
+    road: 754
+  },
+  {
+    id: 'sign_09', img: 'sign_images/sign_09_tel_aviv_yafo_تل_ابيب_يافا_road65.png',
+    cities: [{ ar:'تل ابيب-يافا', he:'תל אביב-יפו', dir:'right' }],
+    road: 65
+  },
+  {
+    id: 'sign_06', img: 'sign_images/sign_06_jerusalem_اورشليم_القدس.png',
+    cities: [{ ar:'اورشليم القدس', he:'ירושלים', dir:'left' }],
+    road: 1
+  },
+  {
+    id: 'sign_03', img: 'sign_images/sign_03_mizpe_ramon_eilat_متسبي_رمون_ايلات_road40.png',
+    cities: [
+      { ar:'متسبي رمون', he:'מצפה רמון', dir:'left' },
+      { ar:'ايلات', he:'אילת', dir:'right' }
+    ],
+    road: 40
+  },
+  {
+    id: 'sign_04', img: 'sign_images/sign_04_sderot_سديروت.png',
+    cities: [{ ar:'سديروت', he:'שדרות', dir:'right' }],
+    road: 34
+  },
+  {
+    id: 'sign_07', img: 'sign_images/sign_07_atir_yeda_صناعات_متقدمة.png',
+    cities: [{ ar:'عتير ידע', he:'עתיר ידע', dir:'left' }],
+    road: 31
+  },
+  {
+    id: 'sign_11', img: 'sign_images/sign_11_kerem_shalom_كيرم_شالوم_road232.png',
+    cities: [{ ar:'كيرم شالوم', he:'כרם שלום', dir:'right' }],
+    road: 232
+  }
+];
+
+// Navigation mission: נצרת → תל אביב
+const MISSION = {
+  title_he: 'הדרך לים',
+  title_ar: 'الطريق للبحر',
+  start_ar: 'الناصره', start_he: 'נצרת',
+  end_ar: 'تل ابيب-يافا', end_he: 'תל אביב',
+  fuel: 5,
+  junctions: [
+    {
+      type: 'mixed',
+      realSign: REAL_SIGNS[0], // sign_08: כפר כנא / נצרת
+      virtualSign: { ar:'طبريا', he:'טבריה', style:'highway-green', road:77, arrow:'←' },
+      prompt: 'אתה יוצא מנצרת דרומה. לאן?',
+      prompt_ar: 'وين بدك تروح؟',
+      leftLabel: 'كفر كنا ←',
+      rightLabel: '→ طبريا',
+      correct: 'left',
+      wrongMsg: 'נסעת לטבריה! 35 ק"מ בכיוון הלא נכון',
+      correctMsg: 'יופי! ממשיכים דרך כפר כנא לכיוון תל אביב'
+    },
+    {
+      type: 'real',
+      realSign: REAL_SIGNS[1], // sign_09: תל אביב-יפו
+      prompt: 'מה כתוב על השלט? לאן פונים?',
+      prompt_ar: 'وين بدك تروح؟',
+      leftLabel: '← حيفا',
+      rightLabel: 'تل ابيب-يافا →',
+      correct: 'right',
+      wrongMsg: 'נסעת לחיפה! 20 ק"מ בכיוון הלא נכון',
+      correctMsg: 'מצוין! תל אביב ממש קרובה'
+    },
+    {
+      type: 'mixed',
+      realSign: REAL_SIGNS[2], // sign_06: ירושלים
+      virtualSign: { ar:'يافا', he:'יפו', style:'city-blue', road:1, arrow:'→' },
+      prompt: 'צומת אחרון! ירושלים או יפו?',
+      prompt_ar: 'وين بدك تروح؟',
+      leftLabel: '← اورشليم',
+      rightLabel: 'يافا →',
+      correct: 'right',
+      wrongMsg: 'נסעת לירושלים! 60 ק"מ בכיוון הלא נכון',
+      correctMsg: 'הגעת ליפו-תל אביב!'
+    }
+  ]
+};
+
+// Waze quiz data
+const WAZE_QUESTIONS = [
+  {
+    ar: 'اتجه يمين',
+    sign_style: 'waze',
+    options: ['פנה ימינה', 'פנה שמאלה', 'המשך ישר', 'עשה פרסה'],
+    correct: 0
+  },
+  {
+    ar: 'اتجه يسار',
+    sign_style: 'waze',
+    options: ['המשך ישר', 'פנה ימינה', 'פנה שמאלה', 'עצור'],
+    correct: 2
+  },
+  {
+    ar: 'استمر على الطريق',
+    sign_style: 'waze',
+    options: ['עצור בצד', 'פנה ימינה', 'עשה פרסה', 'המשך בדרך'],
+    correct: 3
+  },
+  {
+    ar: 'دوار — اخرج يمين',
+    sign_style: 'waze',
+    options: ['כיכר — צא שמאלה', 'כיכר — צא ימינה', 'כיכר — המשך ישר', 'כיכר — עשה פרסה'],
+    correct: 1
+  },
+  {
+    ar: 'بعد ٥٠٠ متر اتجه يسار',
+    sign_style: 'waze',
+    options: ['עוד 500 מטר פנה ימינה', 'עוד 50 מטר עצור', 'עוד 500 מטר פנה שמאלה', 'עוד 500 מטר המשך ישר'],
+    correct: 2
+  },
+  {
+    ar: 'اتجه يمين نحو حيفا',
+    sign_style: 'waze',
+    city_ar: 'حيفا',
+    options: ['פנה ימינה לכיוון חיפה', 'פנה שמאלה לכיוון חיפה', 'פנה ימינה לכיוון יפו', 'המשך ישר לחיפה'],
+    correct: 0
+  },
+  {
+    ar: 'اتجه يسار نحو القدس',
+    sign_style: 'waze',
+    city_ar: 'القدس',
+    options: ['פנה ימינה לירושלים', 'המשך ישר לירושלים', 'פנה שמאלה לירושלים', 'עשה פרסה לירושלים'],
+    correct: 2
+  },
+  {
+    ar: 'محطة وقود على اليمين',
+    sign_style: 'waze',
+    options: ['בית חולים מימין', 'תחנת דלק מימין', 'תחנת רכבת מימין', 'חנייה מימין'],
+    correct: 1
+  },
+  {
+    ar: 'ازدحام مروري — استخدم طريق بديل',
+    sign_style: 'warning',
+    options: ['תאונה — כביש סגור', 'פקק — השתמש בדרך חלופית', 'עבודות — כביש סגור', 'מחסום — עצור'],
+    correct: 1
+  },
+  {
+    ar: 'وصلت إلى وجهتك',
+    sign_style: 'waze',
+    options: ['מחשב מסלול מחדש', 'פנה ימינה', 'הגעת ליעד שלך', 'המשך 200 מטר'],
+    correct: 2
+  }
+];
+
+// Memory match pairs (focus on different names)
+const MATCH_PAIRS = [
+  { ar:'الخليل', he:'חברון' },
+  { ar:'نابلس', he:'שכם' },
+  { ar:'القدس', he:'ירושלים' },
+  { ar:'البحر الميت', he:'ים המלח' },
+  { ar:'جبل الشيخ', he:'הר חרמון' },
+  { ar:'بحيرة طبريا', he:'הכנרת' },
+  { ar:'يافا', he:'יפו' },
+  { ar:'بيت لحم', he:'בית לחם' },
+];
+
+// ===== UTILITY FUNCTIONS =====
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showFeedback(text, type, duration = 1200) {
+  const el = document.createElement('div');
+  el.className = `feedback ${type}-fb`;
+  el.innerHTML = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), duration);
+}
+
+function launchConfetti() {
+  const cel = document.getElementById('celebration');
+  cel.style.display = 'block';
+  cel.innerHTML = '';
+  const colors = ['#33CCFF', '#66BB6A', '#FFC107', '#EF5350', '#E040FB', '#FF9800'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = (Math.random() * 1.5) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    cel.appendChild(piece);
+  }
+  setTimeout(() => { cel.style.display = 'none'; cel.innerHTML = ''; }, 3500);
+}
+
+function renderVirtualSign(ar, style, road, arrow) {
+  const styleClass = style === 'highway-green' ? 'highway-green' :
+                     style === 'city-blue' ? 'city-blue' :
+                     style === 'brown-tourist' ? 'brown-tourist' : 'waze-style';
+  const roadHtml = road ? `<div class="sign-road-number mono">${road}</div>` : '';
+  const arrowHtml = arrow ? `<div class="sign-arrow">${arrow}</div>` : '';
+  return `<div class="virtual-sign ${styleClass}">
+    ${roadHtml}
+    <div class="sign-arabic">${ar}</div>
+    ${arrowHtml}
+  </div>`;
+}
+
+function renderWazeSign(ar) {
+  return `<div class="virtual-sign waze-style" style="min-width:280px;">
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
+      <span class="waze-icon">📍</span>
+      <div class="sign-arabic" style="font-size:1.8rem;color:#333;">${ar}</div>
+    </div>
+  </div>`;
+}
+
+function renderWarningSign(ar) {
+  return `<div class="virtual-sign" style="background:#FFC107;color:#212121;border:3px solid #F57F17;min-width:280px;">
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
+      <span style="font-size:1.5rem;">⚠️</span>
+      <div class="sign-arabic" style="font-size:1.6rem;color:#212121;">${ar}</div>
+    </div>
+  </div>`;
+}
+
+// ===== NAVIGATION MODE =====
+let navState = { junction: 0, fuel: 5, score: 0, mistakes: 0, hints: 0 };
+
+function startNavigation() {
+  navState = { junction: 0, fuel: MISSION.fuel, score: 0, mistakes: 0, hints: 0 };
+  showScreen('navigation');
+  renderNavigation();
+}
+
+function renderFuel() {
+  const drops = document.getElementById('fuelDrops');
+  drops.innerHTML = '';
+  for (let i = 0; i < MISSION.fuel; i++) {
+    const drop = document.createElement('div');
+    drop.className = 'fuel-drop';
+    if (i >= Math.ceil(navState.fuel)) {
+      drop.className += ' empty';
+    } else if (i === Math.floor(navState.fuel) && navState.fuel % 1 !== 0) {
+      drop.className += ' half';
+    }
+    if (navState.fuel <= 1.5 && i < navState.fuel) {
+      drop.className += ' danger';
+    }
+    drops.appendChild(drop);
+  }
+}
+
+function renderProgressRoad() {
+  const road = document.getElementById('progressRoad');
+  road.innerHTML = '';
+  const total = MISSION.junctions.length + 1; // +1 for destination
+  for (let i = 0; i < total; i++) {
+    if (i > 0) {
+      const line = document.createElement('div');
+      line.className = 'progress-line' + (i <= navState.junction ? ' done' : '');
+      road.appendChild(line);
+    }
+    const node = document.createElement('div');
+    node.className = 'progress-node';
+    if (i < navState.junction) { node.className += ' done'; node.textContent = '✓'; }
+    else if (i === navState.junction) { node.className += ' current'; node.textContent = i === total - 1 ? '🏁' : '🚗'; }
+    else if (i === total - 1) { node.textContent = '🏁'; }
+    road.appendChild(node);
+  }
+}
+
+function renderNavigation() {
+  if (navState.fuel <= 0) {
+    showNavResults(false);
+    return;
+  }
+  if (navState.junction >= MISSION.junctions.length) {
+    showNavResults(true);
+    return;
+  }
+
+  const junc = MISSION.junctions[navState.junction];
+  const content = document.getElementById('junctionContent');
+  content.className = 'animate-slide';
+  // Force reflow for animation
+  void content.offsetWidth;
+  content.className = 'animate-slide';
+
+  document.getElementById('missionInfo').textContent = `צומת ${navState.junction + 1}/${MISSION.junctions.length}`;
+  renderFuel();
+  renderProgressRoad();
+  document.getElementById('navScore').textContent = `🎯 ${navState.score}`;
+
+  let signsHtml = '<div class="junction-signs" style="display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;">';
+
+  // Real sign image
+  if (junc.realSign) {
+    signsHtml += `<div class="real-sign-container">
+      <img src="${junc.realSign.img}" alt="שלט כביש" onerror="this.parentElement.innerHTML='<div class=\\'virtual-sign highway-green\\'><div class=\\'sign-arabic\\'>${junc.realSign.cities.map(c=>c.ar).join(' / ')}</div><div class=\\'sign-road-number mono\\'>${junc.realSign.road}</div></div>'">
+    </div>`;
+  }
+
+  // Virtual sign
+  if (junc.virtualSign) {
+    signsHtml += renderVirtualSign(junc.virtualSign.ar, junc.virtualSign.style, junc.virtualSign.road, junc.virtualSign.arrow);
+  }
+
+  signsHtml += '</div>';
+
+  const hintBtnHtml = `<button class="btn btn-outline" onclick="useNavHint()" id="hintBtn" style="font-size:0.9rem;padding:8px 16px;">
+    💡 <span class="arabic-medium" style="font-size:1rem;">بدك مساعده؟</span> <span style="font-size:0.8rem;color:var(--text-muted);">(-0.5 ⛽)</span>
+  </button>`;
+
+  content.innerHTML = `
+    <div style="text-align:center;margin-bottom:4px;">
+      <div style="font-size:0.9rem;color:var(--text-muted);">
+        ${MISSION.start_ar} → <span style="color:var(--waze-blue);font-weight:700;">${MISSION.end_ar}</span>
+      </div>
+    </div>
+    ${signsHtml}
+    <p class="arabic-medium" style="color:var(--waze-blue);margin-top:8px;">${junc.prompt_ar}</p>
+    <p style="color:var(--text-muted);font-size:0.95rem;">${junc.prompt}</p>
+    <div id="navHintArea"></div>
+    <div style="display:flex;gap:16px;margin-top:8px;">
+      <button class="btn btn-dir" id="btnLeft" onclick="navChoose('left')">
+        <span class="arabic-medium">${junc.leftLabel}</span>
+      </button>
+      <button class="btn btn-dir" id="btnRight" onclick="navChoose('right')">
+        <span class="arabic-medium">${junc.rightLabel}</span>
+      </button>
+    </div>
+    ${hintBtnHtml}
+  `;
+}
+
+function useNavHint() {
+  if (navState.fuel < 0.5) return;
+  navState.fuel -= 0.5;
+  renderFuel();
+  navState.hints++;
+  const junc = MISSION.junctions[navState.junction];
+  const hintArea = document.getElementById('navHintArea');
+  // Show Hebrew translations as hint
+  let hintText = '';
+  if (junc.realSign) {
+    hintText += junc.realSign.cities.map(c => `${c.ar} = ${c.he}`).join(' | ');
+  }
+  if (junc.virtualSign) {
+    if (hintText) hintText += ' | ';
+    hintText += `${junc.virtualSign.ar} = ${junc.virtualSign.he}`;
+  }
+  hintArea.innerHTML = `<div class="hint-bubble">💡 ${hintText}</div>`;
+  document.getElementById('hintBtn').disabled = true;
+  document.getElementById('hintBtn').style.opacity = '0.4';
+}
+
+function navChoose(dir) {
+  const junc = MISSION.junctions[navState.junction];
+  const btnLeft = document.getElementById('btnLeft');
+  const btnRight = document.getElementById('btnRight');
+  btnLeft.disabled = true;
+  btnRight.disabled = true;
+
+  if (dir === junc.correct) {
+    // Correct
+    navState.score += 10;
+    const correctBtn = dir === 'left' ? btnLeft : btnRight;
+    correctBtn.classList.add('correct');
+    showFeedback(`<div class="arabic-large">برافو عليك!</div><div style="margin-top:6px;">${junc.correctMsg}</div>`, 'correct');
+    setTimeout(() => {
+      navState.junction++;
+      renderNavigation();
+    }, 1500);
+  } else {
+    // Wrong
+    navState.fuel -= 1;
+    navState.mistakes++;
+    const wrongBtn = dir === 'left' ? btnLeft : btnRight;
+    wrongBtn.classList.add('wrong');
+    showFeedback(`<div class="arabic-large">غلط! ارجع</div><div style="margin-top:6px;">${junc.wrongMsg}</div>`, 'wrong');
+    renderFuel();
+    // Shake fuel gauge
+    document.querySelector('.fuel-gauge').classList.add('animate-shake');
+    setTimeout(() => {
+      document.querySelector('.fuel-gauge').classList.remove('animate-shake');
+      btnLeft.disabled = false;
+      btnRight.disabled = false;
+      btnLeft.classList.remove('wrong');
+      btnRight.classList.remove('wrong');
+    }, 1500);
+  }
+}
+
+function showNavResults(arrived) {
+  if (arrived) {
+    launchConfetti();
+    const stars = navState.mistakes === 0 && navState.hints === 0 ? 3 :
+                  navState.mistakes + navState.hints <= 2 ? 2 : 1;
+    showResultsScreen({
+      title_ar: 'وصلت! اهلا وسهلا',
+      title_he: `הגעת ל${MISSION.end_he}!`,
+      icon: '🎉',
+      stars: stars,
+      stats: [
+        { label: 'ניקוד', value: navState.score },
+        { label: 'דלק שנשאר', value: navState.fuel + '/' + MISSION.fuel },
+        { label: 'טעויות', value: navState.mistakes },
+        { label: 'רמזים', value: navState.hints }
+      ],
+      buttons: [
+        { text: 'שחק שוב', action: 'startNavigation()' },
+        { text: 'חזרה לתפריט', action: 'showScreen("title")' }
+      ]
+    });
+  } else {
+    showResultsScreen({
+      title_ar: 'خلص البنزين!',
+      title_he: 'נגמר הדלק! נתקעת בצד הדרך',
+      icon: '⛽',
+      stars: 0,
+      stats: [
+        { label: 'ניקוד', value: navState.score },
+        { label: 'צמתים שעברת', value: navState.junction + '/' + MISSION.junctions.length },
+        { label: 'טעויות', value: navState.mistakes },
+      ],
+      buttons: [
+        { text: 'נסה שוב', action: 'startNavigation()' },
+        { text: 'חזרה לתפריט', action: 'showScreen("title")' }
+      ]
+    });
+  }
+}
+
+// ===== SPEED READING MODE =====
+let speedState = { round: 0, score: 0, timer: null, timeLeft: 10, answered: false, questions: [] };
+
+function startSpeedReading() {
+  // Build 15 random questions
+  const pool = shuffle(CITIES);
+  const questions = [];
+  for (let i = 0; i < 15 && i < pool.length; i++) {
+    const correct = pool[i];
+    // Pick 3 wrong options
+    const wrongs = shuffle(pool.filter(c => c.he !== correct.he)).slice(0, 3);
+    const options = shuffle([correct, ...wrongs]);
+    questions.push({
+      city: correct,
+      options: options.map(o => o.he),
+      correctIndex: options.findIndex(o => o.he === correct.he)
+    });
+  }
+  speedState = { round: 0, score: 0, timer: null, timeLeft: 10, answered: false, questions };
+  showScreen('speed');
+  renderSpeedRound();
+}
+
+function renderSpeedRound() {
+  if (speedState.round >= speedState.questions.length) {
+    showSpeedResults();
+    return;
+  }
+  const q = speedState.questions[speedState.round];
+  speedState.answered = false;
+  speedState.timeLeft = 10;
+
+  document.getElementById('speedProgress').textContent = `${speedState.round + 1} / ${speedState.questions.length}`;
+  document.getElementById('speedScore').textContent = `🎯 ${speedState.score}`;
+  document.getElementById('speedFeedbackText').textContent = '';
+
+  // Render sign
+  const signArea = document.getElementById('speedSignArea');
+  signArea.innerHTML = renderVirtualSign(q.city.ar, q.city.style, q.city.road[0], '');
+
+  // Render options
+  const optArea = document.getElementById('speedOptions');
+  optArea.innerHTML = q.options.map((opt, i) =>
+    `<button class="quiz-option" onclick="speedAnswer(${i})">${opt}</button>`
+  ).join('');
+
+  // Start timer
+  clearInterval(speedState.timer);
+  updateSpeedTimer();
+  speedState.timer = setInterval(() => {
+    if (speedState.answered) return;
+    speedState.timeLeft -= 0.1;
+    updateSpeedTimer();
+    if (speedState.timeLeft <= 0) {
+      speedState.timeLeft = 0;
+      speedTimeOut();
+    }
+  }, 100);
+}
+
+function updateSpeedTimer() {
+  const t = Math.max(0, speedState.timeLeft);
+  document.getElementById('speedTimer').textContent = t.toFixed(1);
+  document.getElementById('speedTimer').className = 'timer-text' + (t <= 3 ? ' danger' : '');
+  const bar = document.getElementById('speedTimerBar');
+  bar.style.width = (t / 10 * 100) + '%';
+  bar.className = 'timer-fill' + (t <= 3 ? ' danger' : '');
+}
+
+function speedAnswer(idx) {
+  if (speedState.answered) return;
+  speedState.answered = true;
+  clearInterval(speedState.timer);
+
+  const q = speedState.questions[speedState.round];
+  const buttons = document.querySelectorAll('#speedOptions .quiz-option');
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.correctIndex) {
+    buttons[idx].classList.add('correct');
+    const timeBonus = speedState.timeLeft > 7 ? 5 : speedState.timeLeft > 5 ? 3 : 1;
+    const points = 10 + timeBonus;
+    speedState.score += points;
+    document.getElementById('speedFeedbackText').innerHTML = `<span style="color:var(--success);" class="arabic-medium">برافو عليك!</span> +${points}`;
+  } else {
+    buttons[idx].classList.add('wrong');
+    buttons[q.correctIndex].classList.add('correct');
+    document.getElementById('speedFeedbackText').innerHTML = `<span style="color:var(--error);" class="arabic-medium">غلط!</span> התשובה: ${q.options[q.correctIndex]}`;
+  }
+
+  document.getElementById('speedScore').textContent = `🎯 ${speedState.score}`;
+
+  setTimeout(() => {
+    speedState.round++;
+    renderSpeedRound();
+  }, 1800);
+}
+
+function speedTimeOut() {
+  if (speedState.answered) return;
+  speedState.answered = true;
+  clearInterval(speedState.timer);
+  const q = speedState.questions[speedState.round];
+  const buttons = document.querySelectorAll('#speedOptions .quiz-option');
+  buttons.forEach(b => b.disabled = true);
+  buttons[q.correctIndex].classList.add('correct');
+  document.getElementById('speedFeedbackText').innerHTML = `<span style="color:var(--fuel-yellow);">⏱️ נגמר הזמן!</span> התשובה: ${q.options[q.correctIndex]}`;
+  setTimeout(() => {
+    speedState.round++;
+    renderSpeedRound();
+  }, 2000);
+}
+
+function showSpeedResults() {
+  clearInterval(speedState.timer);
+  const maxScore = speedState.questions.length * 15;
+  const pct = speedState.score / maxScore;
+  const stars = pct > 0.8 ? 3 : pct > 0.5 ? 2 : pct > 0.2 ? 1 : 0;
+  if (stars >= 2) launchConfetti();
+  showResultsScreen({
+    title_ar: stars >= 2 ? 'برافو عليك!' : 'جرب مره ثانيه',
+    title_he: 'סיום קריאה מהירה',
+    icon: '⚡',
+    stars,
+    stats: [
+      { label: 'ניקוד', value: speedState.score },
+      { label: 'מתוך', value: maxScore },
+      { label: 'אחוז', value: Math.round(pct * 100) + '%' },
+    ],
+    buttons: [
+      { text: 'שחק שוב', action: 'startSpeedReading()' },
+      { text: 'חזרה לתפריט', action: 'showScreen("title")' }
+    ]
+  });
+}
+
+// ===== WAZE QUIZ MODE =====
+let wazeState = { round: 0, score: 0, questions: [], answered: false };
+
+function startWazeQuiz() {
+  wazeState = { round: 0, score: 0, questions: shuffle([...WAZE_QUESTIONS]), answered: false };
+  showScreen('waze');
+  renderWazeRound();
+}
+
+function renderWazeRound() {
+  if (wazeState.round >= wazeState.questions.length) {
+    showWazeResults();
+    return;
+  }
+  const q = wazeState.questions[wazeState.round];
+  wazeState.answered = false;
+
+  document.getElementById('wazeProgress').textContent = `${wazeState.round + 1} / ${wazeState.questions.length}`;
+  document.getElementById('wazeScore').textContent = `🎯 ${wazeState.score}`;
+  document.getElementById('wazeFeedbackText').textContent = '';
+
+  const signArea = document.getElementById('wazeSignArea');
+  signArea.innerHTML = q.sign_style === 'warning' ? renderWarningSign(q.ar) : renderWazeSign(q.ar);
+
+  const optArea = document.getElementById('wazeOptions');
+  optArea.innerHTML = q.options.map((opt, i) =>
+    `<button class="quiz-option" onclick="wazeAnswer(${i})">${opt}</button>`
+  ).join('');
+}
+
+function wazeAnswer(idx) {
+  if (wazeState.answered) return;
+  wazeState.answered = true;
+
+  const q = wazeState.questions[wazeState.round];
+  const buttons = document.querySelectorAll('#wazeOptions .quiz-option');
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.correct) {
+    buttons[idx].classList.add('correct');
+    wazeState.score += 10;
+    document.getElementById('wazeFeedbackText').innerHTML = `<span style="color:var(--success);" class="arabic-medium">برافو عليك!</span> +10`;
+  } else {
+    buttons[idx].classList.add('wrong');
+    buttons[q.correct].classList.add('correct');
+    document.getElementById('wazeFeedbackText').innerHTML = `<span style="color:var(--error);" class="arabic-medium">غلط!</span> התשובה: ${q.options[q.correct]}`;
+  }
+  document.getElementById('wazeScore').textContent = `🎯 ${wazeState.score}`;
+
+  setTimeout(() => {
+    wazeState.round++;
+    renderWazeRound();
+  }, 1800);
+}
+
+function showWazeResults() {
+  const maxScore = wazeState.questions.length * 10;
+  const pct = wazeState.score / maxScore;
+  const stars = pct > 0.8 ? 3 : pct > 0.5 ? 2 : pct > 0.2 ? 1 : 0;
+  if (stars >= 2) launchConfetti();
+  showResultsScreen({
+    title_ar: stars >= 2 ? 'برافو عليك!' : 'جرب مره ثانيه',
+    title_he: 'סיום חידון ווייז',
+    icon: '📱',
+    stars,
+    stats: [
+      { label: 'ניקוד', value: wazeState.score },
+      { label: 'מתוך', value: maxScore },
+      { label: 'אחוז', value: Math.round(pct * 100) + '%' },
+    ],
+    buttons: [
+      { text: 'שחק שוב', action: 'startWazeQuiz()' },
+      { text: 'חזרה לתפריט', action: 'showScreen("title")' }
+    ]
+  });
+}
+
+// ===== MEMORY MATCH MODE =====
+let matchState = { cards: [], flipped: [], matched: [], moves: 0, pairs: 0, locked: false };
+
+function startMemoryMatch() {
+  // Create 16 cards: 8 Arabic + 8 Hebrew
+  const pairs = shuffle([...MATCH_PAIRS]).slice(0, 8);
+  const cards = [];
+  pairs.forEach((pair, i) => {
+    cards.push({ id: i, type: 'arabic', text: pair.ar, pairId: i });
+    cards.push({ id: i, type: 'hebrew', text: pair.he, pairId: i });
+  });
+  matchState = { cards: shuffle(cards), flipped: [], matched: [], moves: 0, pairs: 0, locked: false };
+  showScreen('match');
+  renderMatchGrid();
+}
+
+function renderMatchGrid() {
+  const grid = document.getElementById('matchGrid');
+  grid.innerHTML = matchState.cards.map((card, idx) => {
+    const isMatched = matchState.matched.includes(card.pairId);
+    const isFlipped = matchState.flipped.includes(idx);
+    const cardClass = card.type === 'arabic' ? 'card-arabic' : 'card-hebrew';
+    return `<div class="match-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}" onclick="matchFlip(${idx})">
+      <div class="match-card-inner">
+        <div class="match-card-front">؟</div>
+        <div class="match-card-back ${cardClass}">${card.text}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('matchMoves').textContent = `מהלכים: ${matchState.moves}`;
+  document.getElementById('matchPairs').textContent = `זוגות: ${matchState.pairs} / 8`;
+}
+
+function matchFlip(idx) {
+  if (matchState.locked) return;
+  if (matchState.flipped.includes(idx)) return;
+  if (matchState.matched.includes(matchState.cards[idx].pairId)) return;
+  if (matchState.flipped.length >= 2) return;
+
+  matchState.flipped.push(idx);
+  renderMatchGrid();
+
+  if (matchState.flipped.length === 2) {
+    matchState.moves++;
+    matchState.locked = true;
+    const [a, b] = matchState.flipped;
+    const cardA = matchState.cards[a];
+    const cardB = matchState.cards[b];
+
+    if (cardA.pairId === cardB.pairId && cardA.type !== cardB.type) {
+      // Match!
+      matchState.matched.push(cardA.pairId);
+      matchState.pairs++;
+      matchState.flipped = [];
+      matchState.locked = false;
+      renderMatchGrid();
+      document.getElementById('matchFeedback').innerHTML = `<span style="color:var(--success);" class="arabic-medium">برافو!</span> ${cardA.type === 'arabic' ? cardA.text : cardB.text} = ${cardA.type === 'hebrew' ? cardA.text : cardB.text}`;
+
+      if (matchState.pairs === 8) {
+        setTimeout(showMatchResults, 800);
+      }
+    } else {
+      // No match
+      document.getElementById('matchFeedback').innerHTML = `<span style="color:var(--error);">לא מתאים...</span>`;
+      setTimeout(() => {
+        matchState.flipped = [];
+        matchState.locked = false;
+        renderMatchGrid();
+      }, 1000);
+    }
+  }
+}
+
+function showMatchResults() {
+  launchConfetti();
+  const stars = matchState.moves <= 16 ? 3 : matchState.moves <= 24 ? 2 : 1;
+  showResultsScreen({
+    title_ar: 'وصلت! برافو عليك!',
+    title_he: 'כל הזוגות נמצאו!',
+    icon: '🃏',
+    stars,
+    stats: [
+      { label: 'מהלכים', value: matchState.moves },
+      { label: 'זוגות', value: '8/8' },
+    ],
+    buttons: [
+      { text: 'שחק שוב', action: 'startMemoryMatch()' },
+      { text: 'חזרה לתפריט', action: 'showScreen("title")' }
+    ]
+  });
+}
+
+// ===== RESULTS SCREEN =====
+function showResultsScreen({ title_ar, title_he, icon, stars, stats, buttons }) {
+  showScreen('results');
+  const starsHtml = '⭐'.repeat(stars) + '<span style="opacity:0.2;">' + '⭐'.repeat(3 - stars) + '</span>';
+  const statsHtml = stats.map(s => `<div class="stat-box"><div class="stat-value">${s.value}</div><div class="stat-label">${s.label}</div></div>`).join('');
+  const btnsHtml = buttons.map(b => {
+    const escaped = b.action.replace(/"/g, '&quot;');
+    return `<button class="btn ${b.text.includes('שוב') || b.text.includes('נסה') ? 'btn-primary' : 'btn-outline'}" onclick="${escaped}">${b.text}</button>`;
+  }).join('');
+
+  document.getElementById('resultsContent').innerHTML = `
+    <div style="font-size:3.5rem;">${icon}</div>
+    <div class="arabic-large" style="color:var(--waze-blue);">${title_ar}</div>
+    <h2 style="font-size:1.4rem;">${title_he}</h2>
+    <div class="stars">${starsHtml}</div>
+    <div class="stats-grid">${statsHtml}</div>
+    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;justify-content:center;">
+      ${btnsHtml}
+    </div>
+  `;
+}
+</script>
+</body>
+</html>

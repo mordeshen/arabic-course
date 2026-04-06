@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול קריאה בערבית</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: opacity 0.3s;
+  }
+  .back-link:hover { opacity: 0.7; }
+
+  .header h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .header .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Mode Toggle */
+  .mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 36px;
+  }
+
+  .mode-btn {
+    padding: 10px 28px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--card);
+    color: var(--muted);
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .mode-btn:first-child { border-radius: 0 10px 10px 0; }
+  .mode-btn:last-child { border-radius: 10px 0 0 10px; }
+  .mode-btn.active {
+    background: rgba(240,192,96,0.12);
+    color: var(--gold);
+    border-color: rgba(240,192,96,0.4);
+  }
+
+  /* Flashcard */
+  .flashcard-area { display: none; flex-direction: column; align-items: center; }
+  .flashcard-area.active { display: flex; }
+
+  .card-counter {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .flashcard {
+    width: 100%;
+    max-width: 500px;
+    min-height: 320px;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 40px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flashcard:hover {
+    border-color: rgba(240,192,96,0.3);
+    box-shadow: 0 8px 40px rgba(240,192,96,0.06);
+  }
+
+  .flashcard .arabic-word {
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    direction: rtl;
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .flashcard .arabic-word.size-letter { font-size: 128px; }
+  .flashcard .arabic-word.size-word { font-size: 64px; }
+  .flashcard .arabic-word.size-phrase { font-size: 48px; }
+
+  .flashcard .flip-hint {
+    color: var(--muted);
+    font-size: 13px;
+    transition: opacity 0.3s;
+  }
+
+  .flashcard .reveal {
+    display: none;
+    text-align: center;
+  }
+
+  .flashcard.flipped .flip-hint { display: none; }
+  .flashcard.flipped .reveal { display: block; }
+
+  .reveal .hebrew {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .reveal .translit {
+    font-size: 20px;
+    color: var(--teal);
+    direction: rtl;
+  }
+
+  .card-nav {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+    align-items: center;
+  }
+
+  .nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--card);
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-btn:hover {
+    border-color: var(--gold);
+    background: rgba(240,192,96,0.08);
+  }
+
+  .shuffle-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(61,232,208,0.2);
+    background: rgba(61,232,208,0.05);
+    color: var(--teal);
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .shuffle-btn:hover {
+    border-color: rgba(61,232,208,0.5);
+    background: rgba(61,232,208,0.1);
+  }
+
+  /* Quiz */
+  .quiz-area { display: none; flex-direction: column; align-items: center; }
+  .quiz-area.active { display: flex; }
+
+  .quiz-score {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .quiz-score span { color: var(--gold); font-weight: 700; }
+
+  .timer-bar {
+    width: 100%;
+    max-width: 500px;
+    height: 5px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .timer-fill {
+    height: 100%;
+    background: linear-gradient(to left, var(--teal), var(--gold));
+    border-radius: 3px;
+    transition: width 0.1s linear;
+    width: 100%;
+  }
+  .timer-fill.danger { background: linear-gradient(to left, var(--rose), #ff4060); }
+
+  .quiz-arabic {
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    direction: rtl;
+    text-align: center;
+    margin-bottom: 32px;
+    line-height: 1.3;
+  }
+
+  .quiz-arabic.size-letter { font-size: 128px; }
+  .quiz-arabic.size-word { font-size: 64px; }
+  .quiz-arabic.size-phrase { font-size: 48px; }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .quiz-option {
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--card);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .quiz-option:hover {
+    border-color: rgba(240,192,96,0.4);
+    background: rgba(240,192,96,0.06);
+  }
+  .quiz-option.correct {
+    border-color: var(--teal);
+    background: rgba(61,232,208,0.15);
+    color: var(--teal);
+  }
+  .quiz-option.wrong {
+    border-color: var(--rose);
+    background: rgba(255,107,138,0.12);
+    color: var(--rose);
+  }
+  .quiz-option.disabled { pointer-events: none; }
+
+  /* Quiz Complete */
+  .quiz-complete {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .quiz-complete.active { display: block; }
+
+  .quiz-complete .big-score {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .quiz-complete .score-label {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .quiz-complete .celebration {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .restart-btn {
+    padding: 12px 32px;
+    border-radius: 24px;
+    border: 1px solid rgba(240,192,96,0.3);
+    background: rgba(240,192,96,0.08);
+    color: var(--gold);
+    font-family: 'Heebo', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .restart-btn:hover {
+    border-color: rgba(240,192,96,0.6);
+    background: rgba(240,192,96,0.15);
+  }
+
+  /* Footer */
+  .footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-nav a {
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.3s;
+  }
+  .footer-nav a:hover { opacity: 0.7; }
+
+  /* Error */
+  .error-msg {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--rose);
+    font-size: 18px;
+  }
+
+  @media (max-width: 600px) {
+    .flashcard .arabic-word.size-letter { font-size: 80px; }
+    .flashcard .arabic-word.size-word { font-size: 48px; }
+    .flashcard .arabic-word.size-phrase { font-size: 36px; }
+    .quiz-arabic.size-letter { font-size: 80px; }
+    .quiz-arabic.size-word { font-size: 48px; }
+    .quiz-arabic.size-phrase { font-size: 36px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .flashcard { min-height: 260px; padding: 30px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <a class="back-link" href="../index.html">&#8592; חזרה לקורס</a>
+    <h1 id="pageTitle">תרגול קריאה</h1>
+    <div class="subtitle" id="pageSubtitle">בחרו מצב תרגול</div>
+  </div>
+
+  <div id="errorArea" class="error-msg" style="display:none;"></div>
+
+  <div id="mainContent" style="display:none;">
+    <div class="mode-toggle">
+      <button class="mode-btn active" data-mode="flashcards">כרטיסיות</button>
+      <button class="mode-btn" data-mode="quiz">חידון</button>
+    </div>
+
+    <!-- Flashcard Mode -->
+    <div class="flashcard-area active" id="flashcardArea">
+      <div class="card-counter" id="cardCounter"></div>
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="arabic-word" id="fcArabic"></div>
+        <div class="flip-hint">לחצו לחשיפה</div>
+        <div class="reveal">
+          <div class="hebrew" id="fcHebrew"></div>
+          <div class="translit" id="fcTranslit"></div>
+        </div>
+      </div>
+      <div class="card-nav">
+        <button class="nav-btn" onclick="prevCard()">&#8594;</button>
+        <button class="shuffle-btn" onclick="shuffleCards()">&#x1f500; ערבוב</button>
+        <button class="nav-btn" onclick="nextCard()">&#8592;</button>
+      </div>
+    </div>
+
+    <!-- Quiz Mode -->
+    <div class="quiz-area" id="quizArea">
+      <div class="quiz-score" id="quizScore"></div>
+      <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+      <div class="quiz-arabic" id="quizArabic"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+
+    <!-- Quiz Complete -->
+    <div class="quiz-complete" id="quizComplete">
+      <div class="celebration">&#127881; &#11088; &#127881;</div>
+      <div class="big-score" id="finalScore"></div>
+      <div class="score-label" id="finalLabel"></div>
+      <button class="restart-btn" onclick="startQuiz()">&#x1f504; שחקו שוב</button>
+    </div>
+  </div>
+
+  <div class="footer-nav" id="footerNav" style="display:none;">
+    <a id="lessonLink" href="#">&#8592; חזרה לשיעור</a>
+    <a href="../index.html">&#127968; חזרה לקורס</a>
+  </div>
+</div>
+
+<script>
+const lessonData = {
+  1: {
+    title: 'האותיות',
+    level: 'letters',
+    items: [
+      {arabic:'\u0623', hebrew:'\u05D0', translit:'\u05D0\u05B7\u05E0\u05D0 = \u05D0\u05E0\u05D9'},
+      {arabic:'\u0628', hebrew:'\u05D1\u05BC', translit:'\u05D1\u05BC\u05D0\u05D1\u05BC = \u05D3\u05DC\u05EA'},
+      {arabic:'\u062A', hebrew:'\u05EA', translit:'\u05E9\u05B7\u05E0\u05B0\u05EA\u05B5\u05D4 = \u05EA\u05D9\u05E7'},
+      {arabic:'\u062C', hebrew:"\u05D2'", translit:"\u05D2\u05B7'\u05D5 = \u05D0\u05D5\u05D5\u05D9\u05E8\u05D4"},
+      {arabic:'\u062D', hebrew:'\u05D7', translit:'\u05D7\u05B7\u05D1\u05BC\u05D9\u05D1\u05BC\u05D9 = \u05D0\u05D4\u05D5\u05D1\u05D9'},
+      {arabic:'\u062E', hebrew:"\u05D7'", translit:"\u05D7'\u05D0\u05DC\u05B5\u05D3"},
+      {arabic:'\u062F', hebrew:'\u05D3', translit:"\u05D7'\u05D0\u05DC\u05B5\u05D3"},
+      {arabic:'\u0631', hebrew:'\u05E8', translit:'\u05DE\u05B7\u05E8\u05E8\u05B7\u05D4 = \u05E4\u05E2\u05DD'},
+      {arabic:'\u0634', hebrew:'\u05E9', translit:'\u05E9\u05B7\u05DE\u05B0\u05E1 = \u05E9\u05DE\u05E9'},
+      {arabic:'\u0639', hebrew:'\u05E2', translit:'\u05D9\u05B7\u05E2\u05B0\u05E0\u05D9 = \u05DB\u05DC\u05D5\u05DE\u05E8'},
+      {arabic:'\u0623\u0646\u0627', hebrew:'\u05D0\u05E0\u05D9', translit:'\u05D0\u05B7\u05E0\u05D0'},
+      {arabic:'\u0634\u0643\u0631\u0627\u064B', hebrew:'\u05EA\u05D5\u05D3\u05D4', translit:'\u05E9\u05BB\u05DB\u05BC\u05B0\u05E8\u05B7\u05DF'},
+      {arabic:'\u0645\u0631\u062D\u0628\u0627', hebrew:'\u05E9\u05DC\u05D5\u05DD', translit:'\u05DE\u05B7\u05E8\u05B0\u05D7\u05B7\u05D1\u05BC\u05D0'},
+      {arabic:'\u0623\u064A\u0648\u0647', hebrew:'\u05DB\u05DF', translit:'\u05D0\u05B7\u05D9\u05B0\u05D5\u05B7\u05D4'},
+      {arabic:'\u0644\u0623', hebrew:'\u05DC\u05D0', translit:'\u05DC\u05B7\u05D0\u05B0'},
+    ]
+  },
+  2: {
+    title: '\u05D1\u05E8\u05DB\u05D5\u05EA',
+    level: 'letters',
+    items: [
+      {arabic:'\u0633', hebrew:'\u05E1', translit:'\u05E1\u05B7\u05DC\u05D0\u05DD = \u05E9\u05DC\u05D5\u05DD'},
+      {arabic:'\u0644', hebrew:'\u05DC', translit:'\u05DC\u05B7\u05D0\u05B0 = \u05DC\u05D0'},
+      {arabic:'\u0645', hebrew:'\u05DE', translit:'\u05DE\u05B7\u05E8\u05B0\u05D7\u05B7\u05D1\u05BC\u05D0 = \u05E9\u05DC\u05D5\u05DD'},
+      {arabic:'\u0646', hebrew:'\u05E0', translit:'\u05E0\u05D5\u05BC\u05E8 = \u05D0\u05D5\u05E8'},
+      {arabic:'\u0643', hebrew:'\u05DB\u05BC', translit:'\u05DB\u05BC\u05D9\u05E4\u05B7\u05DB\u05BC = \u05DE\u05D4 \u05E9\u05DC\u05D5\u05DE\u05DA'},
+      {arabic:'\u0647', hebrew:'\u05D4', translit:'\u05D4\u05D5\u05B9\u05DF = \u05E4\u05D4'},
+      {arabic:'\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064A\u0643\u0645', hebrew:'\u05E9\u05DC\u05D5\u05DD \u05E2\u05DC\u05D9\u05DB\u05DD', translit:'\u05D0\u05B7\u05E1-\u05E1\u05B7\u05DC\u05D0\u05DD\u05BB \u05E2\u05B7\u05DC\u05B5\u05D9\u05DB\u05BB\u05BC\u05DD'},
+      {arabic:'\u0635\u0628\u0627\u062D \u0627\u0644\u062E\u064A\u0631', hebrew:'\u05D1\u05D5\u05E7\u05E8 \u05D8\u05D5\u05D1', translit:'\u05E1\u05B7\u05BF\u05D1\u05BC\u05D0\u05D7 (\u05D0)\u05DC\u05B0\u05D7\u05B5\u05D9\u05E8'},
+      {arabic:'\u0645\u0633\u0627 \u0627\u0644\u062E\u064A\u0631', hebrew:'\u05E2\u05E8\u05D1 \u05D8\u05D5\u05D1', translit:'\u05DE\u05B7\u05E1\u05D0 (\u05D0)\u05DC\u05B0\u05D7\u05B5\u05D9\u05E8'},
+      {arabic:'\u0643\u064A\u0641\u0643', hebrew:'\u05DE\u05D4 \u05E9\u05DC\u05D5\u05DE\u05DA', translit:'\u05DB\u05BC\u05D9\u05E4\u05B7\u05DB\u05BC'},
+      {arabic:'\u0627\u0644\u062D\u0645\u062F\u0644\u0644\u0647', hebrew:'\u05EA\u05D5\u05D3\u05D4 \u05DC\u05D0\u05DC', translit:'\u05D0\u05B5\u05DC\u05B0\u05D7\u05B7\u05DE\u05B0\u05D3\u05BB \u05DC\u05B4\u05DC\u05B7\u05D4'},
+      {arabic:'\u0645\u0639 \u0627\u0644\u0633\u0644\u0627\u0645\u0629', hebrew:'\u05DC\u05D4\u05EA\u05E8\u05D0\u05D5\u05EA', translit:'\u05DE\u05B7\u05E2\u05B7 (\u05D0)\u05E1-\u05E1\u05B7\u05DC\u05D0\u05DE\u05B5\u05D4'},
+      {arabic:'\u0628\u0627\u064A', hebrew:'\u05D1\u05D9\u05D9', translit:'\u05D1\u05BC\u05B7\u05D0\u05D9'},
+    ]
+  },
+  3: {
+    title: '\u05D4\u05D9\u05DB\u05E8\u05D5\u05EA',
+    level: 'words',
+    items: [
+      {arabic:'\u0627\u0633\u0645\u064A', hebrew:'\u05E9\u05DE\u05D9', translit:'\u05D0\u05B4\u05E1\u05DE\u05D9'},
+      {arabic:'\u0645\u0646 \u0648\u064A\u0646', hebrew:'\u05DE\u05D0\u05D9\u05E4\u05D4', translit:'\u05DE\u05B4\u05DF \u05D5\u05B5\u05D9\u05DF'},
+      {arabic:'\u0633\u0627\u0643\u0646', hebrew:'\u05D2\u05E8', translit:'\u05E1\u05D0\u05DB\u05B5\u05BC\u05DF'},
+      {arabic:'\u0634\u063A\u0644', hebrew:'\u05E2\u05D1\u05D5\u05D3\u05D4', translit:'\u05E9\u05BB\u05E8\u05B0\u05D2\u05DC'},
+      {arabic:'\u062A\u0634\u0631\u0641\u0646\u0627', hebrew:'\u05E0\u05E2\u05D9\u05DD \u05DC\u05D4\u05DB\u05D9\u05E8', translit:'\u05EA\u05B0\u05E9\u05B7\u05E8\u05E8\u05B7\u05E4\u05B0\u05E0\u05D0'},
+      {arabic:'\u0641\u0631\u0635\u0629 \u0633\u0639\u064A\u062F\u0629', hebrew:'\u05E9\u05DE\u05D7\u05EA\u05D9', translit:'\u05E4\u05BB\u05E8\u05B0\u05E1\u05B7\u05BF\u05D4 \u05E1\u05B7\u05E2\u05D9\u05D3\u05B5\u05D4'},
+      {arabic:'\u0634\u0648 \u0627\u0633\u0645\u0643', hebrew:'\u05DE\u05D4 \u05E9\u05DE\u05DA', translit:'\u05E9\u05D5\u05BC \u05D0\u05B4\u05E1\u05B0\u05DE\u05B7\u05DB\u05BC'},
+      {arabic:'\u0639\u0645\u0631\u064A', hebrew:'\u05D2\u05D9\u05DC\u05D9', translit:'\u05E2\u05B9\u05DE\u05B0\u05E8\u05D9'},
+    ]
+  },
+  4: {
+    title: '\u05DE\u05E1\u05E4\u05E8\u05D9\u05DD',
+    level: 'words',
+    items: [
+      {arabic:'\u0635\u0641\u0631', hebrew:'0', translit:'\u05E1\u05B4\u05BF\u05E4\u05B5\u05E8'},
+      {arabic:'\u0648\u0627\u062D\u062F', hebrew:'1', translit:'\u05D5\u05D0\u05D7\u05B7\u05D3'},
+      {arabic:'\u0627\u062B\u0646\u064A\u0646', hebrew:'2', translit:'\u05EA\u05B0\u05E0\u05B5\u05D9\u05DF'},
+      {arabic:'\u062B\u0644\u0627\u062B\u0629', hebrew:'3', translit:'\u05EA\u05B7\u05DC\u05D0\u05EA\u05B5\u05D4'},
+      {arabic:'\u0623\u0631\u0628\u0639\u0629', hebrew:'4', translit:'\u05D0\u05B7\u05E8\u05B0\u05D1\u05BC\u05B7\u05E2\u05B7\u05D4'},
+      {arabic:'\u062E\u0645\u0633\u0629', hebrew:'5', translit:'\u05D7\u05B7\u05DE\u05B0\u05E1\u05B5\u05D4'},
+      {arabic:'\u0633\u062A\u0629', hebrew:'6', translit:'\u05E1\u05B4\u05EA\u05EA\u05B5\u05D4'},
+      {arabic:'\u0633\u0628\u0639\u0629', hebrew:'7', translit:'\u05E1\u05B7\u05D1\u05BC\u05B0\u05E2\u05B7\u05D4'},
+      {arabic:'\u062B\u0645\u0627\u0646\u064A\u0629', hebrew:'8', translit:'\u05EA\u05B7\u05DE\u05D0\u05E0\u05B0\u05D9\u05B5\u05D4'},
+      {arabic:'\u062A\u0633\u0639\u0629', hebrew:'9', translit:'\u05EA\u05B4\u05E1\u05B0\u05E2\u05B7\u05D4'},
+      {arabic:'\u0639\u0634\u0631\u0629', hebrew:'10', translit:'\u05E2\u05B7\u05E9\u05B7\u05E8\u05B7\u05D4'},
+    ]
+  },
+  5: {
+    title: '\u05DE\u05E9\u05E4\u05D7\u05D4',
+    level: 'words',
+    items: [
+      {arabic:'\u0645\u0631\u062A\u064A', hebrew:'\u05D0\u05E9\u05EA\u05D9', translit:'\u05DE\u05B7\u05E8\u05B7\u05EA\u05D9'},
+      {arabic:'\u062C\u0648\u0632\u064A', hebrew:'\u05D1\u05E2\u05DC\u05D9', translit:"\u05D2'\u05D5\u05B9\u05D6\u05D9"},
+      {arabic:'\u0627\u0628\u0648\u064A', hebrew:'\u05D0\u05D1\u05D0 \u05E9\u05DC\u05D9', translit:'\u05D0\u05B7\u05D1\u05BC\u05D5\u05BC\u05D9'},
+      {arabic:'\u0627\u0645\u064A', hebrew:'\u05D0\u05DE\u05D0 \u05E9\u05DC\u05D9', translit:'\u05D0\u05B4\u05DE\u05DE\u05D9'},
+      {arabic:'\u0648\u0644\u062F', hebrew:'\u05D9\u05DC\u05D3', translit:'\u05D5\u05B7\u05DC\u05B7\u05D3'},
+      {arabic:'\u0628\u0646\u062A', hebrew:'\u05D9\u05DC\u05D3\u05D4', translit:'\u05D1\u05BC\u05B4\u05E0\u05B0\u05EA'},
+      {arabic:'\u0639\u0646\u062F\u064A', hebrew:'\u05D9\u05E9 \u05DC\u05D9', translit:'\u05E2\u05B4\u05E0\u05B0\u05D3\u05D9'},
+      {arabic:'\u0645\u0639\u064A', hebrew:'\u05D0\u05D9\u05EA\u05D9', translit:'\u05DE\u05B7\u05E2\u05D9'},
+    ]
+  },
+  6: {
+    title: '\u05DE\u05E9\u05E4\u05D8\u05D9\u05DD \u05D4\u05DB\u05E8\u05D7\u05D9\u05D9\u05DD',
+    level: 'words',
+    items: [
+      {arabic:'\u0628\u062F\u064A', hebrew:'\u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4', translit:'\u05D1\u05BC\u05B4\u05D3\u05D3\u05D9'},
+      {arabic:'\u0644\u0627\u0632\u0645', hebrew:'\u05E6\u05E8\u05D9\u05DA', translit:'\u05DC\u05D0\u05D6\u05B5\u05DD'},
+      {arabic:'\u0645\u0645\u0643\u0646', hebrew:'\u05D0\u05E4\u05E9\u05E8', translit:'\u05DE\u05BB\u05DE\u05B0\u05DB\u05B5\u05BC\u05DF'},
+      {arabic:'\u064A\u0639\u0646\u064A', hebrew:'\u05DB\u05DC\u05D5\u05DE\u05E8', translit:'\u05D9\u05B7\u05E2\u05B0\u05E0\u05D9'},
+      {arabic:'\u062D\u0628\u064A\u0628\u064A', hebrew:'\u05D7\u05D1\u05D9\u05D1\u05D9', translit:'\u05D7\u05B7\u05D1\u05BC\u05D9\u05D1\u05BC\u05D9'},
+      {arabic:'\u064A\u0644\u0644\u0627', hebrew:'\u05D9\u05D0\u05DC\u05DC\u05D4', translit:'\u05D9\u05B7\u05DC\u05DC\u05D0'},
+      {arabic:'\u0634\u0648\u064A', hebrew:'\u05E7\u05E6\u05EA', translit:'\u05E9\u05B0\u05D5\u05B7\u05D9'},
+      {arabic:'\u0643\u062A\u064A\u0631', hebrew:'\u05D4\u05E8\u05D1\u05D4', translit:'\u05DB\u05BC\u05B0\u05EA\u05D9\u05E8'},
+      {arabic:'\u0628\u0633', hebrew:'\u05D0\u05D1\u05DC/\u05DE\u05E1\u05E4\u05D9\u05E7', translit:'\u05D1\u05BC\u05B7\u05E1'},
+      {arabic:'\u0643\u0645\u0627\u0646', hebrew:'\u05E2\u05D5\u05D3', translit:'\u05DB\u05BC\u05B7\u05DE\u05D0\u05DF'},
+    ]
+  },
+  7: {
+    title: '\u05D8\u05DC\u05E4\u05D5\u05DF',
+    level: 'words',
+    items: [
+      {arabic:'\u0623\u0644\u0648', hebrew:'\u05D4\u05DC\u05D5', translit:'\u05D0\u05B7\u05DC\u05D5\u05B9'},
+      {arabic:'\u0631\u0642\u0645', hebrew:'\u05DE\u05E1\u05E4\u05E8', translit:'\u05E8\u05B7\u05E7\u05B7\u05DD'},
+      {arabic:'\u0633\u0627\u0645\u0639', hebrew:'\u05E9\u05D5\u05DE\u05E2', translit:'\u05E1\u05D0\u05DE\u05B5\u05E2'},
+      {arabic:'\u0645\u0634\u063A\u0648\u0644', hebrew:'\u05E2\u05E1\u05D5\u05E7', translit:"\u05DE\u05B7\u05E9\u05B0\u05E8'\u05D5\u05BC\u05DC"},
+      {arabic:'\u0645\u0634', hebrew:'\u05DC\u05D0 (\u05E9\u05DC\u05D9\u05DC\u05D4)', translit:'\u05DE\u05B4\u05E9'},
+      {arabic:'\u0645\u0627 \u0628\u062F\u064A', hebrew:'\u05DC\u05D0 \u05E8\u05D5\u05E6\u05D4', translit:'\u05DE\u05D0 \u05D1\u05BC\u05B4\u05D3\u05D3\u05D9'},
+      {arabic:'\u0645\u0646 \u0641\u0636\u0644\u0643', hebrew:'\u05D1\u05D1\u05E7\u05E9\u05D4', translit:'\u05DE\u05B4\u05DF \u05E4\u05B7\u05D3\u05B0\u05BF\u05DC\u05B7\u05DB\u05BC'},
+    ]
+  },
+  8: {
+    title: '\u05D1\u05E8\u05DB\u05D5\u05EA \u05DE\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA',
+    level: 'phrases',
+    items: [
+      {arabic:'\u064A\u0639\u0637\u064A\u0643 \u0627\u0644\u0639\u0627\u0641\u064A\u0629', hebrew:'\u05D9\u05D9\u05E9\u05E8 \u05DB\u05D7', translit:'\u05D9\u05B7\u05E2\u05B0\u05D8\u05BF\u05D9\u05DB\u05BC (\u05D0)\u05DC\u05B0\u05E2\u05D0\u05E4\u05B0\u05D9\u05B5\u05D4'},
+      {arabic:'\u0633\u0644\u0627\u0645\u062A\u0643', hebrew:'\u05D4\u05D7\u05DC\u05DE\u05D4', translit:'\u05E1\u05B7\u05DC\u05D0\u05DE\u05B0\u05EA\u05B7\u05DB\u05BC'},
+      {arabic:'\u0646\u0639\u064A\u0645\u0646', hebrew:'\u05D0\u05D7\u05E8\u05D9 \u05DE\u05E7\u05DC\u05D7\u05EA', translit:'\u05E0\u05B7\u05E2\u05D9\u05DE\u05B7\u05DF'},
+      {arabic:'\u0635\u062D\u0629', hebrew:'\u05D1\u05EA\u05D9\u05D0\u05D1\u05D5\u05DF', translit:'\u05E1\u05B7\u05BF\u05D7\u05D7\u05B7\u05D4'},
+      {arabic:'\u062A\u0633\u0644\u0645', hebrew:'\u05EA\u05D1\u05D5\u05E8\u05DA', translit:'\u05EA\u05B4\u05E1\u05B0\u05DC\u05B7\u05DD'},
+      {arabic:'\u0627\u0644\u0644\u0647 \u064A\u062E\u0644\u064A\u0643', hebrew:'\u05D0\u05DC\u05D5\u05D4\u05D9\u05DD \u05D9\u05E9\u05DE\u05D5\u05E8', translit:"\u05D0\u05B7\u05DC\u05DC\u05B7\u05D4 \u05D9\u05B0\u05D7\u05B7'\u05DC\u05DC\u05D9\u05DB\u05BC"},
+      {arabic:'\u064A\u0633\u0644\u0645 \u062A\u0645\u0643', hebrew:'\u05EA\u05D2\u05D5\u05D1\u05D4 \u05DC\u05DE\u05D7\u05DE\u05D0\u05D4', translit:'\u05D9\u05B4\u05E1\u05B0\u05DC\u05B7\u05DD \u05EA\u05BB\u05DE\u05DE\u05B7\u05DB\u05BC'},
+    ]
+  },
+  9: {
+    title: '\u05E4\u05E2\u05DC\u05D9\u05DD \u05D1\u05D4\u05D5\u05D5\u05D4',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0628\u062D\u0643\u064A', hebrew:'\u05D0\u05E0\u05D9 \u05DE\u05D3\u05D1\u05E8', translit:'\u05D1\u05BC\u05B7\u05D7\u05B0\u05DB\u05BC\u05D9'},
+      {arabic:'\u0628\u0627\u0643\u0644', hebrew:'\u05D0\u05E0\u05D9 \u05D0\u05D5\u05DB\u05DC', translit:'\u05D1\u05BC\u05B7\u05D0\u05DB\u05BB\u05DC'},
+      {arabic:'\u0628\u0631\u0648\u062D', hebrew:'\u05D0\u05E0\u05D9 \u05D4\u05D5\u05DC\u05DA', translit:'\u05D1\u05BC\u05B7\u05E8\u05D5\u05BC\u05D7'},
+      {arabic:'\u0628\u0634\u062A\u063A\u0644', hebrew:'\u05D0\u05E0\u05D9 \u05E2\u05D5\u05D1\u05D3', translit:"\u05D1\u05BC\u05B7\u05E9\u05B0\u05EA\u05B0\u05E8\u05B5'\u05DC"},
+      {arabic:'\u0628\u0641\u0647\u0645', hebrew:'\u05D0\u05E0\u05D9 \u05DE\u05D1\u05D9\u05DF', translit:'\u05D1\u05BC\u05B7\u05E4\u05B0\u05D4\u05B7\u05DD'},
+      {arabic:'\u0628\u0639\u0631\u0641', hebrew:'\u05D0\u05E0\u05D9 \u05D9\u05D5\u05D3\u05E2', translit:'\u05D1\u05BC\u05B7\u05E2\u05B0\u05E8\u05B7\u05E3'},
+      {arabic:'\u0628\u0634\u0648\u0641', hebrew:'\u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4', translit:'\u05D1\u05BC\u05B7\u05E9\u05D5\u05BC\u05E3'},
+      {arabic:'\u0628\u0633\u0645\u0639', hebrew:'\u05D0\u05E0\u05D9 \u05E9\u05D5\u05DE\u05E2', translit:'\u05D1\u05BC\u05B7\u05E1\u05B0\u05DE\u05B7\u05E2'},
+    ]
+  },
+  10: {
+    title: '\u05E4\u05E2\u05DC\u05D9\u05DD \u05D1\u05E2\u05D1\u05E8',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0631\u062D\u062A', hebrew:'\u05D4\u05DC\u05DB\u05EA\u05D9', translit:'\u05E8\u05BB\u05D7\u05B0\u05EA'},
+      {arabic:'\u0627\u0643\u0644\u062A', hebrew:'\u05D0\u05DB\u05DC\u05EA\u05D9', translit:'\u05D0\u05B7\u05DB\u05B7\u05DC\u05B0\u05EA'},
+      {arabic:'\u062D\u0643\u064A\u062A', hebrew:'\u05D3\u05D9\u05D1\u05E8\u05EA\u05D9', translit:'\u05D7\u05B7\u05DB\u05B5\u05BC\u05D9\u05EA'},
+      {arabic:'\u0634\u0641\u062A', hebrew:'\u05E8\u05D0\u05D9\u05EA\u05D9', translit:'\u05E9\u05BB\u05E4\u05B0\u05EA'},
+      {arabic:'\u0633\u0645\u0639\u062A', hebrew:'\u05E9\u05DE\u05E2\u05EA\u05D9', translit:'\u05E1\u05B0\u05DE\u05B4\u05E2\u05B0\u05EA'},
+      {arabic:'\u0643\u062A\u0628\u062A', hebrew:'\u05DB\u05EA\u05D1\u05EA\u05D9', translit:'\u05DB\u05B7\u05BC\u05EA\u05B7\u05D1\u05BC\u05B0\u05EA'},
+    ]
+  },
+  11: {
+    title: '\u05DB\u05D9\u05D5\u05D5\u05E0\u05D9\u05DD',
+    level: 'phrases',
+    items: [
+      {arabic:'\u064A\u0645\u064A\u0646', hebrew:'\u05D9\u05DE\u05D9\u05DF', translit:'\u05D9\u05B7\u05DE\u05D9\u05DF'},
+      {arabic:'\u0634\u0645\u0627\u0644', hebrew:'\u05E9\u05DE\u05D0\u05DC', translit:'\u05E9\u05B0\u05DE\u05D0\u05DC'},
+      {arabic:'\u062F\u063A\u0631\u064A', hebrew:'\u05D9\u05E9\u05E8', translit:"\u05D3\u05BB\u05E8\u05B0'\u05E8\u05D9"},
+      {arabic:'\u0641\u0648\u0642', hebrew:'\u05DC\u05DE\u05E2\u05DC\u05D4', translit:'\u05E4\u05D5\u05BC\u05E7'},
+      {arabic:'\u0642\u0631\u064A\u0628', hebrew:'\u05E7\u05E8\u05D5\u05D1', translit:'\u05E7\u05B7\u05E8\u05D9\u05D1\u05BC'},
+      {arabic:'\u0628\u0639\u064A\u062F', hebrew:'\u05E8\u05D7\u05D5\u05E7', translit:'\u05D1\u05BC\u05B7\u05E2\u05D9\u05D3'},
+      {arabic:'\u0647\u0648\u0646', hebrew:'\u05E4\u05D4', translit:'\u05D4\u05D5\u05B9\u05DF'},
+      {arabic:'\u0647\u0646\u0627\u0643', hebrew:'\u05E9\u05DD', translit:'\u05D4\u05B0\u05E0\u05D0\u05DB\u05BC'},
+      {arabic:'\u0627\u0645\u0634\u064A \u062F\u063A\u0631\u064A', hebrew:'\u05DC\u05DA \u05D9\u05E9\u05E8', translit:"\u05D0\u05B4\u05DE\u05B0\u05E9\u05D9 \u05D3\u05BB\u05E8\u05B0'\u05E8\u05D9"},
+    ]
+  },
+  12: {
+    title: '\u05DE\u05E1\u05E2\u05D3\u05D4 \u05D5\u05E8\u05D5\u05E4\u05D0',
+    level: 'phrases',
+    items: [
+      {arabic:'\u062D\u0633\u0627\u0628', hebrew:'\u05D7\u05E9\u05D1\u05D5\u05DF', translit:'\u05D7\u05B0\u05E1\u05D0\u05D1\u05BC'},
+      {arabic:'\u0645\u064A', hebrew:'\u05DE\u05D9\u05DD', translit:'\u05DE\u05B7\u05D9\u05D9'},
+      {arabic:'\u062F\u0643\u062A\u0648\u0631', hebrew:'\u05E8\u05D5\u05E4\u05D0', translit:'\u05D3\u05B7\u05DB\u05BC\u05B0\u05EA\u05D5\u05B9\u05E8'},
+      {arabic:'\u062F\u0648\u0627', hebrew:'\u05EA\u05E8\u05D5\u05E4\u05D4', translit:'\u05D3\u05B7\u05D5\u05D0'},
+      {arabic:'\u0628\u0637\u0646\u064A', hebrew:'\u05D4\u05D1\u05D8\u05DF \u05E9\u05DC\u05D9', translit:'\u05D1\u05BC\u05B7\u05D8\u05B0\u05E0\u05D9'},
+      {arabic:'\u0628\u0633', hebrew:'\u05D0\u05D1\u05DC', translit:'\u05D1\u05BC\u05B7\u05E1'},
+      {arabic:'\u0639\u0634\u0627\u0646', hebrew:'\u05D1\u05D2\u05DC\u05DC', translit:'\u05E2\u05B7\u05E9\u05D0\u05DF'},
+      {arabic:'\u0643\u0645\u0627\u0646', hebrew:'\u05D2\u05DD/\u05E2\u05D5\u05D3', translit:'\u05DB\u05BC\u05B7\u05DE\u05D0\u05DF'},
+      {arabic:'\u0628\u062F\u064A \u0645\u064A \u0645\u0646 \u0641\u0636\u0644\u0643', hebrew:'\u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DE\u05D9\u05DD \u05D1\u05D1\u05E7\u05E9\u05D4', translit:'\u05D1\u05BC\u05B4\u05D3\u05D3\u05D9 \u05DE\u05B7\u05D9\u05D9 \u05DE\u05B4\u05DF \u05E4\u05B7\u05D3\u05B0\u05BF\u05DC\u05B7\u05DB\u05BC'},
+    ]
+  },
+  13: {
+    title: '\u05E1\u05DE\u05D9\u05DB\u05D5\u05EA',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0628\u064A\u062A \u0627\u0644\u0645\u062F\u0631\u0633\u0629', hebrew:'\u05D1\u05D9\u05EA \u05D4\u05E1\u05E4\u05E8', translit:'\u05D1\u05B5\u05BC\u05D9\u05EA (\u05D0)\u05DC\u05B0\u05DE\u05B7\u05D3\u05B0\u05E8\u05B7\u05E1\u05B5\u05D4'},
+      {arabic:'\u0634\u063A\u0644 \u0627\u0644\u0628\u064A\u062A', hebrew:'\u05E2\u05D1\u05D5\u05D3\u05D5\u05EA \u05D1\u05D9\u05EA', translit:"\u05E9\u05BB\u05E8'\u05DC (\u05D0)\u05DC\u05B0\u05D1\u05B5\u05BC\u05D9\u05EA"},
+      {arabic:'\u0628\u0627\u0628 \u0627\u0644\u0628\u064A\u062A', hebrew:'\u05D3\u05DC\u05EA \u05D4\u05D1\u05D9\u05EA', translit:'\u05D1\u05BC\u05B7\u05D0\u05D1\u05BC (\u05D0)\u05DC\u05B0\u05D1\u05B5\u05BC\u05D9\u05EA'},
+      {arabic:'\u0627\u0633\u0645 \u0627\u0644\u0648\u0644\u062F', hebrew:'\u05E9\u05DD \u05D4\u05D9\u05DC\u05D3', translit:'\u05D0\u05B4\u05E1\u05B5\u05DD (\u05D0)\u05DC\u05B0\u05D5\u05B7\u05DC\u05B7\u05D3'},
+      {arabic:'\u0645\u062F\u064A\u0631 \u0627\u0644\u0645\u062F\u0631\u0633\u0629', hebrew:'\u05DE\u05E0\u05D4\u05DC \u05D1\u05D9\u05D4"\u05E1', translit:'\u05DE\u05BB\u05D3\u05D9\u05E8 (\u05D0)\u05DC\u05B0\u05DE\u05B7\u05D3\u05B0\u05E8\u05B7\u05E1\u05B5\u05D4'},
+    ]
+  },
+  14: {
+    title: '\u05E8\u05D9\u05D1\u05D5\u05D9',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0623\u0648\u0644\u0627\u062F', hebrew:'\u05D9\u05DC\u05D3\u05D9\u05DD', translit:'\u05D0\u05B7\u05D5\u05B0\u05DC\u05D0\u05D3'},
+      {arabic:'\u0628\u064A\u0648\u062A', hebrew:'\u05D1\u05EA\u05D9\u05DD', translit:'\u05D1\u05B0\u05BC\u05D9\u05D5\u05BC\u05EA'},
+      {arabic:'\u0643\u062A\u0628', hebrew:'\u05E1\u05E4\u05E8\u05D9\u05DD', translit:'\u05DB\u05BB\u05BC\u05EA\u05BB\u05D1\u05BC'},
+      {arabic:'\u0645\u062F\u0627\u0631\u0633', hebrew:'\u05D1\u05EA\u05D9 \u05E1\u05E4\u05E8', translit:'\u05DE\u05B7\u05D3\u05D0\u05E8\u05B5\u05E1'},
+      {arabic:'\u0645\u0639\u0644\u0645\u064A\u0646', hebrew:'\u05DE\u05D5\u05E8\u05D9\u05DD', translit:'\u05DE\u05B0\u05E2\u05B7\u05DC\u05BC\u05B0\u05DC\u05B0\u05DE\u05D9\u05DF'},
+      {arabic:'\u0645\u0639\u0644\u0645\u0627\u062A', hebrew:'\u05DE\u05D5\u05E8\u05D5\u05EA', translit:'\u05DE\u05B0\u05E2\u05B7\u05DC\u05BC\u05B0\u05DC\u05B0\u05DE\u05D0\u05EA'},
+    ]
+  },
+  15: {
+    title: '\u05DE\u05E1\u05E4\u05E8\u05D9\u05DD \u05D2\u05D3\u05D5\u05DC\u05D9\u05DD',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0627\u062D\u062F\u0639\u0634', hebrew:'11', translit:'\u05D7\u05B0\u05D3\u05B7\u05E2\u05B7\u05E9'},
+      {arabic:'\u0639\u0634\u0631\u064A\u0646', hebrew:'20', translit:'\u05E2\u05B4\u05E9\u05B0\u05E8\u05D9\u05DF'},
+      {arabic:'\u062B\u0644\u0627\u062B\u064A\u0646', hebrew:'30', translit:'\u05EA\u05B7\u05DC\u05D0\u05EA\u05D9\u05DF'},
+      {arabic:'\u062E\u0645\u0633\u064A\u0646', hebrew:'50', translit:"\u05D7\u05B7'\u05DE\u05B0\u05E1\u05D9\u05DF"},
+      {arabic:'\u0645\u064A\u0629', hebrew:'100', translit:'\u05DE\u05B4\u05D9\u05D9\u05B5\u05D4'},
+      {arabic:'\u0623\u0644\u0641', hebrew:'1000', translit:'\u05D0\u05B7\u05DC\u05B0\u05E3'},
+    ]
+  },
+  16: {
+    title: '\u05E4\u05EA\u05D2\u05DE\u05D9\u05DD',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0645\u0628\u0631\u0648\u0643', hebrew:'\u05DE\u05D6\u05DC \u05D8\u05D5\u05D1', translit:'\u05DE\u05B7\u05D1\u05BC\u05B0\u05E8\u05D5\u05BC\u05DB\u05BC'},
+      {arabic:'\u0648\u0627\u0644\u0644\u0647', hebrew:'\u05D1\u05D0\u05DE\u05EA', translit:'\u05D5\u05B7\u05DC\u05DC\u05B7\u05D4'},
+      {arabic:'\u062D\u0631\u0627\u0645', hebrew:'\u05D7\u05D1\u05DC/\u05D0\u05E1\u05D5\u05E8', translit:'\u05D7\u05B7\u05E8\u05D0\u05DD'},
+      {arabic:'\u0639\u0644\u0649 \u0631\u0627\u0633\u064A', hebrew:'\u05D1\u05DB\u05D9\u05E3', translit:'\u05E2\u05B7\u05DC\u05D0 \u05E8\u05B7\u05D0\u05E1\u05D9'},
+      {arabic:'\u0625\u0646\u0634\u0627\u0644\u0644\u0647', hebrew:'\u05D1\u05E2\u05D6\u05E8\u05EA \u05D4\u05E9\u05DD', translit:'\u05D0\u05B4\u05E0\u05B0\u05E9\u05D0\u05DC\u05DC\u05B7\u05D4'},
+      {arabic:'\u064A\u0627 \u0633\u0644\u0627\u0645', hebrew:'\u05D5\u05D5\u05D0\u05D5', translit:'\u05D9\u05B8\u05D0 \u05E1\u05B7\u05DC\u05D0\u05DD'},
+      {arabic:'\u0645\u0632\u0628\u0648\u0637', hebrew:'\u05E0\u05DB\u05D5\u05DF', translit:'\u05DE\u05B7\u05D6\u05B0\u05BF\u05D1\u05BC\u05D5\u05BC\u05D8\u05BF'},
+    ]
+  },
+  17: {
+    title: '\u05D1\u05E0\u05D9\u05D9\u05E0\u05D9\u05DD',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0643\u062A\u0628', hebrew:'\u05DB\u05EA\u05D1', translit:'\u05DB\u05B7\u05BC\u05EA\u05B7\u05D1\u05BC'},
+      {arabic:'\u0639\u0644\u0651\u0645', hebrew:'\u05DC\u05D9\u05DE\u05D3', translit:'\u05E2\u05B7\u05DC\u05DC\u05B7\u05DD'},
+      {arabic:'\u062A\u0639\u0644\u0651\u0645', hebrew:'\u05DC\u05DE\u05D3', translit:'\u05EA\u05B0\u05E2\u05B7\u05DC\u05DC\u05B7\u05DD'},
+      {arabic:'\u0641\u0643\u0651\u0631', hebrew:'\u05D7\u05E9\u05D1', translit:'\u05E4\u05B7\u05DB\u05BC\u05DB\u05BC\u05B7\u05E8'},
+      {arabic:'\u0641\u0647\u0651\u0645', hebrew:'\u05D4\u05E1\u05D1\u05D9\u05E8', translit:'\u05E4\u05B7\u05D4\u05D4\u05B7\u05DD'},
+      {arabic:'\u0643\u0633\u0651\u0631', hebrew:'\u05E9\u05D1\u05E8', translit:'\u05DB\u05B7\u05BC\u05E1\u05E1\u05B7\u05E8'},
+    ]
+  },
+  18: {
+    title: '\u05E1\u05D9\u05DB\u05D5\u05DD',
+    level: 'phrases',
+    items: [
+      {arabic:'\u0643\u064A\u0641 \u062D\u0627\u0644\u0643', hebrew:'\u05DE\u05D4 \u05E9\u05DC\u05D5\u05DE\u05DA', translit:'\u05DB\u05BC\u05D9\u05E3 \u05D7\u05D0\u05DC\u05B7\u05DB\u05BC'},
+      {arabic:'\u0648\u064A\u0646 \u0633\u0627\u0643\u0646', hebrew:'\u05D0\u05D9\u05E4\u05D4 \u05D0\u05EA\u05D4 \u05D2\u05E8', translit:'\u05D5\u05B5\u05D9\u05DF \u05E1\u05D0\u05DB\u05B5\u05BC\u05DF'},
+      {arabic:'\u0639\u0646\u062F\u064A \u062B\u0644\u0627\u062B \u0623\u0648\u0644\u0627\u062F', hebrew:'\u05D9\u05E9 \u05DC\u05D9 3 \u05D9\u05DC\u05D3\u05D9\u05DD', translit:'\u05E2\u05B4\u05E0\u05B0\u05D3\u05D9 \u05EA\u05B7\u05DC\u05B7\u05EA \u05D0\u05B7\u05D5\u05B0\u05DC\u05D0\u05D3'},
+      {arabic:'\u0628\u062F\u064A \u0627\u0631\u0648\u062D', hebrew:'\u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4 \u05DC\u05DC\u05DB\u05EA', translit:'\u05D1\u05BC\u05B4\u05D3\u05D3\u05D9 \u05D0\u05B7\u05E8\u05D5\u05BC\u05D7'},
+      {arabic:'\u0627\u0644\u062D\u0645\u062F\u0644\u0644\u0647 \u062A\u0645\u0627\u0645', hebrew:'\u05D1"\u05D4 \u05D1\u05E1\u05D3\u05E8', translit:'\u05D0\u05B5\u05DC\u05B0\u05D7\u05B7\u05DE\u05B0\u05D3\u05BB \u05DC\u05B4\u05DC\u05B7\u05D4 \u05EA\u05B7\u05DE\u05D0\u05DD'},
+    ]
+  }
+};
+
+// --- App State ---
+let currentLesson = null;
+let currentLevel = 'words';
+let items = [];
+let cardIndex = 0;
+let quizIndex = 0;
+let quizScore = 0;
+let timerInterval = null;
+let timerValue = 100;
+
+// --- Init ---
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  const lessonNum = parseInt(params.get('lesson')) || 0;
+  const lesson = lessonData[lessonNum];
+
+  if (!lessonNum || !lesson) {
+    document.getElementById('errorArea').style.display = 'block';
+    document.getElementById('errorArea').innerHTML = '\u05E9\u05D9\u05E2\u05D5\u05E8 \u05DC\u05D0 \u05E0\u05DE\u05E6\u05D0.<br><a href="../index.html" style="color:var(--teal);">\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E7\u05D5\u05E8\u05E1</a>';
+    return;
+  }
+
+  currentLesson = lessonNum;
+  currentLevel = lesson.level;
+  items = [...lesson.items];
+
+  document.getElementById('pageTitle').textContent = '\u05EA\u05E8\u05D2\u05D5\u05DC \u05E7\u05E8\u05D9\u05D0\u05D4 \u2014 \u05E9\u05D9\u05E2\u05D5\u05E8 ' + lessonNum + ': ' + lesson.title;
+  document.getElementById('pageSubtitle').textContent = items.length + ' \u05E4\u05E8\u05D9\u05D8\u05D9\u05DD \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC';
+  document.getElementById('mainContent').style.display = 'block';
+  document.getElementById('footerNav').style.display = 'flex';
+
+  const lnum = String(lessonNum).padStart(2, '0');
+  document.getElementById('lessonLink').href = 'lesson_' + lnum + '.html';
+
+  // Mode toggle
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mode = btn.dataset.mode;
+      document.getElementById('flashcardArea').classList.toggle('active', mode === 'flashcards');
+      document.getElementById('quizArea').classList.toggle('active', mode === 'quiz');
+      document.getElementById('quizComplete').classList.remove('active');
+      if (mode === 'quiz') startQuiz();
+      if (mode === 'flashcards') showCard();
+    });
+  });
+
+  showCard();
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('flashcardArea').classList.contains('active')) {
+      if (e.key === 'ArrowRight') prevCard();
+      else if (e.key === 'ArrowLeft') nextCard();
+      else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+    }
+  });
+}
+
+// --- Determine size class based on item ---
+function getSizeClass(item) {
+  // For letter-level lessons, individual characters (1 char) get big size
+  if (currentLevel === 'letters' && item.arabic.length === 1) {
+    return 'size-letter';
+  }
+  if (currentLevel === 'letters') {
+    return 'size-word';
+  }
+  if (currentLevel === 'words') {
+    return 'size-word';
+  }
+  // phrases
+  return 'size-phrase';
+}
+
+// --- Flashcards ---
+function showCard() {
+  if (!items.length) return;
+  const w = items[cardIndex];
+  const arabicEl = document.getElementById('fcArabic');
+  arabicEl.textContent = w.arabic;
+  arabicEl.className = 'arabic-word ' + getSizeClass(w);
+  document.getElementById('fcHebrew').textContent = w.hebrew;
+  document.getElementById('fcTranslit').textContent = w.translit;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('cardCounter').textContent = (cardIndex + 1) + ' / ' + items.length;
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextCard() {
+  cardIndex = (cardIndex + 1) % items.length;
+  showCard();
+}
+
+function prevCard() {
+  cardIndex = (cardIndex - 1 + items.length) % items.length;
+  showCard();
+}
+
+function shuffleCards() {
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  cardIndex = 0;
+  showCard();
+}
+
+// --- Quiz ---
+function startQuiz() {
+  quizIndex = 0;
+  quizScore = 0;
+  items = [...lessonData[currentLesson].items];
+  // shuffle
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  document.getElementById('quizArea').classList.add('active');
+  document.getElementById('quizComplete').classList.remove('active');
+  showQuizQuestion();
+}
+
+function showQuizQuestion() {
+  if (quizIndex >= items.length) {
+    endQuiz();
+    return;
+  }
+
+  clearInterval(timerInterval);
+  timerValue = 100;
+  const fill = document.getElementById('timerFill');
+  fill.style.width = '100%';
+  fill.classList.remove('danger');
+
+  const w = items[quizIndex];
+  const quizArabicEl = document.getElementById('quizArabic');
+  quizArabicEl.textContent = w.arabic;
+  quizArabicEl.className = 'quiz-arabic ' + getSizeClass(w);
+
+  document.getElementById('quizScore').innerHTML = '\u05E9\u05D0\u05DC\u05D4 ' + (quizIndex + 1) + '/' + items.length + ' \u2014 \u05E0\u05D9\u05E7\u05D5\u05D3: <span>' + quizScore + '</span>';
+
+  // Build options: correct + 3 wrong
+  const allHebrew = lessonData[currentLesson].items.map(x => x.hebrew);
+  let options = [w.hebrew];
+  const others = allHebrew.filter(h => h !== w.hebrew);
+  while (options.length < 4 && others.length > 0) {
+    const idx = Math.floor(Math.random() * others.length);
+    const pick = others.splice(idx, 1)[0];
+    if (!options.includes(pick)) options.push(pick);
+  }
+  // fill remaining if needed
+  while (options.length < 4) {
+    options.push(options[Math.floor(Math.random() * options.length)] + '\u200B');
+  }
+  // shuffle options
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+
+  const container = document.getElementById('quizOptions');
+  container.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt.replace('\u200B', '');
+    btn.addEventListener('click', () => handleAnswer(btn, opt, w.hebrew));
+    container.appendChild(btn);
+  });
+
+  // Start 20-second timer
+  timerInterval = setInterval(() => {
+    timerValue -= 1;
+    fill.style.width = timerValue + '%';
+    if (timerValue <= 30) fill.classList.add('danger');
+    if (timerValue <= 0) {
+      clearInterval(timerInterval);
+      document.querySelectorAll('.quiz-option').forEach(b => {
+        b.classList.add('disabled');
+        if (b.textContent === w.hebrew.replace('\u200B', '')) b.classList.add('correct');
+      });
+      setTimeout(() => { quizIndex++; showQuizQuestion(); }, 1200);
+    }
+  }, 200);
+}
+
+function handleAnswer(btn, selected, correct) {
+  clearInterval(timerInterval);
+  const isCorrect = selected.replace('\u200B', '') === correct.replace('\u200B', '');
+
+  document.querySelectorAll('.quiz-option').forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correct.replace('\u200B', '')) b.classList.add('correct');
+  });
+
+  if (isCorrect) {
+    quizScore++;
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+  }
+
+  setTimeout(() => { quizIndex++; showQuizQuestion(); }, 1000);
+}
+
+function endQuiz() {
+  clearInterval(timerInterval);
+  document.getElementById('quizArea').classList.remove('active');
+  document.getElementById('quizComplete').classList.add('active');
+  const pct = Math.round((quizScore / items.length) * 100);
+  document.getElementById('finalScore').textContent = quizScore + ' / ' + items.length;
+
+  let msg = '';
+  if (pct === 100) msg = '\u05DE\u05D5\u05E9\u05DC\u05DD! \u05DB\u05DC \u05D4\u05DB\u05D1\u05D5\u05D3!';
+  else if (pct >= 80) msg = '\u05E2\u05D1\u05D5\u05D3\u05D4 \u05DE\u05E6\u05D5\u05D9\u05E0\u05EA!';
+  else if (pct >= 60) msg = '\u05DC\u05D0 \u05E8\u05E2, \u05E0\u05E1\u05D5 \u05E9\u05D5\u05D1!';
+  else msg = '\u05DB\u05D3\u05D0\u05D9 \u05DC\u05EA\u05E8\u05D2\u05DC \u05E2\u05D5\u05D3 \u05E7\u05E6\u05EA';
+
+  document.getElementById('finalLabel').textContent = msg + ' (' + pct + '%)';
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

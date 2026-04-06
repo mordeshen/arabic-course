@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 9 – הפועל: עכשיו ומחר</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .back-link {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    z-index: 200;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  .slide {
+    display: none;
+    width: 100%;
+    animation: fadeSlide 0.5s ease;
+  }
+  .slide.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    align-items: center;
+  }
+
+  .nav-btn {
+    background: rgba(240,192,96,0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 26px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn:hover { background: rgba(240,192,96,0.25); transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .slide-counter {
+    color: var(--muted);
+    font-size: 13px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .title-slide {
+    text-align: center;
+    padding: 60px 20px 120px;
+  }
+  .title-slide .subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: pop 0.6s 0.2s forwards;
+  }
+  .title-slide h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(36px, 7vw, 64px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: pop 0.6s 0.4s forwards;
+  }
+  .title-slide .arabic-title {
+    font-size: clamp(22px, 5vw, 40px);
+    color: var(--teal);
+    direction: rtl;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: pop 0.6s 0.6s forwards;
+  }
+  .title-slide .desc {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: pop 0.6s 0.8s forwards;
+  }
+  .ornament {
+    font-size: 40px;
+    margin: 20px 0;
+    opacity: 0;
+    animation: pop 0.6s 1s forwards;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .section-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), #1ea8a0);
+    color: #0a0a14;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.2);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border-right: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 80px;
+    background: linear-gradient(to left, var(--glow), transparent);
+    pointer-events: none;
+  }
+  .rule-card .rule-text {
+    font-size: clamp(14px, 2.5vw, 17px);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .rule-card .highlight { color: var(--gold); font-weight: 700; }
+  .rule-card .teal { color: var(--teal); font-weight: 700; }
+  .rule-card .rose { color: var(--rose); font-weight: 700; }
+
+  .particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle 0.8s ease-out forwards;
+  }
+  @keyframes particle {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  @keyframes resultPop {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .example-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card:hover {
+    border-color: rgba(240,192,96,0.3);
+    transform: translateY(-2px);
+    background: rgba(240,192,96,0.05);
+  }
+  .example-card .parts {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    direction: rtl;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .part-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    padding: 3px 10px;
+    background: rgba(240,192,96,0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+  .part-sep { color: var(--muted); font-size: 14px; }
+  .part-result {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal);
+    padding: 3px 10px;
+    background: rgba(61,232,208,0.08);
+    border-radius: 8px;
+    border: 1px solid rgba(61,232,208,0.25);
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .example-card.revealed .part-result {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .example-card .translation {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    direction: rtl;
+  }
+  .click-hint {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1px;
+  }
+  .example-card.revealed .click-hint { display: none; }
+
+  /* Conjugation table */
+  .conj-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    direction: rtl;
+  }
+  .conj-table th {
+    background: rgba(240,192,96,0.1);
+    color: var(--gold);
+    padding: 10px 14px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 2px solid rgba(240,192,96,0.2);
+  }
+  .conj-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 16px;
+  }
+  .conj-table td:first-child {
+    color: var(--muted);
+    font-family: 'Heebo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .conj-table td:nth-child(2) {
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .conj-table td:nth-child(3) {
+    color: var(--teal);
+    font-weight: 700;
+  }
+  .conj-table tr:hover {
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* Interactive conjugation */
+  .conj-interactive {
+    background: var(--card);
+    border: 1px solid rgba(61,232,208,0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .conj-prompt {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .conj-verb-display {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .conj-verb-big {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: 900;
+    color: var(--gold);
+  }
+  .conj-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .conj-option {
+    background: rgba(240,192,96,0.08);
+    border: 2px solid rgba(240,192,96,0.2);
+    border-radius: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .conj-option:hover { border-color: var(--gold); background: rgba(240,192,96,0.15); }
+  .conj-option.correct {
+    border-color: var(--teal);
+    background: rgba(61,232,208,0.15);
+    color: var(--teal);
+    pointer-events: none;
+  }
+  .conj-option.wrong {
+    border-color: var(--rose);
+    background: rgba(255,107,138,0.1);
+    color: var(--rose);
+    animation: shake 0.4s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .quiz-question {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.15);
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+  }
+  .quiz-q-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    direction: rtl;
+    text-align: right;
+  }
+  .quiz-words {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    direction: rtl;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .quiz-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-arrow { color: var(--muted); font-size: 18px; }
+  .quiz-answer {
+    display: inline-block;
+    min-width: 140px;
+    padding: 6px 14px;
+    background: rgba(61,232,208,0.05);
+    border: 2px dashed rgba(61,232,208,0.3);
+    border-radius: 8px;
+    color: transparent;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    direction: rtl;
+    user-select: none;
+  }
+  .quiz-answer.revealed {
+    color: var(--teal);
+    border-color: var(--teal);
+    border-style: solid;
+    background: rgba(61,232,208,0.1);
+    animation: resultPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .quiz-hint { font-size: 12px; color: var(--muted); }
+
+  .reveal-all-btn {
+    background: transparent;
+    border: 1px solid rgba(61,232,208,0.4);
+    color: var(--teal);
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .reveal-all-btn:hover { background: rgba(61,232,208,0.1); }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  .bg-arabic {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 400px;
+    font-weight: 900;
+    color: rgba(240,192,96,0.025);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .separator-line {
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(240,192,96,0.2), transparent);
+    margin: 20px 0;
+  }
+
+  .slide-inner { padding-bottom: 100px; }
+
+  .feedback { margin-top: 12px; font-size: 15px; font-weight: 700; }
+  .feedback.correct { color: var(--teal); }
+  .feedback.wrong { color: var(--rose); }
+
+  .arabic-script { font-family: 'Noto Naskh Arabic', serif; direction: rtl; font-size: 1.2em; }
+
+  .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .memory-card { background: var(--card); border: 2px solid rgba(240,192,96,0.2); border-radius: 12px; padding: 16px 8px; text-align: center; cursor: pointer; font-family: 'Noto Serif Hebrew', serif; font-size: 15px; font-weight: 700; color: var(--muted); min-height: 70px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; user-select: none; }
+  .memory-card:hover { border-color: var(--gold); background: rgba(240,192,96,0.05); }
+  .memory-card.flipped { border-color: var(--gold); color: var(--gold); background: rgba(240,192,96,0.1); }
+  .memory-card.matched { border-color: var(--teal); color: var(--teal); background: rgba(61,232,208,0.1); pointer-events: none; }
+
+  @media (max-width: 600px) {
+    .examples-grid { grid-template-columns: 1fr; }
+    .conj-table { font-size: 13px; }
+    .conj-table td, .conj-table th { padding: 8px 10px; }
+    .memory-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">-> חזרה לקורס</a>
+<div class="bg-arabic">ب</div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+
+<div id="app">
+
+  <!-- SLIDE 0: Title -->
+  <div class="slide active" id="s0">
+    <div class="title-slide">
+      <div class="subtitle">שיעור 9</div>
+      <h1>הפועל<br>עכשיו ומחר</h1>
+      <div class="arabic-title">אַלְפֵעְל — הַלְלַק וּבֻכְרַה</div>
+      <div class="ornament">&#10022; &#9733; &#10022;</div>
+      <div class="desc">נלמד לבנות משפטים עם פעלים בזמן הווה-עתיד.<br>הקידומת בַּ/בְּ מסמנת הווה, ח/רַח מסמנת עתיד.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: Grammar – Present-Future Verb -->
+  <div class="slide" id="s1">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">כלל דקדוק</div>
+        <h2>פועל הווה-עתיד</h2>
+      </div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">הנוסחה:</span> <span class="teal">בּ</span> + אות איתן + שורש + סיומת גוף<br><br>
+          הקידומת <span class="teal">בַּ/בְּ</span> מציינת <span class="highlight">הווה / הרגל</span><br>
+          הקידומת <span class="rose">ח / רַח</span> מציינת <span class="highlight">עתיד</span><br><br>
+          הפועל יכול לציין:<br>
+          1. פעולה בהווה: <span class="teal">אַנא בַּחְכּי מַעאכּ</span> — אני מדבר איתך (כרגע)<br>
+          2. פעולה בעתיד: אני אדבר איתך (מחר)<br>
+          3. פעולה קבועה: אני מדבר איתך (כל יום)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Conjugation Table Interactive -->
+  <div class="slide" id="s2">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">טבלת נטיות</div>
+        <h2>הפועל "לדבר" — חַכּא</h2>
+      </div>
+
+      <table class="conj-table">
+        <thead>
+          <tr>
+            <th>גוף</th>
+            <th>הווה (בּ)</th>
+            <th>עתיד (ח/רַח)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>אַנא (אני)</td><td>בַּחְכּי</td><td>חַחְכּי / רַח אַחְכּי</td></tr>
+          <tr><td>אִנְתִ (אתה)</td><td>בְּתִחְכּי</td><td>חַתִחְכּי</td></tr>
+          <tr><td>אִנְתי (את)</td><td>בְּתִחְכּי</td><td>חַתִחְכּי</td></tr>
+          <tr><td>הוּוֵ (הוא)</td><td>בִּחְכּי</td><td>חַיִחְכּי</td></tr>
+          <tr><td>הִייֵ (היא)</td><td>בְּתִחְכּי</td><td>חַתִחְכּי</td></tr>
+          <tr><td>אֵחְנא (אנחנו)</td><td>מְנִחְכּי</td><td>חַנִחְכּי</td></tr>
+          <tr><td>אִנְתוּ (אתם)</td><td>בְּתִחְכּוּ</td><td>חַתִחְכּוּ</td></tr>
+          <tr><td>הֻםםֵ (הם)</td><td>בִּחְכּוּ</td><td>חַיִחְכּוּ</td></tr>
+        </tbody>
+      </table>
+
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">שימו לב להקבלה לעברית:</span><br>
+          <span class="teal">בְּנִ</span>חְכּי = <strong>נ</strong>דבר &nbsp;|&nbsp;
+          <span class="teal">בְּתִ</span>חְכּוּ = <strong>ת</strong>דברו &nbsp;|&nbsp;
+          <span class="teal">בְּתִ</span>חְכּי = <strong>ת</strong>דברי<br>
+          אותיות האיתן זהות!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Vocabulary – Verbs -->
+  <div class="slide" id="s3">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">אוצר מילים</div>
+        <h2>פעלים בהווה (אני)</h2>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּחְכּי</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני מדבר</span>
+          </div>
+          <div class="translation">שורש: ח.כ.י</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּאכֻל</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני אוכל</span>
+          </div>
+          <div class="translation">שורש: א.כ.ל</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּרוּח</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני הולך</span>
+          </div>
+          <div class="translation">שורש: ר.ו.ח</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּשְתְעֵ'ל</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני עובד</span>
+          </div>
+          <div class="translation">שורש: ש.ע'.ל (בניין 8)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: More Verbs -->
+  <div class="slide" id="s4">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">עוד פעלים</div>
+        <h2>פעלים בהווה (אני)</h2>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּפְהַם</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני מבין</span>
+          </div>
+          <div class="translation">שורש: פ.ה.מ</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּעְרַף</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני יודע</span>
+          </div>
+          <div class="translation">שורש: ע.ר.פ</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּשוּף</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני רואה</span>
+          </div>
+          <div class="translation">שורש: ש.ו.פ</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּסְמַע</span>
+            <span class="part-sep">=</span>
+            <span class="part-result">אני שומע</span>
+          </div>
+          <div class="translation">שורש: ס.מ.ע</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Spiral Review -->
+  <div class="slide" id="s5">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">חזרה ספיראלית</div>
+        <h2>מילים קודמות + פעלים</h2>
+      </div>
+
+      <button class="reveal-all-btn" onclick="revealAllAnswers()">גלה הכל</button>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">1. "אני מדבר איתך" בערבית:</div>
+        <div class="quiz-words">
+          <span class="quiz-word">אַנא _____ מַעאכּ</span>
+          <span class="quiz-arrow">←</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="בַּחְכּי">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">2. "אני לא רוצה" (שלילה משיעור 7):</div>
+        <div class="quiz-words">
+          <span class="quiz-word">?</span>
+          <span class="quiz-arrow">←</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="מא בִּדדי-ש">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">3. "אני עובד" בערבית:</div>
+        <div class="quiz-words">
+          <span class="quiz-word">אַנא _____</span>
+          <span class="quiz-arrow">←</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="בַּשְתְעֵ'ל">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">4. מה התשובה ל"יַעְטֿיכּ (א)לְעאפְיֵה"? (שיעור 8)</div>
+        <div class="quiz-words">
+          <span class="quiz-word">יַעְטֿיכּ (א)לְעאפְיֵה</span>
+          <span class="quiz-arrow">←</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="אַללַה יְעאפיכּ">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">5. "אני רואה ואני שומע" בערבית:</div>
+        <div class="quiz-words">
+          <span class="quiz-word">אַנא _____ וּ _____</span>
+          <span class="quiz-arrow">←</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="בַּשוּף וּ בַּסְמַע">?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Practice – Interactive Conjugation -->
+  <div class="slide" id="s6">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">תרגול</div>
+        <h2>נטו את הפועל</h2>
+      </div>
+      <p style="color:var(--muted); font-size:13px; margin-bottom:20px; text-align:center;">בחרו את הצורה הנכונה של הפועל</p>
+
+      <div class="conj-interactive" id="q1">
+        <div class="conj-prompt">הפועל "לאכול" בגוף <strong style="color:var(--gold)">הם</strong>:</div>
+        <div class="conj-options">
+          <div class="conj-option" onclick="checkConj(this, false)">בַּאכֻל</div>
+          <div class="conj-option" onclick="checkConj(this, true)">בְּכְלוּ</div>
+          <div class="conj-option" onclick="checkConj(this, false)">בְּתִאכְלי</div>
+        </div>
+      </div>
+
+      <div class="conj-interactive" id="q2">
+        <div class="conj-prompt">הפועל "לראות" בגוף <strong style="color:var(--gold)">אנחנו</strong>:</div>
+        <div class="conj-options">
+          <div class="conj-option" onclick="checkConj(this, false)">בַּשוּף</div>
+          <div class="conj-option" onclick="checkConj(this, false)">בְּתְשוּפי</div>
+          <div class="conj-option" onclick="checkConj(this, true)">מִנְשוּף</div>
+        </div>
+      </div>
+
+      <div class="conj-interactive" id="q3">
+        <div class="conj-prompt">הפועל "לדבר" בגוף <strong style="color:var(--gold)">את</strong>:</div>
+        <div class="conj-options">
+          <div class="conj-option" onclick="checkConj(this, true)">בְּתִחְכּי</div>
+          <div class="conj-option" onclick="checkConj(this, false)">בַּחְכּי</div>
+          <div class="conj-option" onclick="checkConj(this, false)">בִּחְכּוּ</div>
+        </div>
+      </div>
+
+      <div class="conj-interactive" id="q4">
+        <div class="conj-prompt">הפועל "לעבוד" בגוף <strong style="color:var(--gold)">הוא</strong>:</div>
+        <div class="conj-options">
+          <div class="conj-option" onclick="checkConj(this, false)">בַּשְתְעֵ'ל</div>
+          <div class="conj-option" onclick="checkConj(this, true)">בִּשְתָר'ל</div>
+          <div class="conj-option" onclick="checkConj(this, false)">מִנִשְתָר'ל</div>
+        </div>
+      </div>
+
+      <div class="conj-interactive" id="q5">
+        <div class="conj-prompt">הפועל "להבין" בגוף <strong style="color:var(--gold)">אתם</strong>:</div>
+        <div class="conj-options">
+          <div class="conj-option" onclick="checkConj(this, false)">בַּפְהַם</div>
+          <div class="conj-option" onclick="checkConj(this, true)">בְּתִפְהַמוּ</div>
+          <div class="conj-option" onclick="checkConj(this, false)">בִּפְהַם</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Game - Memory -->
+  <div class="slide" id="s7">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">משחק</div>
+        <h2>משחק זיכרון</h2>
+      </div>
+      <p style="color:var(--muted);font-size:13px;text-align:center;margin-bottom:16px;">התאימו את המילה בערבית לתרגום בעברית</p>
+      <div id="memoryGrid" class="memory-grid"></div>
+      <div id="memoryTimer" style="text-align:center;color:var(--muted);font-size:13px;margin-top:8px;">⏱ 0:00</div>
+      <div id="memoryResult" style="text-align:center;font-size:16px;font-weight:700;min-height:30px;"></div>
+      <button onclick="initMemory()" style="display:block;margin:10px auto;background:rgba(240,192,96,0.1);border:1px solid var(--gold);color:var(--gold);padding:8px 20px;border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;">משחק חדש</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Summary -->
+  <div class="slide" id="s8">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">סיכום</div>
+        <h2>שיעור 9 — הפועל בהווה-עתיד</h2>
+      </div>
+
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">הנוסחה:</span> <span class="teal">בּ</span> + אות איתן + שורש + סיומת גוף<br><br>
+          <span class="teal">אַנא</span> → בַּ+שורש &nbsp;|&nbsp;
+          <span class="teal">אִנְתִ/אִנְתי/הִייֵ</span> → בְּתִ+שורש<br>
+          <span class="teal">הוּוֵ</span> → בִּ+שורש &nbsp;|&nbsp;
+          <span class="teal">אֵחְנא</span> → מַנ..+שורש<br>
+          <span class="teal">אִנְתוּ</span> → בַת..+שורש+וּ &nbsp;|&nbsp;
+          <span class="teal">הֻםםֵ</span> → בִּ+שורש+וּ
+        </p>
+      </div>
+      <div class="separator-line"></div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">8 פעלים חדשים:</span><br>
+          <span class="teal">בַּחְכּי</span> — (אני) מדבר &nbsp;|&nbsp; <span class="teal">בַּאכֻל</span> — (אני) אוכל &nbsp;|&nbsp; <span class="teal">בַּרוּח</span> — (אני) הולך &nbsp;|&nbsp; <span class="teal">בַּשְתְעֵ'ל</span> — (אני) עובד<br>
+          <span class="teal">בַּפְהַם</span> — (אני) מבין &nbsp;|&nbsp; <span class="teal">בַּעְרַף</span> — (אני) יודע &nbsp;|&nbsp; <span class="teal">בַּשוּף</span> — (אני) רואה &nbsp;|&nbsp; <span class="teal">בַּסְמַע</span> — (אני) שומע<br><br>
+          <span class="rose">עתיד:</span> מחליפים <span class="teal">בּ</span> ב-<span class="rose">ח/רַח</span> &nbsp;&nbsp; <span class="rose">חַחְכּי</span> = אדבר &nbsp;|&nbsp; <span class="rose">רַח אַחְכּי</span> = אדבר
+        </p>
+      </div>
+      <div style="text-align:center; margin-top:30px; font-size:40px; opacity:0.6">&#9733;</div>
+<div style="text-align:center; margin-top:30px;">
+  <div style="font-size:48px; margin-bottom:10px;">🎉</div>
+  <div style="color: var(--gold); font-family: 'Noto Serif Hebrew', serif; font-size: 24px; font-weight:700; margin-bottom:8px;">כל הכבוד! סיימת את השיעור!</div>
+  <div style="color: var(--teal); font-size: 14px; margin-bottom: 20px;">אַלְף מַבְּרוּכּ!</div>
+  <a href="../index.html" style="display:inline-block; background: linear-gradient(135deg, var(--gold), #e0a030); color: #0a0a14; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px;">← חזרה לדף הקורס</a>
+</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>-> הקודם</button>
+  <span class="slide-counter" id="slideCounter">1 / 9</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">הבא <-</button>
+</div>
+
+<script>
+const totalSlides = 9;
+let currentSlide = 0;
+
+function changeSlide(dir) {
+  const slides = document.querySelectorAll('.slide');
+  slides[currentSlide].classList.remove('active');
+  currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+  slides[currentSlide].classList.add('active');
+  updateNav();
+}
+
+function updateNav() {
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  if (currentSlide === totalSlides - 1) {
+    // Mark lesson as completed
+    const lessonNum = parseInt(document.title.match(/\d+/)?.[0] || '0');
+    if (lessonNum > 0) {
+      const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+      if (!completed.includes(lessonNum)) {
+        completed.push(lessonNum);
+        localStorage.setItem('completedLessons', JSON.stringify(completed));
+      }
+    }
+    document.getElementById('nextBtn').textContent = '← לדף הקורס';
+    document.getElementById('nextBtn').onclick = () => window.location.href = '../index.html';
+    document.getElementById('nextBtn').disabled = false;
+  } else {
+    document.getElementById('nextBtn').textContent = 'הבא ←';
+    document.getElementById('nextBtn').onclick = () => changeSlide(1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+}
+
+function revealCard(card) {
+  if (!card.classList.contains('revealed')) {
+    card.classList.add('revealed');
+    spawnCardParticles(card);
+  }
+}
+
+function spawnCardParticles(card) {
+  const colors = ['#f0c060','#3de8d0','#ff6b8a','#ffffff'];
+  const rect = card.getBoundingClientRect();
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i / 8) * Math.PI * 2;
+    const dist = 30 + Math.random() * 40;
+    p.style.cssText = `
+      left: ${rect.left + rect.width/2 - 3}px;
+      top: ${rect.top + rect.height/2 - 3}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      position: fixed;
+      --tx: ${Math.cos(angle) * dist}px;
+      --ty: ${Math.sin(angle) * dist}px;
+      z-index: 9999;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+function revealAnswer(el) {
+  if (!el.classList.contains('revealed')) {
+    el.classList.add('revealed');
+    el.textContent = el.dataset.ans;
+    spawnCardParticles(el);
+  }
+}
+
+function revealAllAnswers() {
+  document.querySelectorAll('.quiz-answer:not(.revealed)').forEach(el => revealAnswer(el));
+}
+
+function checkConj(el, isCorrect) {
+  if (el.classList.contains('correct') || el.classList.contains('wrong')) return;
+  if (isCorrect) {
+    el.classList.add('correct');
+    spawnCardParticles(el);
+    // Disable siblings
+    el.parentElement.querySelectorAll('.conj-option').forEach(o => {
+      if (o !== el) o.style.pointerEvents = 'none';
+    });
+  } else {
+    el.classList.add('wrong');
+    setTimeout(() => el.classList.remove('wrong'), 500);
+  }
+}
+
+// Memory Game
+const memoryPairs = [
+  { ar: 'בַּחְכּי', he: 'אני מדבר' },
+  { ar: 'בַּאכֻל', he: 'אני אוכל' },
+  { ar: 'בַּרוּח', he: 'אני הולך' },
+  { ar: 'בַּשְתְרֵ\'ל', he: 'אני עובד' },
+  { ar: 'בַּפְהַם', he: 'אני מבין' },
+  { ar: 'בַּשוּף', he: 'אני רואה' },
+];
+let memFlipped = [];
+let memMatched = 0;
+let memoryTimerInterval = null, memorySeconds = 0;
+
+function shuffleArr(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
+
+function initMemory() {
+  memFlipped = [];
+  memMatched = 0;
+  document.getElementById('memoryResult').textContent = '';
+  memorySeconds = 0;
+  if(memoryTimerInterval) clearInterval(memoryTimerInterval);
+  const mtEl = document.getElementById('memoryTimer'); if(mtEl) mtEl.textContent = '⏱ 0:00';
+  memoryTimerInterval = setInterval(() => { memorySeconds++; const m=Math.floor(memorySeconds/60); const s=memorySeconds%60; const el=document.getElementById('memoryTimer'); if(el) el.textContent='⏱ '+m+':'+(s<10?'0':'')+s; }, 1000);
+  const cards = [];
+  memoryPairs.forEach((p, i) => {
+    cards.push({ id: 'ar'+i, pairId: i, text: p.ar, type: 'ar' });
+    cards.push({ id: 'he'+i, pairId: i, text: p.he, type: 'he' });
+  });
+  const shuffled = shuffleArr(cards);
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML = '';
+  shuffled.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'memory-card';
+    div.dataset.pairId = c.pairId;
+    div.dataset.cardId = c.id;
+    div.textContent = '?';
+    div.dataset.text = c.text;
+    div.onclick = () => flipMemCard(div);
+    grid.appendChild(div);
+  });
+}
+
+function flipMemCard(card) {
+  if (card.classList.contains('flipped') || card.classList.contains('matched') || memFlipped.length >= 2) return;
+  card.classList.add('flipped');
+  card.textContent = card.dataset.text;
+  memFlipped.push(card);
+  if (memFlipped.length === 2) {
+    const [a, b] = memFlipped;
+    if (a.dataset.pairId === b.dataset.pairId && a.dataset.cardId !== b.dataset.cardId) {
+      setTimeout(() => {
+        a.classList.add('matched');
+        b.classList.add('matched');
+        memFlipped = [];
+        memMatched++;
+        if (memMatched === memoryPairs.length) {
+          if(memoryTimerInterval) clearInterval(memoryTimerInterval);
+          const m=Math.floor(memorySeconds/60); const s=memorySeconds%60; const timeStr=m+':'+(s<10?'0':'')+s;
+          document.getElementById('memoryResult').style.color = 'var(--teal)';
+          document.getElementById('memoryResult').textContent = 'כל הכבוד! מצאתם את כל הזוגות! זמן: '+timeStr;
+        }
+      }, 400);
+    } else {
+      setTimeout(() => {
+        a.classList.remove('flipped'); a.textContent = '?';
+        b.classList.remove('flipped'); b.textContent = '?';
+        memFlipped = [];
+      }, 800);
+    }
+  }
+}
+
+const origChangeSlide9 = changeSlide;
+changeSlide = function(dir) {
+  origChangeSlide9(dir);
+  if (currentSlide === 7) initMemory();
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') changeSlide(1);
+  if (e.key === 'ArrowRight') changeSlide(-1);
+});
+
+updateNav();
+</script>
+</body>
+</html>

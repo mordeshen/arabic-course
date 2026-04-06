@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 12 — מסעדה ורופא</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .back-link {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 300;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  .slide {
+    display: none;
+    width: 100%;
+    animation: fadeSlide 0.5s ease;
+  }
+  .slide.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    align-items: center;
+  }
+
+  .nav-btn {
+    background: rgba(240,192,96,0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 26px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn:hover { background: rgba(240,192,96,0.25); transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .slide-counter {
+    color: var(--muted);
+    font-size: 13px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .title-slide {
+    text-align: center;
+    padding: 60px 20px 120px;
+  }
+  .title-slide .subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: pop 0.6s 0.2s forwards;
+  }
+  .title-slide h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(36px, 7vw, 64px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: pop 0.6s 0.4s forwards;
+  }
+  .title-slide .arabic-title {
+    font-size: clamp(22px, 5vw, 40px);
+    color: var(--teal);
+    direction: rtl;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: pop 0.6s 0.6s forwards;
+  }
+  .title-slide .desc {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: pop 0.6s 0.8s forwards;
+  }
+  .ornament {
+    font-size: 40px;
+    margin: 20px 0;
+    opacity: 0;
+    animation: pop 0.6s 1s forwards;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .section-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), #1ea8a0);
+    color: #0a0a14;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.2);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border-right: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 80px;
+    background: linear-gradient(to left, var(--glow), transparent);
+    pointer-events: none;
+  }
+  .rule-card .rule-text {
+    font-size: clamp(14px, 2.5vw, 17px);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .rule-card .highlight { color: var(--gold); font-weight: 700; }
+  .rule-card .teal { color: var(--teal); font-weight: 700; }
+  .rule-card .rose { color: var(--rose); font-weight: 700; }
+
+  .collision-arena {
+    background: rgba(61,232,208,0.04);
+    border: 1px solid rgba(61,232,208,0.2);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .collision-arena:hover { border-color: rgba(61,232,208,0.4); }
+  .collision-arena .hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .collision-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    min-height: 100px;
+    position: relative;
+  }
+
+  .word-bubble {
+    background: rgba(240,192,96,0.1);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 700;
+    color: var(--gold);
+    transition: transform 0.3s;
+    position: relative;
+    white-space: nowrap;
+  }
+  .word-bubble.teal-bubble {
+    background: rgba(61,232,208,0.1);
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  .plus-sign {
+    font-size: 28px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .collide-left  { animation: collideLeft 0.4s ease-in forwards; }
+  .collide-right { animation: collideRight 0.4s ease-in forwards; }
+  @keyframes collideLeft  { to { transform: translateX(60px); } }
+  @keyframes collideRight { to { transform: translateX(-60px); } }
+
+  .explode { animation: explode 0.5s ease-out forwards; }
+  @keyframes explode {
+    0%   { transform: scale(1); opacity: 1; }
+    40%  { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(0); opacity: 0; }
+  }
+
+  .result-word {
+    display: none;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--teal);
+    text-shadow: 0 0 30px rgba(61,232,208,0.5);
+    animation: resultPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  @keyframes resultPop {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .result-label {
+    display: none;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    animation: fadeUp 0.4s 0.3s forwards;
+    opacity: 0;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle 0.8s ease-out forwards;
+  }
+  @keyframes particle {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .example-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card:hover {
+    border-color: rgba(240,192,96,0.3);
+    transform: translateY(-2px);
+    background: rgba(240,192,96,0.05);
+  }
+  .example-card .parts {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    direction: rtl;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .part-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    padding: 3px 10px;
+    background: rgba(240,192,96,0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+  .part-sep { color: var(--muted); font-size: 14px; }
+  .part-result {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal);
+    padding: 3px 10px;
+    background: rgba(61,232,208,0.08);
+    border-radius: 8px;
+    border: 1px solid rgba(61,232,208,0.25);
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .example-card.revealed .part-result {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .example-card .translation {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    direction: rtl;
+  }
+  .click-hint {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1px;
+  }
+  .example-card.revealed .click-hint { display: none; }
+
+  .quiz-question {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.15);
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+  }
+  .quiz-q-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    direction: rtl;
+    text-align: right;
+  }
+  .quiz-words {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    direction: rtl;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .quiz-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-arrow {
+    color: var(--muted);
+    font-size: 18px;
+  }
+  .quiz-answer {
+    display: inline-block;
+    min-width: 140px;
+    padding: 6px 14px;
+    background: rgba(61,232,208,0.05);
+    border: 2px dashed rgba(61,232,208,0.3);
+    border-radius: 8px;
+    color: transparent;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    direction: rtl;
+    user-select: none;
+  }
+  .quiz-answer.revealed {
+    color: var(--teal);
+    border-color: var(--teal);
+    border-style: solid;
+    background: rgba(61,232,208,0.1);
+    animation: resultPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .quiz-hint { font-size: 12px; color: var(--muted); }
+
+  .reveal-all-btn {
+    background: transparent;
+    border: 1px solid rgba(61,232,208,0.4);
+    color: var(--teal);
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .reveal-all-btn:hover { background: rgba(61,232,208,0.1); }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  .bg-arabic {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 400px;
+    font-weight: 900;
+    color: rgba(240,192,96,0.025);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .separator-line {
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(240,192,96,0.2), transparent);
+    margin: 20px 0;
+  }
+
+  .slide-inner {
+    padding-bottom: 100px;
+  }
+
+  .dialogue-box {
+    background: var(--card);
+    border: 1px solid rgba(61,232,208,0.15);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .dialogue-line {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    direction: rtl;
+  }
+  .dialogue-line:last-child { margin-bottom: 0; }
+  .dialogue-speaker {
+    background: rgba(240,192,96,0.15);
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .dialogue-speaker.b {
+    background: rgba(61,232,208,0.15);
+    color: var(--teal);
+  }
+  .dialogue-text {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .dialogue-he {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Heebo', sans-serif;
+  }
+
+  .scenario-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--rose);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .arabic-script { font-family: 'Noto Naskh Arabic', serif; direction: rtl; font-size: 1.2em; }
+
+  @media (max-width: 600px) {
+    .examples-grid { grid-template-columns: 1fr; }
+    .collision-stage { gap: 16px; }
+    .word-bubble { font-size: 20px; padding: 8px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">&#8592; &#1495;&#1494;&#1512;&#1492; &#1500;&#1511;&#1493;&#1512;&#1505;</a>
+<div class="bg-arabic">&#1591;</div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+
+<div id="app">
+
+  <!-- SLIDE 0: Title -->
+  <div class="slide active" id="s0">
+    <div class="title-slide">
+      <div class="subtitle">שיעור 12</div>
+      <h1>מסעדה ורופא</h1>
+      <div class="arabic-title">المطعم والدكتور</div>
+      <div class="ornament">&#10022; &#10023; &#10022;</div>
+      <div class="desc">נלמד להזמין אוכל במסעדה ולתאר תסמינים אצל הרופא, עם מיליות שימושיות.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: Grammar - Useful Particles -->
+  <div class="slide" id="s1">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">דקדוק</div>
+        <h2>מיליות שימושיות</h2>
+      </div>
+      <div class="rule-card">
+        <p class="rule-text">
+          מיליות הן מילים קטנות שמחברות משפטים ונותנות הקשר.<br>
+          בערבית מדוברת הן <span class="highlight">הכרחיות לשיחה שוטפת</span>:
+        </p>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּס</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">אבל / מספיק</span>
+          </div>
+          <div class="translation">بس — רק / אבל / די</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עַשאן</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">כי / בשביל</span>
+          </div>
+          <div class="translation">عشان — בגלל / בשביל</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">לַממא</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">כאשר</span>
+          </div>
+          <div class="translation">لمّا — כש...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: More Particles + Demo -->
+  <div class="slide" id="s2">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">דקדוק</div>
+        <h2>עוד מיליות</h2>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּעְדֵין</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">אחר כך / אז</span>
+          </div>
+          <div class="translation">بعدين — אחר כך</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">כַּמאן</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">גם / עוד</span>
+          </div>
+          <div class="translation">كمان — עוד / גם</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">לִססא</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">עדיין / עדיין לא</span>
+          </div>
+          <div class="translation">لسّا — עדיין / עוד לא</div>
+        </div>
+      </div>
+
+      <div class="separator-line"></div>
+
+      <div class="collision-arena" id="arena1" onclick="runCollision('arena1', 'בִּדדי אַאכֹל', 'בַּס לִססאתי מִש גַ׳אהֵז', 'בִּדדי אַאכֹל בַּס לִססאתי מִש גַ׳אהֵז', 'אני רוצה לאכול אבל עדיין לא מוכן')">
+        <div class="collision-stage" id="stage1">
+          <div class="word-bubble">בִּדדי אַאכֹל</div>
+          <div class="plus-sign">+</div>
+          <div class="word-bubble teal-bubble">בַּס לִססאתי</div>
+        </div>
+        <div id="result1" class="result-word">בִּדדי אַאכֹל בַּס לִססא מִש גַ'אהֵז</div>
+        <div id="rlabel1" class="result-label">= אני רוצה לאכול אבל עדיין לא מוכן</div>
+        <div class="hint">&#9654; לחצו להדגמה</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Restaurant Vocabulary -->
+  <div class="slide" id="s3">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">אוצר מילים</div>
+        <h2>מסעדה</h2>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">חְסאבּ</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">חשבון</span>
+          </div>
+          <div class="translation">حساب — חשבון</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">טַבַּח'</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">מטבח / טבח</span>
+          </div>
+          <div class="translation">طبّاخ — טבח / מטבח</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">מַיי</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">מים</span>
+          </div>
+          <div class="translation">ميّ — מים</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">חָרָך</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">חריף / חם</span>
+          </div>
+          <div class="translation">حارّ — חריף / חם</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">מֵנְיוּ</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">תפריט</span>
+          </div>
+          <div class="translation">منيو — תפריט</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Doctor Vocabulary -->
+  <div class="slide" id="s4">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">אוצר מילים</div>
+        <h2>אצל הרופא</h2>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">דַכְּתוֹר</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">רופא</span>
+          </div>
+          <div class="translation">دكتور — רופא</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">דַוא</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">תרופה</span>
+          </div>
+          <div class="translation">دوا — תרופה</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">ראסי בְּיוּגַ'עני</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">כואב לי הראש</span>
+          </div>
+          <div class="translation">راسي بيوجعني — כואב לי הראש</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בַּטְני</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">הבטן שלי</span>
+          </div>
+          <div class="translation">بطني — הבטן שלי</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עִנְדי וַגַ'ע</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">יש לי כאב</span>
+          </div>
+          <div class="translation">عندي وجع — יש לי כאב</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Spiral Review -->
+  <div class="slide" id="s5">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">חזרה ספיראלית</div>
+        <h2>בִּדדי + אוכל + מספרים + ברכות</h2>
+      </div>
+
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">משלבים ידע קודם:</span><br><br>
+          <span class="teal">בִּדדי חֻממֻסֿ</span> — אני רוצה חומוס<br>
+          <span class="teal">תְנֵין חֻממֻסֿ מִן פַדְלַכּ</span> — שניים חומוס בבקשה<br>
+          <span class="teal">כַּם (א)לְחְסאבּ?</span> — כמה החשבון?<br>
+          <span class="teal">סָחְחָה!</span> — לבריאות! (אחרי ארוחה)
+        </p>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">בִּדדי כּאסֵת שַאי</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">אני רוצה כוס תה</span>
+          </div>
+          <div class="translation">بدّي كاسة شاي</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">סָחְחָה!</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">לבריאות!</span>
+          </div>
+          <div class="translation">صحّة! — לבריאות!</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עַלא קַלְבַּכּ</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">על הלב שלך (תשובה לסחחה)</span>
+          </div>
+          <div class="translation">على قلبك — תשובה לסחחה</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">סַלאמְתַכּ</span>
+            <span class="part-sep">&#8592;</span>
+            <span class="part-result">תהיה בריא, תרגיש טוב</span>
+          </div>
+          <div class="translation">سلامتك — לחולה</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Practice - Two Scenarios -->
+  <div class="slide" id="s6">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">תרגול</div>
+        <h2>שני תרחישים</h2>
+      </div>
+
+      <button class="reveal-all-btn" onclick="revealAll()">גלה הכל</button>
+
+      <div class="scenario-title">&#127869; תרחיש א' — מסעדה</div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">1. "שלום, אני רוצה להזמין" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="מַרְחַבּא, בִּדדי אֻטְלֹבּ">?</span>
+        </div>
+        <div class="quiz-hint">מרחבא + בדדי + ציווי</div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">2. "אפשר תפריט בבקשה?" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="מֻמְכֵּן (א)לְמֵנְיוּ מִן פַדְלַכּ?">?</span>
+        </div>
+        <div class="quiz-hint">מומכן + מניו + מן פדלך</div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">3. "אני רוצה חומוס, וגם מים" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="בִּדדי חֻממֻסֿ, וּכַּמאן מַיי">?</span>
+        </div>
+        <div class="quiz-hint">בדדי + חומוס + כמאן + מיי</div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">4. "החשבון בבקשה" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="(א)לְחְסאבּ מִן פַדְלַכּ">?</span>
+        </div>
+        <div class="quiz-hint">חסאב + מן פדלך</div>
+      </div>
+
+      <div class="separator-line"></div>
+
+      <div class="scenario-title">&#129657; תרחיש ב' — רופא</div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">5. "שלום דוקטור, כואב לי הבטן" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="מַרְחַבּא יא דַכְּתוֹר, בַּטְני בְּתוּגַ'עְני">?</span>
+        </div>
+        <div class="quiz-hint">מרחבא + דכתור + בטני + כאב</div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">6. "הכאב התחיל אתמול כי אכלתי משהו חריף" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="(א)לְוַגַ'ע בַּללַש אֵמְבּארֵח עַשאן אַכַלְת אִשי חַאר">?</span>
+        </div>
+        <div class="quiz-hint">וגע + אמבארח + עשאן + אכלת + חאר</div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">7. "אני צריך תרופה?" =</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="בִּדדי דַוא?">?</span>
+        </div>
+        <div class="quiz-hint">בדדי + דוא</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Game - Speed Quiz -->
+  <div class="slide" id="s7">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">משחק</div>
+        <h2>חידון מהיר</h2>
+      </div>
+      <div id="quizGameArea">
+        <div id="quizQuestion" style="text-align:center;font-family:'Noto Serif Hebrew',serif;font-size:clamp(20px,4vw,30px);font-weight:700;color:var(--gold);margin-bottom:20px;"></div>
+        <div id="timerBar" style="width:100%;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin:10px 0;overflow:hidden;"><div id="timerFill" style="height:100%;background:linear-gradient(to right,var(--teal),var(--gold));border-radius:2px;width:100%;transition:width 0.1s linear;"></div></div>
+        <div id="quizOptions" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"></div>
+        <div id="quizScore" style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:10px;"></div>
+        <div id="quizFeedback" style="text-align:center;font-size:16px;font-weight:700;min-height:30px;"></div>
+      </div>
+      <button onclick="nextQuizQ()" style="display:block;margin:10px auto;background:rgba(240,192,96,0.1);border:1px solid var(--gold);color:var(--gold);padding:8px 20px;border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;">השאלה הבאה</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Summary -->
+  <div class="slide" id="s8">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">סיכום</div>
+        <h2>שיעור 12 — מסעדה ורופא</h2>
+      </div>
+
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">&#9312; מיליות שימושיות:</span><br><br>
+          <span class="teal">בַּס</span> (אבל/מספיק) &nbsp;|&nbsp; <span class="teal">עַשאן</span> (כי/בשביל) &nbsp;|&nbsp; <span class="teal">לַממא</span> (כאשר)<br>
+          <span class="teal">בַּעְדֵין</span> (אחר כך) &nbsp;|&nbsp; <span class="teal">כַּמאן</span> (גם/עוד) &nbsp;|&nbsp; <span class="teal">לִססא</span> (עדיין/לא עוד)
+        </p>
+      </div>
+      <div class="separator-line"></div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">&#9313; מסעדה:</span><br><br>
+          <span class="rose">חְסָאבּ</span> (חשבון) &nbsp;|&nbsp; <span class="rose">מַיי</span> (מים) &nbsp;|&nbsp; <span class="rose">חָרָך</span> (חריף) &nbsp;|&nbsp; <span class="rose">מֵנְיוּ</span> (תפריט)
+        </p>
+      </div>
+      <div class="separator-line"></div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">&#9314; רופא:</span><br><br>
+          <span class="rose">דַכְּתוֹר</span> (רופא) &nbsp;|&nbsp; <span class="rose">דַוא</span> (תרופה) &nbsp;|&nbsp; <span class="rose">ראסי בְּיוּגַ'עני</span> (כואב לי הראש)<br>
+          <span class="rose">בַּטְני</span> (הבטן שלי) &nbsp;|&nbsp; <span class="rose">סַלאמְתַכּ</span> (שלום עליך)
+        </p>
+      </div>
+      <div class="separator-line"></div>
+      <div class="rule-card" style="text-align:center; border-right: none; border-top: 4px solid var(--teal);">
+        <p class="rule-text" style="text-align:center">
+          <span class="teal">סָחְחָה!</span> — לבריאות!<br>
+          <span class="teal">עַלא קַלְבַּכּ!</span> — על הלב שלך!
+        </p>
+      </div>
+      <div style="text-align:center; margin-top:30px; font-size:40px; opacity:0.6">&#10022;</div>
+<div style="text-align:center; margin-top:30px;">
+  <div style="font-size:48px; margin-bottom:10px;">🎉</div>
+  <div style="color: var(--gold); font-family: 'Noto Serif Hebrew', serif; font-size: 24px; font-weight:700; margin-bottom:8px;">כל הכבוד! סיימת את השיעור!</div>
+  <div style="color: var(--teal); font-size: 14px; margin-bottom: 20px;">אַלְף מַבְּרוּכּ!</div>
+  <a href="../index.html" style="display:inline-block; background: linear-gradient(135deg, var(--gold), #e0a030); color: #0a0a14; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px;">← חזרה לדף הקורס</a>
+</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&#8594; הקודם</button>
+  <span class="slide-counter" id="slideCounter">1 / 9</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">הבא &#8592;</button>
+</div>
+
+<script>
+const totalSlides = 9;
+let currentSlide = 0;
+const arenaState = {};
+
+function changeSlide(dir) {
+  const slides = document.querySelectorAll('.slide');
+  slides[currentSlide].classList.remove('active');
+  currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+  slides[currentSlide].classList.add('active');
+  updateNav();
+  if (currentSlide === 7) loadQuizQ();
+}
+
+function updateNav() {
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  if (currentSlide === totalSlides - 1) {
+    // Mark lesson as completed
+    const lessonNum = parseInt(document.title.match(/\d+/)?.[0] || '0');
+    if (lessonNum > 0) {
+      const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+      if (!completed.includes(lessonNum)) {
+        completed.push(lessonNum);
+        localStorage.setItem('completedLessons', JSON.stringify(completed));
+      }
+    }
+    document.getElementById('nextBtn').textContent = '← לדף הקורס';
+    document.getElementById('nextBtn').onclick = () => window.location.href = '../index.html';
+    document.getElementById('nextBtn').disabled = false;
+  } else {
+    document.getElementById('nextBtn').textContent = 'הבא ←';
+    document.getElementById('nextBtn').onclick = () => changeSlide(1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+}
+
+function revealCard(card) {
+  if (!card.classList.contains('revealed')) {
+    card.classList.add('revealed');
+    spawnCardParticles(card);
+  }
+}
+
+function spawnCardParticles(card) {
+  const colors = ['#f0c060','#3de8d0','#ff6b8a','#ffffff'];
+  const rect = card.getBoundingClientRect();
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i / 8) * Math.PI * 2;
+    const dist = 30 + Math.random() * 40;
+    p.style.cssText = `
+      left: ${rect.left + rect.width/2 - 3}px;
+      top: ${rect.top + rect.height/2 - 3}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      position: fixed;
+      --tx: ${Math.cos(angle) * dist}px;
+      --ty: ${Math.sin(angle) * dist}px;
+      z-index: 9999;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+function runCollision(arenaId, word1, word2, result, label) {
+  if (arenaState[arenaId]) return;
+  arenaState[arenaId] = true;
+  const num = arenaId.slice(-1);
+  const stage = document.getElementById('stage' + num);
+  const resultEl = document.getElementById('result' + num);
+  const labelEl = document.getElementById('rlabel' + num);
+  const arena = document.getElementById(arenaId);
+  const [left, , right] = stage.children;
+  left.classList.add('collide-left');
+  right.classList.add('collide-right');
+  setTimeout(() => {
+    left.classList.add('explode');
+    right.classList.add('explode');
+    spawnBigParticles(arena);
+    setTimeout(() => {
+      stage.style.display = 'none';
+      resultEl.style.display = 'block';
+      labelEl.style.display = 'block';
+      arena.querySelector('.hint').style.display = 'none';
+    }, 450);
+  }, 400);
+}
+
+function spawnBigParticles(parent) {
+  const colors = ['#f0c060','#3de8d0','#ff6b8a','#ffffff','#ffd97d'];
+  const rect = parent.getBoundingClientRect();
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 40 + Math.random() * 80;
+    p.style.cssText = `
+      left: ${rect.left + rect.width/2 - 3 + (Math.random()-0.5)*60}px;
+      top: ${rect.top + rect.height/2 - 3}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${4 + Math.random()*6}px;
+      height: ${4 + Math.random()*6}px;
+      position: fixed;
+      --tx: ${Math.cos(angle) * dist}px;
+      --ty: ${Math.sin(angle) * dist}px;
+      z-index: 9999;
+      animation-duration: ${0.6 + Math.random()*0.4}s;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1100);
+  }
+}
+
+function revealAnswer(el) {
+  if (!el.classList.contains('revealed')) {
+    el.classList.add('revealed');
+    el.textContent = el.dataset.ans;
+    spawnCardParticles(el);
+  }
+}
+
+function revealAll() {
+  document.querySelectorAll('.quiz-answer:not(.revealed)').forEach(el => revealAnswer(el));
+}
+
+// Speed Quiz Game
+const quizQuestions = [
+  { q: 'מה זה "חְסאבּ"?', options: ['תפריט', 'חשבון', 'מים', 'תרופה'], correct: 1 },
+  { q: 'מה זה "דַכְּתוֹר"?', options: ['טבח', 'רופא', 'מלצר', 'חשבון'], correct: 1 },
+  { q: 'מה זה "בַּס"?', options: ['כי', 'גם', 'אבל / מספיק', 'עדיין'], correct: 2 },
+  { q: 'מה זה "כַּמאן"?', options: ['אחר כך', 'גם / עוד', 'כאשר', 'עדיין'], correct: 1 },
+  { q: 'איך אומרים "כואב לי הראש"?', options: ['בַּטְני בְּתוּגַ\'עְני', 'ראסי בְּיוּגַ\'עני', 'עִנְדי דַוא', 'בִּדדי מַיי'], correct: 1 },
+  { q: 'מה זה "עַשאן"?', options: ['אבל', 'כי / בשביל', 'עדיין', 'אחר כך'], correct: 1 },
+  { q: 'מה זה "לִססא"?', options: ['גם', 'כאשר', 'עדיין / עדיין לא', 'אבל'], correct: 2 },
+  { q: 'איך אומרים "מים"?', options: ['חַאר', 'מֵנְיוּ', 'מַיי', 'דַוא'], correct: 2 },
+];
+let quizIdx = 0;
+let quizScoreVal = 0;
+let quizTimerInterval = null;
+
+function loadQuizQ() {
+  const q = quizQuestions[quizIdx];
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('quizScore').textContent = `ניקוד: ${quizScoreVal} / ${quizQuestions.length}`;
+  document.getElementById('quizFeedback').textContent = '';
+  const opts = document.getElementById('quizOptions');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.style.cssText = "background:var(--card);border:2px solid rgba(240,192,96,0.2);border-radius:10px;padding:12px;cursor:pointer;font-family:'Noto Serif Hebrew',serif;font-size:15px;font-weight:700;color:var(--text);transition:all 0.2s;";
+    btn.onmouseover = () => { btn.style.borderColor = 'var(--gold)'; btn.style.background = 'rgba(240,192,96,0.1)'; };
+    btn.onmouseout = () => { if (!btn.dataset.answered) { btn.style.borderColor = 'rgba(240,192,96,0.2)'; btn.style.background = 'var(--card)'; } };
+    btn.onclick = () => checkQuizAnswer(i, btn);
+    opts.appendChild(btn);
+  });
+  // Start 15-second timer
+  if(quizTimerInterval) clearInterval(quizTimerInterval);
+  let timeLeft = 150;
+  const timerFill = document.getElementById('timerFill');
+  if(timerFill) { timerFill.style.width = '100%'; timerFill.style.background = 'linear-gradient(to right,var(--teal),var(--gold))'; }
+  quizTimerInterval = setInterval(() => {
+    timeLeft--;
+    if(timerFill) { timerFill.style.width = (timeLeft/150*100) + '%'; if(timeLeft < 50) timerFill.style.background = 'var(--rose)'; }
+    if(timeLeft <= 0) {
+      clearInterval(quizTimerInterval);
+      const q = quizQuestions[quizIdx];
+      const allBtns = document.getElementById('quizOptions').children;
+      for (let b of allBtns) { b.style.pointerEvents = 'none'; }
+      allBtns[q.correct].style.borderColor = 'var(--teal)';
+      allBtns[q.correct].style.background = 'rgba(61,232,208,0.15)';
+      allBtns[q.correct].style.color = 'var(--teal)';
+      document.getElementById('quizFeedback').style.color = 'var(--rose)';
+      document.getElementById('quizFeedback').textContent = 'נגמר הזמן!';
+    }
+  }, 100);
+}
+
+function checkQuizAnswer(idx, btn) {
+  if(quizTimerInterval) clearInterval(quizTimerInterval);
+  const q = quizQuestions[quizIdx];
+  const allBtns = document.getElementById('quizOptions').children;
+  for (let b of allBtns) { b.style.pointerEvents = 'none'; b.dataset.answered = '1'; }
+  if (idx === q.correct) {
+    btn.style.borderColor = 'var(--teal)';
+    btn.style.background = 'rgba(61,232,208,0.15)';
+    btn.style.color = 'var(--teal)';
+    document.getElementById('quizFeedback').style.color = 'var(--teal)';
+    document.getElementById('quizFeedback').textContent = 'נכון!';
+    quizScoreVal++;
+  } else {
+    btn.style.borderColor = 'var(--rose)';
+    btn.style.background = 'rgba(255,107,138,0.1)';
+    btn.style.color = 'var(--rose)';
+    allBtns[q.correct].style.borderColor = 'var(--teal)';
+    allBtns[q.correct].style.background = 'rgba(61,232,208,0.15)';
+    allBtns[q.correct].style.color = 'var(--teal)';
+    document.getElementById('quizFeedback').style.color = 'var(--rose)';
+    document.getElementById('quizFeedback').textContent = 'לא נכון...';
+  }
+  document.getElementById('quizScore').textContent = `ניקוד: ${quizScoreVal} / ${quizQuestions.length}`;
+}
+
+function nextQuizQ() {
+  quizIdx = (quizIdx + 1) % quizQuestions.length;
+  if (quizIdx === 0) quizScoreVal = 0;
+  loadQuizQ();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') changeSlide(1);
+  if (e.key === 'ArrowRight') changeSlide(-1);
+});
+
+updateNav();
+</script>
+</body>
+</html>

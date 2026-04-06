@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 18 – שיחה חופשית — סיכום הקורס</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .back-link {
+    position: fixed;
+    top: 12px;
+    right: 20px;
+    z-index: 300;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide { display: none; width: 100%; animation: fadeSlide 0.5s ease; }
+  .slide.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    align-items: center;
+  }
+
+  .nav-btn {
+    background: rgba(240,192,96,0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 26px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn:hover { background: rgba(240,192,96,0.25); transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .slide-counter {
+    color: var(--muted);
+    font-size: 13px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .title-slide {
+    text-align: center;
+    padding: 60px 20px 120px;
+  }
+  .title-slide .subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: pop 0.6s 0.2s forwards;
+  }
+  .title-slide h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(32px, 7vw, 58px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: pop 0.6s 0.4s forwards;
+  }
+  .title-slide .arabic-title {
+    font-size: clamp(22px, 5vw, 40px);
+    color: var(--teal);
+    direction: rtl;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: pop 0.6s 0.6s forwards;
+  }
+  .title-slide .desc {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: pop 0.6s 0.8s forwards;
+  }
+  .ornament {
+    font-size: 40px;
+    margin: 20px 0;
+    opacity: 0;
+    animation: pop 0.6s 1s forwards;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .section-header { text-align: center; margin-bottom: 36px; }
+  .section-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), #1ea8a0);
+    color: #0a0a14;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.2);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border-right: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 80px;
+    background: linear-gradient(to left, var(--glow), transparent);
+    pointer-events: none;
+  }
+  .rule-card .rule-text {
+    font-size: clamp(14px, 2.5vw, 17px);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .rule-card .highlight { color: var(--gold); font-weight: 700; }
+  .rule-card .teal { color: var(--teal); font-weight: 700; }
+  .rule-card .rose { color: var(--rose); font-weight: 700; }
+
+  .particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle 0.8s ease-out forwards;
+  }
+  @keyframes particle {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  @keyframes resultPop {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .separator-line {
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(240,192,96,0.2), transparent);
+    margin: 20px 0;
+  }
+
+  .slide-inner { padding-bottom: 100px; }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  .bg-arabic {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 400px;
+    font-weight: 900;
+    color: rgba(240,192,96,0.025);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  /* Dialogue styles */
+  .dialogue-line {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .dialogue-line .speaker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .speaker-a { color: var(--gold); }
+  .speaker-b { color: var(--teal); }
+  .dialogue-line .line-arabic {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(16px, 3vw, 22px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    direction: rtl;
+  }
+  .dialogue-line .line-hebrew {
+    font-size: 13px;
+    color: var(--muted);
+    direction: rtl;
+  }
+  .dialogue-line.hidden-line .line-arabic,
+  .dialogue-line.hidden-line .line-hebrew {
+    color: transparent;
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+  }
+  .dialogue-line.hidden-line:hover {
+    border-color: rgba(240,192,96,0.3);
+  }
+  .dialogue-line.hidden-line .reveal-tag {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    pointer-events: none;
+  }
+  .dialogue-line.revealed .line-arabic { color: var(--text); background: none; }
+  .dialogue-line.revealed .line-hebrew { color: var(--muted); background: none; }
+  .dialogue-line.revealed .reveal-tag { display: none; }
+
+  /* Quiz styles */
+  .quiz-question {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.15);
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+  }
+  .quiz-q-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    direction: rtl;
+    text-align: right;
+  }
+  .quiz-words {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    direction: rtl;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .quiz-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-arrow { color: var(--muted); font-size: 18px; }
+  .quiz-answer {
+    display: inline-block;
+    min-width: 140px;
+    padding: 6px 14px;
+    background: rgba(61,232,208,0.05);
+    border: 2px dashed rgba(61,232,208,0.3);
+    border-radius: 8px;
+    color: transparent;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    direction: rtl;
+    user-select: none;
+  }
+  .quiz-answer.revealed {
+    color: var(--teal);
+    border-color: var(--teal);
+    border-style: solid;
+    background: rgba(61,232,208,0.1);
+    animation: resultPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .quiz-hint { font-size: 12px; color: var(--muted); }
+
+  .reveal-all-btn {
+    background: transparent;
+    border: 1px solid rgba(61,232,208,0.4);
+    color: var(--teal);
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .reveal-all-btn:hover { background: rgba(61,232,208,0.1); }
+
+  /* Pocket dictionary */
+  .dict-section {
+    margin-bottom: 24px;
+  }
+  .dict-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(240,192,96,0.15);
+  }
+  .dict-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 6px;
+  }
+  .dict-item {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    direction: rtl;
+  }
+  .dict-item .ar { color: var(--teal); font-weight: 700; font-family: 'Noto Serif Hebrew', serif; }
+  .dict-item .he { color: var(--muted); }
+
+  /* Celebration */
+  .celebration-card {
+    background: linear-gradient(135deg, rgba(240,192,96,0.08), rgba(61,232,208,0.08));
+    border: 2px solid rgba(240,192,96,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .celebration-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(240,192,96,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(61,232,208,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .celebration-card h2 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .celebration-card .celeb-sub {
+    font-size: 18px;
+    color: var(--teal);
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .celebration-card .celeb-desc {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .scenario-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    background: rgba(255,107,138,0.12);
+    border: 1px solid rgba(255,107,138,0.3);
+    color: var(--rose);
+  }
+
+  .arabic-script { font-family: 'Noto Naskh Arabic', serif; direction: rtl; font-size: 1.2em; }
+
+  /* Speed Quiz */
+  .speed-quiz-container { max-width: 600px; margin: 0 auto; }
+  .speed-q-card { background: var(--card); border: 1px solid rgba(240,192,96,0.2); border-radius: 16px; padding: 24px; margin-bottom: 16px; text-align: center; }
+  .speed-q-num { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .speed-q-text { font-size: clamp(14px, 3vw, 18px); font-weight: 700; color: var(--gold); margin-bottom: 16px; direction: rtl; }
+  .speed-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .speed-opt { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; cursor: pointer; font-family: 'Noto Serif Hebrew', serif; font-size: 15px; font-weight: 700; color: var(--text); transition: all 0.2s; text-align: center; }
+  .speed-opt:hover { border-color: rgba(240,192,96,0.4); background: rgba(240,192,96,0.06); }
+  .speed-opt.correct { border-color: var(--teal); background: rgba(61,232,208,0.15); color: var(--teal); }
+  .speed-opt.wrong { border-color: var(--rose); background: rgba(255,107,138,0.1); color: var(--rose); }
+  .speed-opt.disabled { pointer-events: none; opacity: 0.5; }
+  .speed-score { text-align: center; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 16px; }
+
+  @media (max-width: 600px) {
+    .dict-grid { grid-template-columns: 1fr 1fr; }
+    .speed-options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">&larr; חזרה לקורס</a>
+<div class="bg-arabic">ش</div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+
+<div id="app">
+
+  <!-- SLIDE 0: Title -->
+  <div class="slide active" id="s0">
+    <div class="title-slide">
+      <div class="subtitle">שיעור 18 — סיום הקורס</div>
+      <h1>שיחה חופשית</h1>
+      <div class="arabic-title">محادثة حرّة — نهاية الدورة</div>
+      <div class="ornament">&#10022; &#10023; &#10022;</div>
+      <div class="desc">נשלב את הכל — שלושה תרחישים מלאים שמכסים את כל מה שלמדנו. לחצו על השורות המוסתרות לחשוף את הדיאלוג!</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: Scenario 1 - Meeting a neighbor -->
+  <div class="slide" id="s1">
+    <div class="slide-inner">
+      <div class="section-header">
+        <span class="scenario-badge">תרחיש 1</span>
+        <h2>פגישה ראשונה עם שכן</h2>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">אַחְמַד (שכן)</div>
+        <div class="line-arabic">מַרְחַבּא! אַנא אַחְמַד, ג'ארַכּ (א)לְג'דיד.</div>
+        <div class="line-hebrew">שלום! אני אחמד, השכן החדש שלך.</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ (אתה)</div>
+        <div class="line-arabic">אַהְלֵן וּסַהְלֵן! אַנא [שמך]. כּיף חאלַכּ?</div>
+        <div class="line-hebrew">ברוכים הבאים! אני [שמך]. מה שלומך?</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">אַחְמַד</div>
+        <div class="line-arabic">אַלְחַמְדֻ לִלַּה, מְניח. וֵ(א)נְתִ?</div>
+        <div class="line-hebrew">תודה לאל, טוב. ואתה?</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">תַמאם, שֻכְּרַן. עִנְדַכּ עאיְלֵה?</div>
+        <div class="line-hebrew">מצוין, תודה. יש לך משפחה?</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">אַחְמַד</div>
+        <div class="line-arabic">אֵה, מַרָתי וּתְלאתֵ וּלאד. וֵ(א)נְתִ?</div>
+        <div class="line-hebrew">כן, אשתי ושלושה ילדים. ואתה?</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">אַנא לִסַּא עַזְזַאבִי. (א)תְשַרַפְנא!</div>
+        <div class="line-hebrew">אני עדיין רווק. נעים להכיר!</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Scenario 2 - A day in town -->
+  <div class="slide" id="s2">
+    <div class="slide-inner">
+      <div class="section-header">
+        <span class="scenario-badge">תרחיש 2</span>
+        <h2>יום בעיר — כיוונים + מסעדה</h2>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">עוֹבֵר אוֹרַח</div>
+        <div class="line-arabic">לוֹ סַמַחְת, וֵין (א)לְמַטְעַם?</div>
+        <div class="line-hebrew">סליחה, איפה המסעדה?</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">רוּח דֻע'רי, בַּעְדֵין לִף יַמין. (א)לְמַטְעַם עַלא (א)שׁ-שְׁמאל.</div>
+        <div class="line-hebrew">לך ישר, אחר כך פנה ימינה. המסעדה משמאל.</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+
+      <div class="separator-line"></div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">מֶלְצַר</div>
+        <div class="line-arabic">אַהְלֵן! שׁוּ בְּתִחְבְּ תוֹכֵּל?</div>
+        <div class="line-hebrew">שלום! מה תרצה לאכול?</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">בַּדּי חֻממֻסֿ וּפַלאפֵל, וַמַיֵּה מִן פַדְֿלַכּ.</div>
+        <div class="line-hebrew">אני רוצה חומוס ופלאפל, ומים בבקשה.</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">מֶלְצַר</div>
+        <div class="line-arabic">תְפַדַּל! בִּ(א)לְהַנא וִ(א)שׁ-שְׁפא.</div>
+        <div class="line-hebrew">בבקשה! בתיאבון!</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">שֻכְּרַן כְּתיר! (א)לְחִסאבּ, מִן פַדְֿלַכּ.</div>
+        <div class="line-hebrew">תודה רבה! החשבון, בבקשה.</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Scenario 3 - Family event -->
+  <div class="slide" id="s3">
+    <div class="slide-inner">
+      <div class="section-header">
+        <span class="scenario-badge">תרחיש 3</span>
+        <h2>אירוע משפחתי — ברכות ופתגמים</h2>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">קָרוֹב מִשְׁפָּחָה</div>
+        <div class="line-arabic">מַבְּרוּכּ! אַלְף מַבְּרוּכּ עַ(א)לְעַריס!</div>
+        <div class="line-hebrew">מזל טוב! אלף ברכות לחתן!</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">אַללַה יְבּארֵכּ פיכּ! בִּ(א)ר-רִפאאְ וֵ(א)לְבַּנין.</div>
+        <div class="line-hebrew">שאלוהים יברך אותך! בהרמוניה ובבנים.</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">קָרוֹב</div>
+        <div class="line-arabic">יָא סַלאם, שׁוּ הַ(א)לְפַרְחַה! כֻּלְנא וּלאד תִסְעַה, מַזְבּוּט?</div>
+        <div class="line-hebrew">וואו, איזו שמחה! כולנו שווים, נכון?</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">וַללַה מַזְבּוּט! עַלא רַאסי, כֻּל (א)לְעאיְלֵה הוֹן.</div>
+        <div class="line-hebrew">באמת נכון! בשמחה, כל המשפחה כאן.</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+
+      <div class="dialogue-line">
+        <div class="speaker speaker-a">קָרוֹב</div>
+        <div class="line-arabic">אִנְשאללַה דַאיְמַן הֵיכּ. יַללא בִּנא נִרְקֹץ!</div>
+        <div class="line-hebrew">אם ירצה השם תמיד ככה. יאללה בוא נרקוד!</div>
+      </div>
+
+      <div class="dialogue-line hidden-line" onclick="revealDialogue(this)">
+        <div class="speaker speaker-b">אִנְתִ</div>
+        <div class="line-arabic">יַללא! אַללַה יִתַמְמֵם עַלֵיְכֻם בִּ(א)לְחֵ'יר!</div>
+        <div class="line-hebrew">יאללה! אלוהים ישלים לכם בטוב!</div>
+        <span class="reveal-tag">לחץ לחשוף</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Vocabulary - Scenario words -->
+  <div class="slide" id="s4">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">חזרה ספירלית</div>
+        <h2>מילים מהתרחישים</h2>
+      </div>
+
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">תרחיש 1 — היכרות:</span><br>
+          <span class="teal">ג'ארַכּ</span> = שכן שלך |
+          <span class="teal">עאיְלֵה</span> = משפחה |
+          <span class="teal">מַרָתי</span> = אשתי |
+          <span class="teal">עַזְזַאבִי</span> = רווק |
+          <span class="teal">(א)תְשַרַפְנא</span> = נעים להכיר
+        </p>
+      </div>
+
+      <div class="rule-card" style="border-right-color: var(--teal);">
+        <p class="rule-text">
+          <span class="highlight">תרחיש 2 — בעיר:</span><br>
+          <span class="teal">דֻע'רי</span> = ישר |
+          <span class="teal">לִף יַמין</span> = פנה ימינה |
+          <span class="teal">שְׁמאל</span> = שמאל |
+          <span class="teal">מַטְעַם</span> = מסעדה |
+          <span class="teal">חִסאבּ</span> = חשבון |
+          <span class="teal">בִּ(א)לְהַנא</span> = בתיאבון
+        </p>
+      </div>
+
+      <div class="rule-card" style="border-right-color: var(--rose);">
+        <p class="rule-text">
+          <span class="highlight">תרחיש 3 — אירוע:</span><br>
+          <span class="rose">מַבְּרוּכּ</span> = מזל טוב |
+          <span class="rose">עַריס</span> = חתן |
+          <span class="rose">פַרְחַה</span> = שמחה |
+          <span class="rose">נִרְקֹץ</span> = נרקוד |
+          <span class="rose">דַאיְמַן</span> = תמיד
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Practice - Complete the dialogue -->
+  <div class="slide" id="s5">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">תרגול</div>
+        <h2>השלם את הדיאלוג</h2>
+      </div>
+
+      <button class="reveal-all-btn" onclick="revealAllQuiz()">גלה הכל</button>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">1. מישהו אומר לך "מַרְחַבּא!" — מה תענה?</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="אַהְלֵן וּסַהְלֵן!">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">2. אתה במסעדה. איך תבקש את החשבון?</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="(א)לְחִסאבּ, מִן פַדְֿלַכּ">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">3. חבר מתחתן. מה תגיד לו?</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="מַבְּרוּכּ! בִּ(א)ר-רִפאאְ וֵ(א)לְבַּנין!">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">4. מישהו שואל "כּיף חאלַכּ?" ואתה בסדר. מה תענה?</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="אַלְחַמְדֻ לִלַּה, מְניח">?</span>
+        </div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="quiz-q-text">5. אתה רוצה להזמין את החברים ללכת. מה תגיד?</div>
+        <div class="quiz-words">
+          <span class="quiz-arrow">&#8592;</span>
+          <span class="quiz-answer" onclick="revealAnswer(this)" data-ans="יַללא בִּנא!">?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Pocket Dictionary -->
+  <div class="slide" id="s6">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">מילון כיס</div>
+        <h2>100 המילים שלמדנו</h2>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">ברכות ופתיחה</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">מַרְחַבּא</span> <span class="he">שלום</span></div>
+          <div class="dict-item"><span class="ar">אַהְלֵן</span> <span class="he">היי</span></div>
+          <div class="dict-item"><span class="ar">כּיף חאלַכּ</span> <span class="he">מה שלומך</span></div>
+          <div class="dict-item"><span class="ar">אַלְחַמְדֻ לִלַּה</span> <span class="he">תודה לאל</span></div>
+          <div class="dict-item"><span class="ar">שֻכְּרַן</span> <span class="he">תודה</span></div>
+          <div class="dict-item"><span class="ar">עַפְוַן</span> <span class="he">סליחה</span></div>
+          <div class="dict-item"><span class="ar">מִן פַדְֿלַכּ</span> <span class="he">בבקשה</span></div>
+          <div class="dict-item"><span class="ar">(א)תְשַרַפְנא</span> <span class="he">נעים להכיר</span></div>
+          <div class="dict-item"><span class="ar">מַע (א)סְסַלאמֵה</span> <span class="he">להתראות</span></div>
+          <div class="dict-item"><span class="ar">סַבּאח (א)לְחֵ'יר</span> <span class="he">בוקר טוב</span></div>
+        </div>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">משפחה</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">עאיְלֵה</span> <span class="he">משפחה</span></div>
+          <div class="dict-item"><span class="ar">אַבּ / בַּיְי</span> <span class="he">אבא</span></div>
+          <div class="dict-item"><span class="ar">אֻם / מאמא</span> <span class="he">אמא</span></div>
+          <div class="dict-item"><span class="ar">אַחּ</span> <span class="he">אח</span></div>
+          <div class="dict-item"><span class="ar">אֻחְת</span> <span class="he">אחות</span></div>
+          <div class="dict-item"><span class="ar">מַרָה / זוֹג'ֵה</span> <span class="he">אשה</span></div>
+          <div class="dict-item"><span class="ar">זוֹג'</span> <span class="he">בעל</span></div>
+          <div class="dict-item"><span class="ar">וַלַד / בִּנְת</span> <span class="he">ילד / ילדה</span></div>
+          <div class="dict-item"><span class="ar">ג'ַדּ / סֵדּ</span> <span class="he">סבא</span></div>
+          <div class="dict-item"><span class="ar">סִתּ</span> <span class="he">סבתא</span></div>
+        </div>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">מספרים</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">וָאחַד</span> <span class="he">1</span></div>
+          <div class="dict-item"><span class="ar">תְנֵין</span> <span class="he">2</span></div>
+          <div class="dict-item"><span class="ar">תְלאתֵה</span> <span class="he">3</span></div>
+          <div class="dict-item"><span class="ar">אַרְבַּעֵה</span> <span class="he">4</span></div>
+          <div class="dict-item"><span class="ar">חַ'מְסֵה</span> <span class="he">5</span></div>
+          <div class="dict-item"><span class="ar">סִתֵּה</span> <span class="he">6</span></div>
+          <div class="dict-item"><span class="ar">סַבְּעֵה</span> <span class="he">7</span></div>
+          <div class="dict-item"><span class="ar">תְמַנְיֵה</span> <span class="he">8</span></div>
+          <div class="dict-item"><span class="ar">תִסְעֵה</span> <span class="he">9</span></div>
+          <div class="dict-item"><span class="ar">עַשַרֵה</span> <span class="he">10</span></div>
+        </div>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">פעלים נפוצים</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">כַּתַבּ</span> <span class="he">כתב</span></div>
+          <div class="dict-item"><span class="ar">ראח</span> <span class="he">הלך</span></div>
+          <div class="dict-item"><span class="ar">אַכַּל</span> <span class="he">אכל</span></div>
+          <div class="dict-item"><span class="ar">שִרֵבּ</span> <span class="he">שתה</span></div>
+          <div class="dict-item"><span class="ar">חַכּא</span> <span class="he">סיפר</span></div>
+          <div class="dict-item"><span class="ar">פִהֵם</span> <span class="he">הבין</span></div>
+          <div class="dict-item"><span class="ar">עַללַם</span> <span class="he">לימד</span></div>
+          <div class="dict-item"><span class="ar">תְעַללַם</span> <span class="he">למד</span></div>
+          <div class="dict-item"><span class="ar">סַאַל</span> <span class="he">שאל</span></div>
+          <div class="dict-item"><span class="ar">נִזֵל</span> <span class="he">ירד</span></div>
+        </div>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">אוכל ושתייה</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">חֻממֻסֿ</span> <span class="he">חומוס</span></div>
+          <div class="dict-item"><span class="ar">פַלאפֵל</span> <span class="he">פלאפל</span></div>
+          <div class="dict-item"><span class="ar">ח'ֻבְּז</span> <span class="he">לחם</span></div>
+          <div class="dict-item"><span class="ar">מַיֵּה</span> <span class="he">מים</span></div>
+          <div class="dict-item"><span class="ar">קַהְוֵה</span> <span class="he">קפה</span></div>
+          <div class="dict-item"><span class="ar">שַאי</span> <span class="he">תה</span></div>
+          <div class="dict-item"><span class="ar">לַחְמֵה</span> <span class="he">בשר</span></div>
+          <div class="dict-item"><span class="ar">סַלַטַֿה</span> <span class="he">סלט</span></div>
+          <div class="dict-item"><span class="ar">רֻזּ</span> <span class="he">אורז</span></div>
+          <div class="dict-item"><span class="ar">זֵית</span> <span class="he">זית</span></div>
+        </div>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">כיוונים ומקומות</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">יַמין</span> <span class="he">ימין</span></div>
+          <div class="dict-item"><span class="ar">שְׁמאל</span> <span class="he">שמאל</span></div>
+          <div class="dict-item"><span class="ar">דֻע'רי</span> <span class="he">ישר</span></div>
+          <div class="dict-item"><span class="ar">קַריבּ</span> <span class="he">קרוב</span></div>
+          <div class="dict-item"><span class="ar">בַּעיד</span> <span class="he">רחוק</span></div>
+          <div class="dict-item"><span class="ar">בֵּית</span> <span class="he">בית</span></div>
+          <div class="dict-item"><span class="ar">מַדְרַסֵה</span> <span class="he">בי"ס</span></div>
+          <div class="dict-item"><span class="ar">מַטְעַם</span> <span class="he">מסעדה</span></div>
+          <div class="dict-item"><span class="ar">סוּק</span> <span class="he">שוק</span></div>
+          <div class="dict-item"><span class="ar">שָׁארֶע</span> <span class="he">רחוב</span></div>
+        </div>
+      </div>
+
+      <div class="dict-section">
+        <div class="dict-title">ביטויים וסלנג</div>
+        <div class="dict-grid">
+          <div class="dict-item"><span class="ar">וַללַה</span> <span class="he">באמת</span></div>
+          <div class="dict-item"><span class="ar">יַללא</span> <span class="he">יאללה</span></div>
+          <div class="dict-item"><span class="ar">אִנְשאללַה</span> <span class="he">בעזרת השם</span></div>
+          <div class="dict-item"><span class="ar">מַזְבּוּט</span> <span class="he">נכון</span></div>
+          <div class="dict-item"><span class="ar">חַראם</span> <span class="he">חבל / אסור</span></div>
+          <div class="dict-item"><span class="ar">עַלא רַאסי</span> <span class="he">בשמחה</span></div>
+          <div class="dict-item"><span class="ar">יָא סַלאם</span> <span class="he">וואו</span></div>
+          <div class="dict-item"><span class="ar">מַבְּרוּכּ</span> <span class="he">מזל טוב</span></div>
+          <div class="dict-item"><span class="ar">אַללַה יִרְחַמוֹ</span> <span class="he">ירחם עליו</span></div>
+          <div class="dict-item"><span class="ar">כֻּל עאם וֵאנְתִ בְּחֵ'יר</span> <span class="he">חג שמח / יום הולדת שמח</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Speed Quiz Game -->
+  <div class="slide" id="s7">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">חידון סיום</div>
+        <h2>כמה זוכרים מכל הקורס?</h2>
+      </div>
+      <div class="speed-score" id="speedScore">ניקוד: 0 / 0</div>
+      <div id="speedTimerBar" style="width:100%;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin:10px 0;overflow:hidden;"><div id="speedTimerFill" style="height:100%;background:linear-gradient(to right,var(--teal),var(--gold));border-radius:2px;width:100%;transition:width 0.1s linear;"></div></div>
+      <div id="speedTimerText" style="text-align:center;color:var(--muted);font-size:13px;margin-bottom:8px;">⏱ 0:15</div>
+      <div class="speed-quiz-container" id="speedQuizContainer"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Celebration & Summary -->
+  <div class="slide" id="s8">
+    <div class="slide-inner">
+
+      <div class="celebration-card" id="celebCard">
+        <h2>סיימת את הקורס!</h2>
+        <div class="celeb-sub">اِنتهيت الدورة — مبروك!</div>
+        <div class="celeb-desc">
+          למדת ברכות, משפחה, מספרים, כיוונים, אוכל, פעלים, בניינים, פתגמים וסלנג.<br>
+          אתם מוכנים לצאת לשטח ולקשקש קצת בערבית!
+        </div>
+      </div>
+
+      <div class="rule-card" style="text-align:center; border-right: none; border-top: 4px solid var(--gold);">
+        <p class="rule-text" style="text-align:center">
+          <span class="highlight">מה למדנו ב-18 שיעורים:</span><br><br>
+          &#10003; אותיות וניקוד &#10003; ברכות ופתיחות &#10003; משפחה<br>
+          &#10003; מספרים &#10003; כיוונים &#10003; אוכל ושתייה<br>
+          &#10003; פעלים בעבר, הווה, עתיד &#10003; בניינים<br>
+          &#10003; פתגמים, סלנג, ברכות לכל מצב<br>
+          &#10003; שלושה דיאלוגים מלאים!
+        </p>
+      </div>
+
+      <div class="separator-line"></div>
+
+      <div class="rule-card" style="text-align:center; border-right: none; border-top: 4px solid var(--teal);">
+        <p class="rule-text" style="text-align:center">
+          <span class="teal" style="font-size:1.2em;">כֻּלְנא וּלאד תִסְעַה</span><br>
+          כולנו ילדי תשעה חודשים — כולנו בני אדם<br><br>
+          <span class="rose">יַללא — צאו לדבר!</span>
+        </p>
+      </div>
+
+      <div style="text-align:center; margin-top:30px;">
+        <div style="font-size:64px; margin-bottom:10px;">🎓🎉🥳</div>
+        <div style="color: var(--gold); font-family: 'Noto Serif Hebrew', serif; font-size: 28px; font-weight:900; margin-bottom:8px;">מַבְּרוּכּ! סיימת את הקורס!</div>
+        <div style="color: var(--teal); font-size: 16px; margin-bottom: 8px;">אַלְף אַלְף מַבְּרוּכּ! כֻּל (א)לִ(א)חְתִראם!</div>
+        <div style="color: var(--muted); font-size: 14px; margin-bottom: 24px;">למדת 180+ מילים, 18 כללי דקדוק, ו-3 תרחישים מלאים</div>
+        <a href="../index.html" style="display:inline-block; background: linear-gradient(135deg, var(--gold), #e0a030); color: #0a0a14; padding: 14px 36px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 17px;">← חזרה לדף הקורס</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&#8594; הקודם</button>
+  <span class="slide-counter" id="slideCounter">1 / 9</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">הבא &#8592;</button>
+</div>
+
+<script>
+const totalSlides = 9;
+let currentSlide = 0;
+
+function changeSlide(dir) {
+  const slides = document.querySelectorAll('.slide');
+  slides[currentSlide].classList.remove('active');
+  currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+  slides[currentSlide].classList.add('active');
+  updateNav();
+  // Trigger celebration particles on last slide
+  if (currentSlide === totalSlides - 1) {
+    setTimeout(() => spawnCelebration(), 300);
+  }
+}
+
+function updateNav() {
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  if (currentSlide === totalSlides - 1) {
+    // Mark lesson as completed
+    const lessonNum = parseInt(document.title.match(/\d+/)?.[0] || '0');
+    if (lessonNum > 0) {
+      const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+      if (!completed.includes(lessonNum)) {
+        completed.push(lessonNum);
+        localStorage.setItem('completedLessons', JSON.stringify(completed));
+      }
+    }
+    document.getElementById('nextBtn').textContent = '← לדף הקורס';
+    document.getElementById('nextBtn').onclick = () => window.location.href = '../index.html';
+    document.getElementById('nextBtn').disabled = false;
+  } else {
+    document.getElementById('nextBtn').textContent = 'הבא ←';
+    document.getElementById('nextBtn').onclick = () => changeSlide(1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+}
+
+function revealDialogue(line) {
+  if (line.classList.contains('hidden-line') && !line.classList.contains('revealed')) {
+    line.classList.add('revealed');
+    spawnCardParticles(line);
+  }
+}
+
+function spawnCardParticles(el) {
+  const colors = ['#f0c060','#3de8d0','#ff6b8a','#ffffff'];
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i / 8) * Math.PI * 2;
+    const dist = 30 + Math.random() * 40;
+    p.style.cssText = `
+      left: ${rect.left + rect.width/2 - 3}px;
+      top: ${rect.top + rect.height/2 - 3}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      position: fixed;
+      --tx: ${Math.cos(angle) * dist}px;
+      --ty: ${Math.sin(angle) * dist}px;
+      z-index: 9999;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+function revealAnswer(el) {
+  if (!el.classList.contains('revealed')) {
+    el.classList.add('revealed');
+    el.textContent = el.dataset.ans;
+    spawnCardParticles(el);
+  }
+}
+
+function revealAllQuiz() {
+  document.querySelectorAll('.quiz-answer:not(.revealed)').forEach(el => revealAnswer(el));
+}
+
+function spawnCelebration() {
+  const colors = ['#f0c060','#3de8d0','#ff6b8a','#ffffff','#ffd97d','#a78bfa'];
+  const card = document.getElementById('celebCard');
+  if (!card) return;
+  const rect = card.getBoundingClientRect();
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 60 + Math.random() * 120;
+    const delay = Math.random() * 600;
+    p.style.cssText = `
+      left: ${rect.left + Math.random() * rect.width}px;
+      top: ${rect.top + Math.random() * rect.height}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${4 + Math.random()*8}px;
+      height: ${4 + Math.random()*8}px;
+      position: fixed;
+      --tx: ${Math.cos(angle) * dist}px;
+      --ty: ${Math.sin(angle) * dist}px;
+      z-index: 9999;
+      animation-delay: ${delay}ms;
+      animation-duration: ${0.8 + Math.random()*0.6}s;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1500 + delay);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') changeSlide(1);
+  if (e.key === 'ArrowRight') changeSlide(-1);
+});
+
+// Speed Quiz for Lesson 18 - Course finale review
+const speedQuizData = [
+  { q: 'איך אומרים "שלום" בערבית מדוברת?', correct: 'מַרְחַבּא', opts: ['מַרְחַבּא','שֻכְּרַן','מַע (א)סְסַלאמֵה','עַפְוַן'] },
+  { q: 'מה התרגום של "בית הספר" בסמיכות?', correct: 'בֵּית (א)לְמַדְרַסֵה', opts: ['בֵּית (א)לְמַדְרַסֵה','(א)לְבֵּית מַדְרַסֵה','מַדְרַסֵת (א)לְבֵּית','(א)לְמַדְרַסֵה בֵּית'] },
+  { q: 'מה הרבים של וַלַד (ילד)?', correct: 'אַוְלאד', opts: ['אַוְלאד','וַלַדין','וַלַדאת','וֻלוּד'] },
+  { q: 'איך אומרים 25 בערבית?', correct: 'חַ\'מְסֵה וּעִשְרין', opts: ['חַ\'מְסֵה וּעִשְרין','עִשְרין חַ\'מְסֵה','חַ\'מֵסְתַעַש','חַ\'מְסין'] },
+  { q: 'כשחבר מתחתן, מה אומרים?', correct: 'מַבְּרוּכּ!', opts: ['מַבְּרוּכּ!','חַראם!','אִנְשאללַה','יַללא!'] },
+  { q: 'עַללַם (לימד) — באיזה בניין?', correct: 'בניין 2 — פַעַּל', opts: ['בניין 1 — פָעַל','בניין 2 — פַעַּל','בניין 5 — תְפַעַּל','לא בניין'] },
+  { q: 'מה התרגום של "יאללה קדימה!"?', correct: 'יַללא בִּנא!', opts: ['יַללא בִּנא!','וַללַה!','עַלא רַאסי!','אִנְשאללַה'] },
+  { q: 'איך מבקשים את החשבון במסעדה?', correct: '(א)לְחִסאבּ מִן פַדְֿלַכּ', opts: ['(א)לְחִסאבּ מִן פַדְֿלַכּ','שֻכְּרַן כְּתיר','בַּדּי אַכַּל','קַדדֵיש הַאדַא'] },
+  { q: 'תְעַללַם (למד) — באיזה בניין?', correct: 'בניין 5 — תְפַעַּל', opts: ['בניין 1','בניין 2','בניין 5 — תְפַעַּל','בניין 3'] },
+  { q: 'מה אומרים כשאדם נפטר?', correct: 'אַללַה יִרְחַמוֹ', opts: ['מַבְּרוּכּ!','אַללַה יִרְחַמוֹ','יָא סַלאם!','חַראם!'] },
+];
+let speedScore = 0, speedAnswered = 0;
+let speedTimerInterval = null, speedTimeLeft = 150;
+function initSpeedQuiz() {
+  speedScore = 0; speedAnswered = 0;
+  const container = document.getElementById('speedQuizContainer');
+  container.innerHTML = '';
+  speedQuizData.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'speed-q-card';
+    card.id = 'sq' + i;
+    const shuffled = [...q.opts].sort(() => Math.random() - 0.5);
+    card.innerHTML = `<div class="speed-q-num">שאלה ${i+1} / ${speedQuizData.length}</div><div class="speed-q-text">${q.q}</div><div class="speed-options">${shuffled.map(o => `<div class="speed-opt" onclick="checkSpeedAnswer(this,${i})">${o}</div>`).join('')}</div>`;
+    container.appendChild(card);
+  });
+  updateSpeedScore();
+  if(speedTimerInterval) clearInterval(speedTimerInterval);
+  speedTimeLeft = 150;
+  const stFill = document.getElementById('speedTimerFill');
+  const stText = document.getElementById('speedTimerText');
+  if(stFill) { stFill.style.width = '100%'; stFill.style.background = 'linear-gradient(to right,var(--teal),var(--gold))'; }
+  if(stText) stText.textContent = '⏱ 0:15';
+  speedTimerInterval = setInterval(() => {
+    speedTimeLeft--;
+    if(stFill) { stFill.style.width = (speedTimeLeft/150*100) + '%'; if(speedTimeLeft < 50) stFill.style.background = 'var(--rose)'; }
+    if(stText) { const sec = Math.ceil(speedTimeLeft/10); stText.textContent = '⏱ ' + Math.floor(sec/60) + ':' + (sec%60<10?'0':'') + (sec%60); }
+    if(speedTimeLeft <= 0) { clearInterval(speedTimerInterval); if(stText) stText.textContent = '⏱ נגמר הזמן!'; }
+  }, 100);
+}
+function checkSpeedAnswer(el, idx) {
+  const correct = speedQuizData[idx].correct;
+  const card = document.getElementById('sq' + idx);
+  const opts = card.querySelectorAll('.speed-opt');
+  opts.forEach(o => {
+    o.classList.add('disabled');
+    if (o.textContent === correct) o.classList.add('correct');
+  });
+  if (el.textContent === correct) { speedScore++; }
+  else { el.classList.add('wrong'); }
+  speedAnswered++;
+  updateSpeedScore();
+  if (speedAnswered === speedQuizData.length) {
+    if(speedTimerInterval) clearInterval(speedTimerInterval);
+    document.getElementById('speedScore').textContent = `🎉 סיום! ניקוד: ${speedScore} / ${speedQuizData.length}`;
+  }
+}
+function updateSpeedScore() {
+  document.getElementById('speedScore').textContent = `ניקוד: ${speedScore} / ${speedAnswered}`;
+}
+initSpeedQuiz();
+
+updateNav();
+</script>
+</body>
+</html>

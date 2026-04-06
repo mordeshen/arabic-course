@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ערבית מדוברת פלסטינית — הקורס המלא</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-arabic {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 500px;
+    font-weight: 900;
+    color: rgba(240,192,96,0.02);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 60px 20px 50px;
+  }
+
+  .hero .subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: pop 0.6s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: pop 0.6s 0.4s forwards;
+  }
+
+  .hero .arabic-title {
+    font-size: clamp(18px, 4vw, 32px);
+    color: var(--teal);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: pop 0.6s 0.6s forwards;
+  }
+
+  .hero .desc {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: pop 0.6s 0.8s forwards;
+  }
+
+  .ornament {
+    font-size: 32px;
+    margin: 20px 0;
+    opacity: 0;
+    animation: pop 0.6s 1s forwards;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 50px 0 20px;
+  }
+
+  .module-tag {
+    background: linear-gradient(135deg, var(--teal), #1ea8a0);
+    color: #0a0a14;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .module-header h2 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .module-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(240,192,96,0.3));
+  }
+
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .lesson-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 22px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+
+  .lesson-card:hover {
+    border-color: rgba(240,192,96,0.4);
+    transform: translateY(-4px);
+    background: rgba(240,192,96,0.05);
+    box-shadow: 0 12px 40px rgba(240,192,96,0.08);
+  }
+
+  .lesson-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 60px;
+    background: linear-gradient(to left, var(--glow), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .lesson-card:hover::before { opacity: 1; }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .lesson-num {
+    font-size: 32px;
+    font-weight: 900;
+    font-family: 'Noto Serif Hebrew', serif;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .lesson-icon {
+    font-size: 28px;
+    opacity: 0.8;
+  }
+
+  .card-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .card-arabic {
+    font-size: 14px;
+    color: var(--teal);
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .meta-words {
+    background: rgba(240,192,96,0.1);
+    color: var(--gold);
+    border: 1px solid rgba(240,192,96,0.2);
+  }
+
+  .meta-grammar {
+    background: rgba(61,232,208,0.08);
+    color: var(--teal);
+    border: 1px solid rgba(61,232,208,0.2);
+  }
+
+  .lesson-complete-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(61,232,208,0.2);
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  .course-progress {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .course-progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .course-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .footer a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .reading-card {
+    background: rgba(61,232,208,0.04);
+    border: 1px solid rgba(61,232,208,0.2);
+    border-radius: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 80px;
+  }
+  .reading-card:hover {
+    border-color: rgba(61,232,208,0.5);
+    background: rgba(61,232,208,0.08);
+    transform: translateY(-2px);
+  }
+  .reading-card .rc-icon { font-size: 24px; margin-bottom: 4px; }
+  .reading-card .rc-text { color: var(--teal); font-size: 11px; font-weight: 600; line-height: 1.3; }
+  .reading-card .rc-arabic { font-family: 'Noto Naskh Arabic', sans-serif; color: var(--gold); font-size: 18px; direction: rtl; margin-top: 4px; }
+
+  @media (max-width: 600px) {
+    .lessons-grid { grid-template-columns: 1fr; }
+    .hero { padding: 40px 10px 30px; }
+    .stats-bar { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-arabic">عربي</div>
+
+<div id="app">
+  <div class="hero">
+    <div class="subtitle">קורס אינטראקטיבי לדוברי עברית</div>
+    <h1>ערבית מדוברת פלסטינית</h1>
+    <div class="arabic-title">العامية الفلسطينية</div>
+    <div class="ornament">✦ ✧ ✦</div>
+    <div class="desc">18 שיעורים אינטראקטיביים מאפס עד שיחה חופשית.<br>כל התעתיק בעברית. לחצו על שיעור כדי להתחיל.</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">18</div>
+      <div class="stat-label">שיעורים</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">180+</div>
+      <div class="stat-label">מילים חדשות</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">מודולים</div>
+    </div>
+  </div>
+
+  <div class="course-progress">
+    <div id="progressText" style="color: var(--muted); font-size: 14px;">0 / 18 שיעורים הושלמו</div>
+    <div class="course-progress-bar">
+      <div class="course-progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <!-- Module A -->
+  <div class="module-header">
+    <span class="module-tag">מודול א</span>
+    <h2>הצעדים הראשונים</h2>
+    <div class="module-line"></div>
+  </div>
+
+  <div class="lessons-grid">
+    <a class="lesson-card" href="lessons/lesson_01.html">
+      <div class="card-top">
+        <span class="lesson-num">01</span>
+        <span class="lesson-icon">🔤</span>
+      </div>
+      <div class="card-title">האותיות — ברוך הבא לערבית</div>
+      <div class="card-arabic">الحروف — أهلاً بالعربية</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">5 מילים</span>
+        <span class="meta-tag meta-grammar">האותיות והצלילים</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=1">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 1</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_02.html">
+      <div class="card-top">
+        <span class="lesson-num">02</span>
+        <span class="lesson-icon">👋</span>
+      </div>
+      <div class="card-title">שלום! — הברכות הבסיסיות</div>
+      <div class="card-arabic">مرحبا! — التحيات الأساسية</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">אל הידיעה ואותיות שמש</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=2">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 2</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_03.html">
+      <div class="card-top">
+        <span class="lesson-num">03</span>
+        <span class="lesson-icon">🤝</span>
+      </div>
+      <div class="card-title">מי אתה? — היכרות</div>
+      <div class="card-arabic">مين إنت؟ — التعارف</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">כינויי הגוף</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=3">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 3</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_04.html">
+      <div class="card-top">
+        <span class="lesson-num">04</span>
+        <span class="lesson-icon">🔢</span>
+      </div>
+      <div class="card-title">מספרים — מ-0 עד 10</div>
+      <div class="card-arabic">الأرقام — من ٠ إلى ١٠</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">11 מילים</span>
+        <span class="meta-tag meta-grammar">זכר ונקבה</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=4">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 4</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+  </div>
+
+  <!-- Module B -->
+  <div class="module-header">
+    <span class="module-tag">מודול ב</span>
+    <h2>החיים שלי</h2>
+    <div class="module-line"></div>
+  </div>
+
+  <div class="lessons-grid">
+    <a class="lesson-card" href="lessons/lesson_05.html">
+      <div class="card-top">
+        <span class="lesson-num">05</span>
+        <span class="lesson-icon">👨‍👩‍👧‍👦</span>
+      </div>
+      <div class="card-title">המשפחה — אֵלְאַהֵל</div>
+      <div class="card-arabic">العيلة — الأهل</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">עִנְדי / מַעי</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=5">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 5</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_06.html">
+      <div class="card-top">
+        <span class="lesson-num">06</span>
+        <span class="lesson-icon">💬</span>
+      </div>
+      <div class="card-title">יומיום — משפטים הכרחיים</div>
+      <div class="card-arabic">جمل ضرورية — يوم بيوم</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">אלף עזר ותנועת עזר</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=6">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 6</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_07.html">
+      <div class="card-top">
+        <span class="lesson-num">07</span>
+        <span class="lesson-icon">📞</span>
+      </div>
+      <div class="card-title">בטלפון — שיחה פשוטה</div>
+      <div class="card-arabic">على التلفون — محادثة بسيطة</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">8 מילים</span>
+        <span class="meta-tag meta-grammar">שלילה</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=7">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 7</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_08.html">
+      <div class="card-top">
+        <span class="lesson-num">08</span>
+        <span class="lesson-icon">🤲</span>
+      </div>
+      <div class="card-title">ברכות — התרבות הערבית</div>
+      <div class="card-arabic">تحيات — الثقافة العربية</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">ברכה ← תשובה</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=8">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 8</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+  </div>
+
+  <!-- Module C -->
+  <div class="module-header">
+    <span class="module-tag">מודול ג</span>
+    <h2>בעולם</h2>
+    <div class="module-line"></div>
+  </div>
+
+  <div class="lessons-grid">
+    <a class="lesson-card" href="lessons/lesson_09.html">
+      <div class="card-top">
+        <span class="lesson-num">09</span>
+        <span class="lesson-icon">🔄</span>
+      </div>
+      <div class="card-title">הפועל — עכשיו ומחר</div>
+      <div class="card-arabic">الفعل — الحاضر والمستقبل</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">8 מילים</span>
+        <span class="meta-tag meta-grammar">הווה-עתיד</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=9">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 9</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_10.html">
+      <div class="card-top">
+        <span class="lesson-num">10</span>
+        <span class="lesson-icon">⏪</span>
+      </div>
+      <div class="card-title">מה קרה? — הפועל בעבר</div>
+      <div class="card-arabic">شو صار؟ — الفعل بالماضي</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">8 מילים</span>
+        <span class="meta-tag meta-grammar">עבר</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=10">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 10</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_11.html">
+      <div class="card-top">
+        <span class="lesson-num">11</span>
+        <span class="lesson-icon">🧭</span>
+      </div>
+      <div class="card-title">לאן? — כיוונים</div>
+      <div class="card-arabic">لوين؟ — الاتجاهات</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">ציווי</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=11">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 11</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_12.html">
+      <div class="card-top">
+        <span class="lesson-num">12</span>
+        <span class="lesson-icon">🍽️</span>
+      </div>
+      <div class="card-title">מסעדה ורופא</div>
+      <div class="card-arabic">المطعم والدكتور</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">מיליות שימושיות</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=12">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 12</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+  </div>
+
+  <!-- Module D -->
+  <div class="module-header">
+    <span class="module-tag">מודול ד</span>
+    <h2>לדבר באמת</h2>
+    <div class="module-line"></div>
+  </div>
+
+  <div class="lessons-grid">
+    <a class="lesson-card" href="lessons/lesson_13.html">
+      <div class="card-top">
+        <span class="lesson-num">13</span>
+        <span class="lesson-icon">🔗</span>
+      </div>
+      <div class="card-title">סמיכות — לחבר מילים</div>
+      <div class="card-arabic">الإضافة — ربط الكلمات</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">8 מילים</span>
+        <span class="meta-tag meta-grammar">סמיכות ותא מרבוטה</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=13">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 13</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_14.html">
+      <div class="card-top">
+        <span class="lesson-num">14</span>
+        <span class="lesson-icon">👥</span>
+      </div>
+      <div class="card-title">ריבוי — יחיד ורבים</div>
+      <div class="card-arabic">الجمع — مفرد وجمع</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">8 מילים</span>
+        <span class="meta-tag meta-grammar">ריבוי שלם ושבור</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=14">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 14</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_15.html">
+      <div class="card-top">
+        <span class="lesson-num">15</span>
+        <span class="lesson-icon">💯</span>
+      </div>
+      <div class="card-title">מספרים גדולים + שעות</div>
+      <div class="card-arabic">أرقام كبيرة + الساعة</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">מספרים 11-100</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=15">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 15</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_16.html">
+      <div class="card-top">
+        <span class="lesson-num">16</span>
+        <span class="lesson-icon">🗣️</span>
+      </div>
+      <div class="card-title">פתגמים וסלנג</div>
+      <div class="card-arabic">أمثال وسلانغ</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">10 מילים</span>
+        <span class="meta-tag meta-grammar">ברכות מתקדמות</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=16">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 16</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_17.html">
+      <div class="card-top">
+        <span class="lesson-num">17</span>
+        <span class="lesson-icon">🏗️</span>
+      </div>
+      <div class="card-title">בניינים — המנוע של הפועל</div>
+      <div class="card-arabic">الأوزان — محرك الفعل</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">8 מילים</span>
+        <span class="meta-tag meta-grammar">3 בניינים מרכזיים</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=17">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 17</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/lesson_18.html">
+      <div class="card-top">
+        <span class="lesson-num">18</span>
+        <span class="lesson-icon">🎓</span>
+      </div>
+      <div class="card-title">שיחה חופשית — סיכום הקורס</div>
+      <div class="card-arabic">محادثة حرة — ملخص الدورة</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">סיכום 180+ מילים</span>
+        <span class="meta-tag meta-grammar">3 תרחישים מלאים</span>
+      </div>
+    </a>
+
+    <a class="reading-card" href="lessons/reading_practice?lesson=18">
+      <span class="rc-icon">📝</span>
+      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 18</span>
+      <span class="rc-arabic">تدريب القراءة</span>
+    </a>
+
+    <a class="lesson-card" href="lessons/reading_arabic.html">
+      <div class="card-top">
+        <span class="lesson-num">📖</span>
+        <span class="lesson-icon">📖</span>
+      </div>
+      <div class="card-title">לקרוא ערבית</div>
+      <div class="card-arabic">تعلّم القراءة</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-grammar">קריאה בערבית</span>
+      </div>
+    </a>
+
+    <a class="lesson-card" href="lessons/nawwitni.html" style="border: 1px solid rgba(51,204,255,0.3);">
+      <div class="card-top">
+        <span class="lesson-num">🚗</span>
+        <span class="lesson-icon">🗺️</span>
+      </div>
+      <div class="card-title">نوّطني — נווט אותי!</div>
+      <div class="card-arabic">ה-GPS התקלקל. קרא שלטים בערבית כדי להגיע הביתה</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">שלטי כבישים</span>
+        <span class="meta-tag meta-grammar">ניווט + קריאה</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    קורס ערבית פלסטינית מדוברת לדוברי עברית
+    <br><br>
+    <span style="color: var(--gold); font-weight: 700;">© כל הזכויות שמורות לשלום שנוולד</span>
+    <br>✦
+  </div>
+</div>
+
+<script>
+function updateProgress() {
+  const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+  const total = 18;
+  const pct = (completed.length / total) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = completed.length + ' / ' + total + ' שיעורים הושלמו';
+
+  // Add checkmarks to completed lessons
+  document.querySelectorAll('.lesson-card').forEach(card => {
+    const href = card.getAttribute('href');
+    const match = href && href.match(/lesson_(\d+)/);
+    if (match) {
+      const num = parseInt(match[1]);
+      if (completed.includes(num)) {
+        const badge = document.createElement('div');
+        badge.className = 'lesson-complete-badge';
+        badge.textContent = '✓';
+        card.appendChild(badge);
+      }
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', updateProgress);
+</script>
+
+</body>
+</html>

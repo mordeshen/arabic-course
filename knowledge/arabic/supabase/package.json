@@ -1,0 +1,16 @@
+{
+  "name": "arabic-kb-supabase-seed",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "seed": "node seed.js",
+    "seed:dotenv": "node -r dotenv/config seed.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.0"
+  }
+}

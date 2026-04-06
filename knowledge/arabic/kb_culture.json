@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "file": "kb_culture.json",
+    "layer": "culture",
+    "version": "2.1",
+    "updated": "2026-03-25",
+    "description": "Dialect notes, cultural context, register, social norms",
+    "rag_tags": [
+      "dialect",
+      "culture",
+      "register",
+      "formal",
+      "informal",
+      "colloquial",
+      "MSA",
+      "Palestinian",
+      "social",
+      "politeness",
+      "taboo",
+      "greetings_culture"
+    ]
+  },
+  "dialect_notes": {
+    "description": "הבדלים בין ערבית ספרותית לפלסטינית מדוברת",
+    "key_differences": [
+      {
+        "feature": "ק (قاف)",
+        "formal": "q",
+        "palestinian": "אְ (glottal stop) או כּ",
+        "example": "قلب → אַלְבּ (לב)"
+      },
+      {
+        "feature": "ה שואלת",
+        "formal": "هل + פועל?",
+        "palestinian": "אינטונציה בלבד, או شو/مش",
+        "example": "بتحب القهوة؟ (פשוט שאלה בטון)"
+      },
+      {
+        "feature": "עתיד",
+        "formal": "سوف / سـ",
+        "palestinian": "رح / حـ",
+        "example": "رح أروح = אני אלך"
+      },
+      {
+        "feature": "אין",
+        "formal": "ليس / لا يوجد",
+        "palestinian": "مش / ما في",
+        "example": "ما في مشكلة = אין בעיה"
+      },
+      {
+        "feature": "רוצה",
+        "formal": "أريد",
+        "palestinian": "بدّي",
+        "example": "بدي آكل = אני רוצה לאכול"
+      },
+      {
+        "feature": "עכשיו",
+        "formal": "الآن",
+        "palestinian": "هلّأ / هسّا",
+        "example": "هلّأ بروح = עכשיו אני הולך"
+      },
+      {
+        "feature": "מה",
+        "formal": "ماذا",
+        "palestinian": "شو",
+        "example": "شو بدك? = מה אתה רוצה?"
+      },
+      {
+        "feature": "איפה",
+        "formal": "أين",
+        "palestinian": "وين",
+        "example": "وين رايح? = לאן אתה הולך?"
+      },
+      {
+        "feature": "למה",
+        "formal": "لماذا",
+        "palestinian": "ليش",
+        "example": "ليش ما إجيت? = למה לא באת?"
+      },
+      {
+        "feature": "הרבה",
+        "formal": "كثيراً",
+        "palestinian": "كتير",
+        "example": "كتير منيح = מאוד טוב"
+      }
+    ]
+  },
+  "cultural_context": {
+    "greetings_protocol": {
+      "description": "בערבית פלסטינית ברכות הן לא פורמליות בלבד — הן מביעות כבוד ואכפתיות",
+      "rules": [
+        "תמיד להשיב לברכה — שתיקה נחשבת גסה",
+        "يعطيك العافية נאמרת לכל מי שעובד — מהקופאית ועד הרופא",
+        "إن شاء الله היא לא רק דתית — היא חלק מהשיח היומיומי",
+        "الله يرحمه/ها — אומרים על כל מי שנפטר, גם אם לא מכירים"
+      ]
+    },
+    "hospitality": {
+      "description": "הכנסת אורחים — ערך מרכזי",
+      "phrases": [
+        {
+          "arabic": "تفضّل / تفضّلي",
+          "transliteration": "tfaḍḍal",
+          "hebrew": "בבקשה (היכנס/שב/קח)",
+          "note": "המילה הכי חשובה באירוח"
+        },
+        {
+          "arabic": "أهلا وسهلا",
+          "transliteration": "ahlan wa-sahlan",
+          "hebrew": "ברוכים הבאים"
+        },
+        {
+          "arabic": "صحتين",
+          "transliteration": "ṣaḥtēn",
+          "hebrew": "בתיאבון (שני בריאויות)",
+          "response": "على قلبك = על הלב שלך"
+        }
+      ]
+    }
+  }
+}

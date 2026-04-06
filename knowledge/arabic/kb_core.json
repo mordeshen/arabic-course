@@ -1,0 +1,522 @@
+{
+  "meta": {
+    "file": "kb_core.json",
+    "layer": "core_linguistics",
+    "version": "2.1",
+    "updated": "2026-03-25",
+    "description": "Phonology, morphology, grammar essentials for Palestinian Arabic",
+    "contents": [
+      "phonology",
+      "morphology",
+      "grammar_essentials"
+    ],
+    "rag_tags": [
+      "phonology",
+      "pronunciation",
+      "morphology",
+      "verb_forms",
+      "grammar",
+      "negation",
+      "questions",
+      "prepositions",
+      "numbers",
+      "pronouns",
+      "tense"
+    ]
+  },
+  "phonology": {
+    "description": "כללים פונולוגיים של ערבית פלסטינית מדוברת",
+    "sun_letters": {
+      "description": "אותיות השמש - ה-ל של אל- נבלעת בהן",
+      "letters": [
+        "ت",
+        "ث",
+        "د",
+        "ذ",
+        "ر",
+        "ز",
+        "س",
+        "ش",
+        "ص",
+        "ض",
+        "ط",
+        "ظ",
+        "ل",
+        "ن"
+      ],
+      "example": "אש-שַמְס (השמש) ולא אל-שַמְס",
+      "note": "בדיבור מהיר ההבלעה חזקה יותר"
+    },
+    "moon_letters": {
+      "description": "אותיות הירח - ה-ל של אל- נשמרת",
+      "letters": [
+        "أ",
+        "ب",
+        "ج",
+        "ح",
+        "خ",
+        "ع",
+        "غ",
+        "ف",
+        "ق",
+        "ك",
+        "م",
+        "ه",
+        "و",
+        "ي"
+      ],
+      "example": "אל-בֵּית (הבית)"
+    },
+    "definite_article": {
+      "forms": {
+        "before_sun_letter": "אל- הופכת לאות הראשונה של המילה (הטמעה)",
+        "before_moon_letter": "אל- נשארת כמו שהיא",
+        "after_vowel": "ה-א של אל- נעלמת: פִי-ל-בֵּית (בבית)"
+      }
+    },
+    "vowel_changes_in_dialect": {
+      "description": "שינויי תנועות אופייניים לדיאלקט הפלסטיני",
+      "rules": [
+        {
+          "formal": "قَ (qāf)",
+          "palestinian": "אַ (hamza/alef) או כּ (kāf) לפי אזור",
+          "example": "قال → אָאל (אמר)"
+        },
+        {
+          "formal": "ث (thā')",
+          "palestinian": "ת (tā') או ס (sīn)",
+          "example": "ثلاثة → תְלָאתֶה (שלוש)"
+        },
+        {
+          "formal": "ذ (dhāl)",
+          "palestinian": "ד (dāl) או ז (zāy)",
+          "example": "هذا → הָאדָא (זה)"
+        }
+      ]
+    }
+  },
+  "morphology": {
+    "description": "מורפולוגיה של ערבית פלסטינית מדוברת",
+    "attached_pronouns": {
+      "description": "כינויי גוף חבורים - מתחברים לסוף מילים",
+      "group_a": {
+        "description": "קבוצה א - אחרי עיצורים",
+        "pronouns": {
+          "שלי": "-י",
+          "שלך (ז)": "-כַּ",
+          "שלך (נ)": "-כִ",
+          "שלו": "-ו / -הוּ",
+          "שלה": "-הַא",
+          "שלנו": "-נַא",
+          "שלכם": "-כוּם",
+          "שלהם": "-הוּם"
+        }
+      },
+      "group_b": {
+        "description": "קבוצה ב - אחרי תנועות",
+        "pronouns": {
+          "שלי": "-יַּ",
+          "שלך (ז)": "-כ",
+          "שלך (נ)": "-כִ",
+          "שלו": "-ה",
+          "שלה": "-הַא",
+          "שלנו": "-נַא",
+          "שלכם": "-כוּם",
+          "שלהם": "-הוּם"
+        }
+      },
+      "usage_examples": [
+        {
+          "base": "כְּתָאבּ (ספר)",
+          "with_pronoun": "כְּתָאבִּי (הספר שלי)"
+        },
+        {
+          "base": "בֵּית (בית)",
+          "with_pronoun": "בֵּיתְנַא (הבית שלנו)"
+        },
+        {
+          "base": "אוּכְּת (אחות)",
+          "with_pronoun": "אוּכְּתוּ (האחות שלו)"
+        }
+      ]
+    },
+    "verb_patterns": {
+      "description": "בניינים עיקריים בערבית פלסטינית מדוברת",
+      "patterns": [
+        {
+          "pattern_number": 1,
+          "name": "פָעַל (בסיסי)",
+          "hebrew_equivalent": "קל / פעל",
+          "description": "הבניין הבסיסי ביותר, רוב הפעלים היומיומיים",
+          "examples": [
+            {
+              "arabic": "كتب",
+              "transliteration": "kátab",
+              "hebrew": "כתב"
+            },
+            {
+              "arabic": "راح",
+              "transliteration": "rāḥ",
+              "hebrew": "הלך"
+            },
+            {
+              "arabic": "أكل",
+              "transliteration": "ákal",
+              "hebrew": "אכל"
+            },
+            {
+              "arabic": "شرب",
+              "transliteration": "shirib",
+              "hebrew": "שתה"
+            }
+          ]
+        },
+        {
+          "pattern_number": 2,
+          "name": "פַעַּל (כפול)",
+          "hebrew_equivalent": "פיעל",
+          "description": "חיזוק, ריבוי, גרימה",
+          "examples": [
+            {
+              "arabic": "علّم",
+              "transliteration": "ʿállam",
+              "hebrew": "לימד"
+            },
+            {
+              "arabic": "كسّر",
+              "transliteration": "kássar",
+              "hebrew": "שבר (לרסיסים)"
+            },
+            {
+              "arabic": "نظّف",
+              "transliteration": "náẓẓaf",
+              "hebrew": "ניקה"
+            }
+          ]
+        },
+        {
+          "pattern_number": 3,
+          "name": "פָאעַל",
+          "hebrew_equivalent": "קרוב לפיעל",
+          "description": "פעולה הדדית, ניסיון",
+          "examples": [
+            {
+              "arabic": "سافر",
+              "transliteration": "sāfar",
+              "hebrew": "נסע/טייל"
+            },
+            {
+              "arabic": "حاول",
+              "transliteration": "ḥāwal",
+              "hebrew": "ניסה"
+            },
+            {
+              "arabic": "ساعد",
+              "transliteration": "sāʿad",
+              "hebrew": "עזר"
+            }
+          ]
+        },
+        {
+          "pattern_number": 4,
+          "name": "אַפְעַל",
+          "hebrew_equivalent": "הפעיל",
+          "description": "גרימה, הכנסה למצב",
+          "examples": [
+            {
+              "arabic": "أرسل",
+              "transliteration": "ársal",
+              "hebrew": "שלח"
+            },
+            {
+              "arabic": "أعطى",
+              "transliteration": "áʿṭa",
+              "hebrew": "נתן"
+            }
+          ],
+          "note": "בדיבור פלסטיני בניין 4 פחות נפוץ, לעתים מוחלף בבניין 2"
+        },
+        {
+          "pattern_number": 5,
+          "name": "תְפַעַּל",
+          "hebrew_equivalent": "התפעל",
+          "description": "רפלקסיבי של בניין 2",
+          "examples": [
+            {
+              "arabic": "تعلّم",
+              "transliteration": "tʿállam",
+              "hebrew": "למד"
+            },
+            {
+              "arabic": "تغيّر",
+              "transliteration": "tgháyyar",
+              "hebrew": "השתנה"
+            }
+          ]
+        },
+        {
+          "pattern_number": 6,
+          "name": "תְפָאעַל",
+          "hebrew_equivalent": "התפעל הדדי",
+          "description": "פעולה הדדית רפלקסיבית",
+          "examples": [
+            {
+              "arabic": "تواصل",
+              "transliteration": "twāṣal",
+              "hebrew": "תקשר/היה בקשר"
+            }
+          ]
+        },
+        {
+          "pattern_number": 7,
+          "name": "אִנְפַעַל",
+          "hebrew_equivalent": "נפעל",
+          "description": "סביל",
+          "examples": [
+            {
+              "arabic": "انكسر",
+              "transliteration": "inkásar",
+              "hebrew": "נשבר"
+            },
+            {
+              "arabic": "انفتح",
+              "transliteration": "infátaḥ",
+              "hebrew": "נפתח"
+            }
+          ]
+        },
+        {
+          "pattern_number": 8,
+          "name": "אִפְתַעַל",
+          "hebrew_equivalent": "קרוב להתפעל",
+          "description": "רפלקסיבי, נפוץ מאוד בדיבור",
+          "examples": [
+            {
+              "arabic": "اشتغل",
+              "transliteration": "ishtaghal",
+              "hebrew": "עבד"
+            },
+            {
+              "arabic": "اشترى",
+              "transliteration": "ishtára",
+              "hebrew": "קנה"
+            },
+            {
+              "arabic": "احتاج",
+              "transliteration": "iḥtāj",
+              "hebrew": "הצטרך"
+            }
+          ]
+        },
+        {
+          "pattern_number": 10,
+          "name": "אִסְתַפְעַל",
+          "hebrew_equivalent": "קרוב להתפעל",
+          "description": "בקשה, חיפוש תכונה",
+          "examples": [
+            {
+              "arabic": "استعمل",
+              "transliteration": "istáʿmal",
+              "hebrew": "השתמש"
+            },
+            {
+              "arabic": "استنّى",
+              "transliteration": "istánna",
+              "hebrew": "חיכה (פלסטיני!)"
+            }
+          ]
+        }
+      ]
+    },
+    "verb_conjugation_template": {
+      "description": "טבלת נטייה כללית - עבר, הווה-עתיד",
+      "past_tense": {
+        "أنا": "פָעַלְ-ת",
+        "إنتَ": "פָעַלְ-ת",
+        "إنتِ": "פָעַלְ-תי",
+        "هو": "פָעַל",
+        "هي": "פָעְלַ-ת",
+        "إحنا": "פָעַלְ-נַא",
+        "إنتو": "פָעַלְ-תוּ",
+        "هم": "פָעַלוּ"
+      },
+      "present_future": {
+        "description": "משתמשים בתחיליות: א/ב/ת/י/נ + בניין",
+        "أنا": "בַ-פְעַל / אַ-פְעַל",
+        "إنتَ": "בְּתִ-פְעַל",
+        "إنتِ": "בְּתִ-פְעְלִי",
+        "هو": "בִּי-פְעַל",
+        "هي": "בְּתִ-פְעַל",
+        "إحنا": "מְנִ-פְעַל",
+        "إنتو": "בְּתִ-פְעְלוּ",
+        "هم": "בִּי-פְעְלוּ"
+      },
+      "future_prefix": {
+        "description": "לציון עתיד ברור מוסיפים رح או حـ",
+        "examples": [
+          "רַח אָרוּח (אני אלך)",
+          "חַ-יִכְתוּב (הוא יכתוב)"
+        ]
+      }
+    }
+  },
+  "grammar_essentials": {
+    "negation": {
+      "description": "שלילה בערבית פלסטינית",
+      "rules": [
+        {
+          "type": "שלילת פועל",
+          "pattern": "مَا + פועל + ش",
+          "example": "ما بعرفش = אני לא יודע",
+          "note": "ה-ش אופציונלי בפלסטיני, חובה בלבנוני"
+        },
+        {
+          "type": "שלילת שם/תואר",
+          "pattern": "مش + שם/תואר",
+          "example": "مش منيح = לא טוב"
+        },
+        {
+          "type": "אין/אף",
+          "pattern": "ما في / ولا",
+          "example": "ما في حدا = אין אף אחד"
+        },
+        {
+          "type": "עדיין לא",
+          "pattern": "لسّا + מילת שלילה",
+          "example": "لسّا ما وصل = עדיין לא הגיע"
+        }
+      ]
+    },
+    "questions": {
+      "description": "מילות שאלה",
+      "words": [
+        {
+          "arabic": "شو",
+          "transliteration": "shū",
+          "hebrew": "מה"
+        },
+        {
+          "arabic": "مين",
+          "transliteration": "mīn",
+          "hebrew": "מי"
+        },
+        {
+          "arabic": "وين",
+          "transliteration": "wēn",
+          "hebrew": "איפה"
+        },
+        {
+          "arabic": "كيف",
+          "transliteration": "kīf",
+          "hebrew": "איך"
+        },
+        {
+          "arabic": "ليش",
+          "transliteration": "lēsh",
+          "hebrew": "למה"
+        },
+        {
+          "arabic": "قديش / أديش",
+          "transliteration": "addēsh",
+          "hebrew": "כמה"
+        },
+        {
+          "arabic": "إيمتى",
+          "transliteration": "ēmta",
+          "hebrew": "מתי"
+        },
+        {
+          "arabic": "أيّ",
+          "transliteration": "ayy",
+          "hebrew": "איזה"
+        }
+      ]
+    },
+    "prepositions": {
+      "description": "מילות יחס נפוצות",
+      "items": [
+        {
+          "arabic": "في / بـ",
+          "transliteration": "fī / b-",
+          "hebrew": "ב-"
+        },
+        {
+          "arabic": "على",
+          "transliteration": "ʿala",
+          "hebrew": "על"
+        },
+        {
+          "arabic": "من",
+          "transliteration": "min",
+          "hebrew": "מ-"
+        },
+        {
+          "arabic": "لـ",
+          "transliteration": "la-",
+          "hebrew": "ל-"
+        },
+        {
+          "arabic": "عند",
+          "transliteration": "ʿind",
+          "hebrew": "אצל/ליד"
+        },
+        {
+          "arabic": "مع",
+          "transliteration": "maʿ",
+          "hebrew": "עם"
+        },
+        {
+          "arabic": "عن",
+          "transliteration": "ʿan",
+          "hebrew": "על/לגבי"
+        },
+        {
+          "arabic": "بين",
+          "transliteration": "bēn",
+          "hebrew": "בין"
+        },
+        {
+          "arabic": "عـ / على",
+          "transliteration": "ʿa-",
+          "hebrew": "ל/על (מקוצר)",
+          "note": "رحت عَ-البيت = הלכתי לבית"
+        }
+      ]
+    },
+    "demonstratives": {
+      "description": "מילות הצבעה",
+      "items": [
+        {
+          "arabic": "هاد",
+          "transliteration": "hād",
+          "hebrew": "זה (ז)",
+          "formal": "هذا"
+        },
+        {
+          "arabic": "هاي",
+          "transliteration": "hāy",
+          "hebrew": "זאת (נ)",
+          "formal": "هذه"
+        },
+        {
+          "arabic": "هدول",
+          "transliteration": "hadōl",
+          "hebrew": "אלה",
+          "formal": "هؤلاء"
+        },
+        {
+          "arabic": "هداك",
+          "transliteration": "hadāk",
+          "hebrew": "ההוא",
+          "formal": "ذاك / ذلك"
+        },
+        {
+          "arabic": "هديك",
+          "transliteration": "hadīk",
+          "hebrew": "ההיא",
+          "formal": "تلك"
+        }
+      ]
+    }
+  }
+}

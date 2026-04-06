@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>לקרוא ערבית — تعلّم القراءة</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide { display: none; width: 100%; animation: fadeSlide 0.5s ease; }
+  .slide.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    align-items: center;
+  }
+  .nav-btn {
+    background: rgba(240,192,96,0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 26px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn:hover { background: rgba(240,192,96,0.25); transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+  .slide-counter {
+    color: var(--muted);
+    font-size: 13px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .back-link {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    z-index: 200;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  /* Title Slide */
+  .title-slide {
+    text-align: center;
+    padding: 60px 20px 120px;
+  }
+  .title-slide .subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: pop 0.6s 0.2s forwards;
+  }
+  .title-slide h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(36px, 7vw, 64px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: pop 0.6s 0.4s forwards;
+  }
+  .title-slide .arabic-title {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: clamp(28px, 6vw, 52px);
+    color: var(--teal);
+    direction: rtl;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: pop 0.6s 0.6s forwards;
+  }
+  .title-slide .desc {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: pop 0.6s 0.8s forwards;
+  }
+  .ornament {
+    font-size: 40px;
+    margin: 20px 0;
+    opacity: 0;
+    animation: pop 0.6s 1s forwards;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* Game common styles */
+  .game-container {
+    text-align: center;
+    padding: 20px 10px 100px;
+    width: 100%;
+  }
+  .game-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 28px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .game-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* Score bar */
+  .score-bar {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .score-bar span { font-weight: 700; }
+  .score-val { color: var(--gold); }
+  .progress-val { color: var(--teal); }
+
+  /* Timer bar */
+  .timer-wrap {
+    width: 100%;
+    max-width: 500px;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    margin: 0 auto 28px;
+    overflow: hidden;
+  }
+  .timer-bar {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 3px;
+    transition: width 0.3s linear, background-color 0.5s;
+    width: 100%;
+  }
+  .timer-bar.danger { background: var(--rose); }
+
+  /* Arabic display */
+  .arabic-display {
+    font-family: 'Noto Naskh Arabic', serif;
+    color: var(--text);
+    line-height: 1.4;
+    direction: rtl;
+    margin: 16px auto 28px;
+    max-width: 700px;
+  }
+  .arabic-letter-big {
+    font-size: clamp(72px, 18vw, 140px);
+    font-weight: 700;
+    text-shadow: 0 0 40px var(--glow), 0 0 80px rgba(240,192,96,0.08);
+  }
+  .arabic-word-big {
+    font-size: clamp(48px, 10vw, 80px);
+    font-weight: 700;
+    text-shadow: 0 0 30px var(--glow);
+  }
+  .arabic-sentence {
+    font-size: clamp(22px, 4.5vw, 34px);
+    line-height: 1.8;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: right;
+  }
+
+  /* Option buttons */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .option-btn {
+    background: var(--card);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px 12px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn:hover:not(.disabled) {
+    border-color: var(--gold);
+    background: rgba(240,192,96,0.08);
+    transform: translateY(-2px);
+  }
+  .option-btn.correct {
+    border-color: var(--teal);
+    background: rgba(61,232,208,0.15);
+    color: var(--teal);
+    animation: correctPulse 0.4s;
+  }
+  .option-btn.wrong {
+    border-color: var(--rose);
+    background: rgba(255,107,138,0.12);
+    color: var(--rose);
+  }
+  .option-btn.disabled { pointer-events: none; }
+
+  @keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  /* Hint line */
+  .hint-line {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 16px;
+    min-height: 24px;
+    transition: opacity 0.3s;
+  }
+
+  /* Group indicator */
+  .group-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .group-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+  }
+  .group-dot.active { background: var(--gold); transform: scale(1.3); }
+  .group-dot.done { background: var(--teal); }
+
+  /* Reading exercise */
+  .reading-section {
+    text-align: center;
+    padding: 20px 10px 100px;
+    width: 100%;
+  }
+  .question-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 10px auto;
+    max-width: 600px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: right;
+  }
+  .question-card:hover { border-color: var(--gold); }
+  .question-card .q {
+    color: var(--gold);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .question-card .a {
+    color: var(--teal);
+    font-size: 15px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s, opacity 0.3s;
+    opacity: 0;
+  }
+  .question-card.revealed .a {
+    max-height: 60px;
+    opacity: 1;
+    margin-top: 8px;
+  }
+
+  /* Exercise nav */
+  .exercise-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0 10px;
+  }
+  .exercise-nav button {
+    background: rgba(61,232,208,0.1);
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    padding: 8px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .exercise-nav button:hover { background: rgba(61,232,208,0.2); }
+  .exercise-nav button:disabled { opacity: 0.3; cursor: default; }
+
+  /* Summary */
+  .summary-container {
+    text-align: center;
+    padding: 40px 20px 120px;
+    width: 100%;
+  }
+  .big-score {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(48px, 10vw, 80px);
+    font-weight: 900;
+    color: var(--gold);
+    margin: 16px 0;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--teal);
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .letters-review {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  .letter-chip {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border: 1px solid;
+  }
+  .letter-chip.mastered {
+    border-color: var(--teal);
+    background: rgba(61,232,208,0.1);
+    color: var(--teal);
+  }
+  .letter-chip.practice {
+    border-color: var(--rose);
+    background: rgba(255,107,138,0.1);
+    color: var(--rose);
+  }
+  .course-link {
+    display: inline-block;
+    margin-top: 30px;
+    background: linear-gradient(135deg, var(--gold), #e0a030);
+    color: var(--bg);
+    font-weight: 900;
+    padding: 14px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: transform 0.2s;
+  }
+  .course-link:hover { transform: scale(1.05); }
+
+  /* Particles */
+  .particle-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFly 0.8s ease-out forwards;
+  }
+  @keyframes particleFly {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  }
+
+  /* Start button */
+  .start-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: linear-gradient(135deg, var(--gold), #e0a030);
+    color: var(--bg);
+    font-family: 'Heebo', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    opacity: 0;
+    animation: pop 0.6s 1.2s forwards;
+  }
+  .start-btn:hover { transform: scale(1.08); }
+
+  /* Speed round flash */
+  .speed-label {
+    display: inline-block;
+    background: rgba(255,107,138,0.15);
+    border: 1px solid var(--rose);
+    color: var(--rose);
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: 1fr; max-width: 320px; }
+    .stat-row { gap: 20px; }
+    .arabic-sentence { padding: 18px 14px; font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">חזרה לקורס ←</a>
+<div class="particle-container" id="particles"></div>
+
+<div id="app">
+
+  <!-- SLIDE 0: Title -->
+  <div class="slide active" id="slide-0">
+    <div class="title-slide">
+      <div class="subtitle">קריאה אינטראקטיבית</div>
+      <h1>לקרוא ערבית</h1>
+      <div class="arabic-title">تعلّم القراءة</div>
+      <div class="ornament">&#10022;</div>
+      <div class="desc">למדו לזהות ולקרוא אותיות ומילים בערבית<br>משחק אינטראקטיבי עם טיימר וניקוד</div>
+      <button class="start-btn" onclick="goSlide(1)">יאללה נתחיל</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: Letter Recognition -->
+  <div class="slide" id="slide-1">
+    <div class="game-container">
+      <div class="game-title">זיהוי אותיות</div>
+      <div class="game-subtitle">מהי האות הזו? בחרו את ההגוי הנכון</div>
+      <div class="group-indicator" id="groupDots"></div>
+      <div class="score-bar">
+        <div>ניקוד: <span class="score-val" id="letterScore">0</span></div>
+        <div>אות: <span class="progress-val" id="letterProgress">1/28</span></div>
+      </div>
+      <div class="timer-wrap"><div class="timer-bar" id="letterTimer"></div></div>
+      <div class="arabic-display arabic-letter-big" id="letterDisplay">ا</div>
+      <div class="options-grid" id="letterOptions"></div>
+      <div class="hint-line" id="letterHint"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Word Reading -->
+  <div class="slide" id="slide-2">
+    <div class="game-container">
+      <div class="game-title">קריאת מילים</div>
+      <div class="game-subtitle">מהי המילה? בחרו את התרגום הנכון</div>
+      <div class="score-bar">
+        <div>ניקוד: <span class="score-val" id="wordScore">0</span></div>
+        <div>מילה: <span class="progress-val" id="wordProgress">1/20</span></div>
+      </div>
+      <div class="timer-wrap"><div class="timer-bar" id="wordTimer"></div></div>
+      <div class="arabic-display arabic-word-big" id="wordDisplay">مرحبا</div>
+      <div class="options-grid" id="wordOptions"></div>
+      <div class="hint-line" id="wordHint"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Sentence Reading -->
+  <div class="slide" id="slide-3">
+    <div class="reading-section">
+      <div class="game-title">קריאת טקסט</div>
+      <div class="game-subtitle">קראו את הטקסט בערבית וענו על השאלות (לחצו לגלות תשובה)</div>
+      <div class="score-bar">
+        <div>תרגיל: <span class="progress-val" id="exProgress">1/5</span></div>
+      </div>
+      <div class="arabic-display arabic-sentence" id="sentenceDisplay"></div>
+      <div id="sentenceTitle" style="color:var(--gold);font-weight:700;margin:12px 0 6px;font-size:16px;"></div>
+      <div id="sentenceQuestions"></div>
+      <div class="exercise-nav">
+        <button id="exPrev" onclick="changeExercise(-1)">הקודם</button>
+        <button id="exNext" onclick="changeExercise(1)">הבא</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Speed Round -->
+  <div class="slide" id="slide-4">
+    <div class="game-container">
+      <div class="speed-label">SPEED ROUND</div>
+      <div class="game-title">סיבוב מהיר</div>
+      <div class="game-subtitle">אותיות + מילים ביחד! 10 שניות לכל פריט</div>
+      <div class="score-bar">
+        <div>ניקוד: <span class="score-val" id="speedScore">0</span></div>
+        <div>פריט: <span class="progress-val" id="speedProgress">1/20</span></div>
+      </div>
+      <div class="timer-wrap"><div class="timer-bar" id="speedTimer"></div></div>
+      <div class="arabic-display" id="speedDisplay" style="font-size:clamp(52px,12vw,100px);font-weight:700;"></div>
+      <div class="options-grid" id="speedOptions"></div>
+      <div class="hint-line" id="speedHint"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Summary -->
+  <div class="slide" id="slide-5">
+    <div class="summary-container">
+      <div class="game-title">סיכום</div>
+      <div class="big-score" id="finalScore">0</div>
+      <div style="color:var(--muted);font-size:15px;">נקודות סה"כ</div>
+      <div class="stat-row">
+        <div class="stat-item"><div class="stat-num" id="statLetters">0</div><div class="stat-label">אותיות נכונות</div></div>
+        <div class="stat-item"><div class="stat-num" id="statWords">0</div><div class="stat-label">מילים נכונות</div></div>
+        <div class="stat-item"><div class="stat-num" id="statSpeed">0</div><div class="stat-label">סיבוב מהיר</div></div>
+      </div>
+      <div style="color:var(--gold);font-weight:700;font-size:16px;margin:20px 0 8px;">אותיות שנלמדו</div>
+      <div class="letters-review" id="lettersReview"></div>
+      <a href="../index.html" class="course-link">חזרה לקורס</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="btnNext" onclick="goSlide(currentSlide+1)">הבא ←</button>
+  <span class="slide-counter" id="slideCounter">1 / 6</span>
+  <button class="nav-btn" id="btnPrev" onclick="goSlide(currentSlide-1)">→ הקודם</button>
+</div>
+
+<script>
+// ======== DATA ========
+const arabicLetters = [
+  {letter:'\u0627', name:'alef', sound:'\u05D0', hint:'\u05DB\u05DE\u05D5 \u05D0'},
+  {letter:'\u0628', name:'ba', sound:'\u05D1\u05BC', hint:'\u05DB\u05DE\u05D5 \u05D1'},
+  {letter:'\u062A', name:'ta', sound:'\u05EA', hint:'\u05DB\u05DE\u05D5 \u05EA'},
+  {letter:'\u062B', name:'tha', sound:'\u05EA\'', hint:'th \u05DB\u05DE\u05D5 think'},
+  {letter:'\u062C', name:'jim', sound:'\u05D2\'', hint:'\u05DB\u05DE\u05D5 \u05D6\''},
+  {letter:'\u062D', name:'ha', sound:'\u05D7', hint:'\u05D7 \u05E0\u05E7\u05D9\u05D9\u05D4'},
+  {letter:'\u062E', name:'kha', sound:'\u05D7\'', hint:'\u05DB\u05DE\u05D5 \u05DB \u05E8\u05E4\u05D5\u05D9\u05D4'},
+  {letter:'\u062F', name:'dal', sound:'\u05D3', hint:'\u05DB\u05DE\u05D5 \u05D3'},
+  {letter:'\u0630', name:'dhal', sound:'\u05D3\'', hint:'th \u05DB\u05DE\u05D5 that'},
+  {letter:'\u0631', name:'ra', sound:'\u05E8', hint:'\u05E8 \u05DE\u05EA\u05D2\u05DC\u05D2\u05DC\u05EA'},
+  {letter:'\u0632', name:'zay', sound:'\u05D6', hint:'\u05DB\u05DE\u05D5 \u05D6'},
+  {letter:'\u0633', name:'sin', sound:'\u05E1', hint:'\u05DB\u05DE\u05D5 \u05E1'},
+  {letter:'\u0634', name:'shin', sound:'\u05E9', hint:'\u05DB\u05DE\u05D5 \u05E9'},
+  {letter:'\u0635', name:'sad', sound:'\u05E1\u05BF', hint:'\u05E1 \u05DB\u05D5\u05E2\u05E1\u05EA'},
+  {letter:'\u0636', name:'dad', sound:'\u05D3\u05BF', hint:'\u05D3 \u05DB\u05D5\u05E2\u05E1\u05EA'},
+  {letter:'\u0637', name:'ta', sound:'\u05D8', hint:'\u05D8 \u05DB\u05D5\u05E2\u05E1\u05EA'},
+  {letter:'\u0638', name:'za', sound:'\u05D6\u05BF', hint:'\u05D6 \u05DB\u05D5\u05E2\u05E1\u05EA'},
+  {letter:'\u0639', name:'ain', sound:'\u05E2', hint:'\u05DE\u05D4\u05D2\u05E8\u05D5\u05DF'},
+  {letter:'\u063A', name:'ghain', sound:'\u05E8\'', hint:'\u05E8\' \u05D2\u05E8\u05D5\u05E0\u05D9\u05EA'},
+  {letter:'\u0641', name:'fa', sound:'\u05E4', hint:'\u05DB\u05DE\u05D5 \u05E4'},
+  {letter:'\u0642', name:'qaf', sound:'\u05E7', hint:'\u2192 \u05D0\u05E2\u05D9\u05E6\u05D5\u05E8\u05D9\u05EA'},
+  {letter:'\u0643', name:'kaf', sound:'\u05DB\u05BC', hint:'\u05DB\u05DE\u05D5 \u05DB\u05BC'},
+  {letter:'\u0644', name:'lam', sound:'\u05DC', hint:'\u05DB\u05DE\u05D5 \u05DC'},
+  {letter:'\u0645', name:'mim', sound:'\u05DE', hint:'\u05DB\u05DE\u05D5 \u05DE'},
+  {letter:'\u0646', name:'nun', sound:'\u05E0', hint:'\u05DB\u05DE\u05D5 \u05E0'},
+  {letter:'\u0647', name:'ha', sound:'\u05D4', hint:'\u05DB\u05DE\u05D5 \u05D4'},
+  {letter:'\u0648', name:'waw', sound:'\u05D5', hint:'w/u'},
+  {letter:'\u064A', name:'ya', sound:'\u05D9', hint:'y/i'}
+];
+
+const wordList = [
+  {arabic:'\u0645\u0631\u062D\u0628\u0627', hebrew:'\u05E9\u05DC\u05D5\u05DD / \u05D4\u05D9\u05D9', transliteration:'mar\u1E25aba'},
+  {arabic:'\u0628\u062F\u064A', hebrew:'\u05D0\u05E0\u05D9 \u05E8\u05D5\u05E6\u05D4', transliteration:'biddi'},
+  {arabic:'\u0634\u063A\u0644', hebrew:'\u05E2\u05D1\u05D5\u05D3\u05D4', transliteration:'shughl'},
+  {arabic:'\u0648\u064A\u0646', hebrew:'\u05D0\u05D9\u05E4\u05D4', transliteration:'w\u0113n'},
+  {arabic:'\u0643\u062A\u064A\u0631', hebrew:'\u05DE\u05D0\u05D5\u05D3', transliteration:'kt\u012Br'},
+  {arabic:'\u0639\u0646\u062C\u062F', hebrew:'\u05D1\u05D0\u05DE\u05EA', transliteration:'\u02BFanjad'},
+  {arabic:'\u0647\u064A\u0643', hebrew:'\u05DB\u05DB\u05D4', transliteration:'h\u0113k'},
+  {arabic:'\u0634\u0648', hebrew:'\u05DE\u05D4', transliteration:'sh\u016B'},
+  {arabic:'\u0641\u0634', hebrew:'\u05D0\u05D9\u05DF', transliteration:'fish'},
+  {arabic:'\u0628\u0633', hebrew:'\u05E8\u05E7 / \u05D0\u05D1\u05DC', transliteration:'bas'},
+  {arabic:'\u0627\u0644\u062D\u0645\u062F\u0644\u0644\u0647', hebrew:'\u05D1\u05E8\u05D5\u05DA \u05D4\u05E9\u05DD', transliteration:'el-\u1E25amdilla'},
+  {arabic:'\u0627\u0646 \u0634\u0627\u0621\u0627\u0644\u0644\u0647', hebrew:'\u05D0\u05DD \u05D9\u05E8\u05E6\u05D4 \u05D4\u05E9\u05DD', transliteration:'insh\u0101\u02BEall\u0101h'},
+  {arabic:'\u0641\u0644\u0648\u0633', hebrew:'\u05DB\u05E1\u05E3', transliteration:'fl\u016Bs'},
+  {arabic:'\u0645\u0634', hebrew:'\u05DC\u05D0 (\u05E9\u05DC\u05D9\u05DC\u05D4)', transliteration:'mish'},
+  {arabic:'\u0635\u0628\u0627\u062D \u0627\u0644\u062E\u064A\u0631', hebrew:'\u05D1\u05D5\u05E7\u05E8 \u05D8\u05D5\u05D1', transliteration:'\u1E63ab\u0101\u1E25 el-kh\u0113r'},
+  {arabic:'\u064A\u0627\u0631\u0628', hebrew:'\u05D0\u05DC\u05D5\u05D4\u05D9\u05DD / \u05D1\u05D1\u05E7\u05E9\u05D4', transliteration:'y\u0101 rabb'},
+  {arabic:'\u0644\u0633\u0627', hebrew:'\u05E2\u05D3\u05D9\u05D9\u05DF', transliteration:'lissa'},
+  {arabic:'\u0639\u0644\u0649 \u0637\u0648\u0644', hebrew:'\u05DE\u05D9\u05D3 / \u05D9\u05E9\u05E8', transliteration:'\u02BFala \u1E6D\u016Bl'},
+  {arabic:'\u0627\u0644\u0645\u0641\u0631\u0648\u0636', hebrew:'\u05D0\u05DE\u05D5\u05E8', transliteration:'el-mafr\u016B\u1E0D'},
+  {arabic:'\u0639\u0634\u0627\u0646', hebrew:'\u05D1\u05E9\u05D1\u05D9\u05DC / \u05DB\u05D9', transliteration:'\u02BFash\u0101n'}
+];
+
+const readingExercises = [
+  {
+    title:'\u05D7\u05D9\u05E4\u05D5\u05E9 \u05E2\u05D1\u05D5\u05D3\u05D4',
+    arabic:'\u0645\u0631\u062D\u0628\u0627 \u0635\u0628\u0627\u064A\u0627\u060C \u0623\u0646\u0627 \u0628\u0646\u062A \u0639\u0645\u0631\u064A \u0662\u0660 \u0633\u0646\u0647\u060C \u062E\u0644\u0635\u062A \u062A\u0648\u062C\u064A\u0647\u064A \u0648\u0628\u062F\u0648\u0631 \u0639\u0644\u0649 \u0634\u063A\u0644. \u0641\u064A \u062D\u062F\u0627 \u0628\u0639\u0631\u0641 \u0645\u062D\u0644 \u0623\u0648 \u0634\u0631\u0643\u0647 \u0628\u062A\u0634\u063A\u0651\u0644 \u0628\u0646\u0627\u062A\u061F \u0628\u062F\u064A \u0627\u0634\u064A \u0642\u0631\u064A\u0628 \u0645\u0646 \u0627\u0644\u0628\u064A\u062A \u0648\u0633\u0639\u0631 \u0643\u0648\u064A\u0633. \u0627\u0644\u0644\u064A \u0628\u062A\u0639\u0631\u0641 \u062A\u0631\u0627\u0633\u0644\u0646\u064A. \u0627\u0644\u0644\u0647 \u064A\u062C\u0632\u064A\u0643\u0645 \u0627\u0644\u062E\u064A\u0631.',
+    questions:[{q:'\u05DB\u05DE\u05D4 \u05D1\u05EA \u05D4\u05D9\u05D0?',a:'20'},{q:'\u05DE\u05D4 \u05DE\u05D7\u05E4\u05E9\u05EA?',a:'\u05E2\u05D1\u05D5\u05D3\u05D4'},{q:'\u05DE\u05D4 \u05D7\u05E9\u05D5\u05D1 \u05DC\u05D4?',a:'\u05E7\u05E8\u05D5\u05D1 \u05DC\u05D1\u05D9\u05EA'}]
+  },
+  {
+    title:'\u05EA\u05DC\u05D5\u05E0\u05D4 \u05E2\u05DC \u05DE\u05D5\u05E6\u05E8',
+    arabic:'\u0628\u0646\u0627\u062A \u0633\u0644\u0627\u0645 \u0639\u0644\u064A\u0643\u0645. \u0627\u0644\u0627\u0633\u0628\u0648\u0639 \u0627\u0644\u0645\u0627\u0636\u064A \u0648\u0635\u0651\u064A\u062A \u0639\u0644\u0649 \u0641\u0633\u062A\u0627\u0646 \u0645\u0646 \u0635\u0641\u062D\u0647 \u0639\u0627\u0644\u0641\u064A\u0633. \u0627\u0644\u0635\u0648\u0631 \u0643\u0627\u0646\u062A \u062D\u0644\u0648\u0627\u062A \u0628\u0633 \u0644\u0645\u0627 \u0648\u0635\u0644 \u0637\u0644\u0639 \u0645\u0634 \u0632\u064A \u0627\u0644\u0635\u0648\u0631 \u0627\u0628\u062F\u0627\u064B! \u0627\u0644\u0644\u0648\u0646 \u063A\u0644\u0637 \u0648\u0627\u0644\u0642\u0645\u0627\u0634 \u0631\u062E\u064A\u0635 \u0643\u062A\u064A\u0631. \u062D\u0643\u064A\u062A \u0645\u0639 \u0627\u0644\u0628\u064A\u0627\u0639\u0647 \u0648\u0642\u0627\u0644\u062A\u0644\u064A \u0645\u0634 \u0645\u0645\u0643\u0646 \u062A\u0631\u062C\u0639\u064A. \u0634\u0648 \u0627\u0639\u0645\u0644 \u064A\u0627 \u0628\u0646\u0627\u062A\u061F',
+    questions:[{q:'\u05DE\u05D4 \u05D4\u05D6\u05DE\u05D9\u05E0\u05D4?',a:'\u05E9\u05DE\u05DC\u05D4 \u05DE\u05E4\u05D9\u05D9\u05E1\u05D1\u05D5\u05E7'},{q:'\u05DE\u05D4 \u05D4\u05D1\u05E2\u05D9\u05D4?',a:'\u05DC\u05D0 \u05D3\u05D5\u05DE\u05D4 \u05DC\u05EA\u05DE\u05D5\u05E0\u05D5\u05EA'},{q:'\u05DE\u05D4 \u05D0\u05DE\u05E8\u05D4 \u05D4\u05DE\u05D5\u05DB\u05E8\u05EA?',a:'\u05D0\u05D9 \u05D0\u05E4\u05E9\u05E8 \u05DC\u05D4\u05D7\u05D6\u05D9\u05E8'}]
+  },
+  {
+    title:'\u05D0\u05DE\u05D0 \u05E9\u05DE\u05E1\u05EA\u05D3\u05E8\u05EA',
+    arabic:'\u0627\u0628\u0648\u064A \u0645\u062A\u0648\u0641\u064A \u0627\u0644\u0644\u0647 \u064A\u0631\u062D\u0645\u0647\u060C \u0648\u0645\u0627\u0645\u0627 \u0628\u062A\u0634\u062A\u063A\u0644 \u0628\u0633 \u0631\u0627\u062A\u0628\u0647\u0627 \u0645\u0634 \u0643\u062A\u064A\u0631. \u0627\u0644\u0634\u0647\u0631 \u0627\u0644\u0645\u0627\u0636\u064A \u062E\u0637\u064A\u0628\u064A \u0643\u0627\u0646 \u0644\u0627\u0632\u0645 \u064A\u0633\u0627\u0641\u0631\u060C \u0648\u0645\u0627\u0645\u0627 \u062D\u0628\u0651\u062A \u062A\u0639\u0645\u0644 \u0639\u0632\u0648\u0645\u0629 \u0642\u0628\u0644 \u0645\u0627 \u064A\u0631\u0648\u062D. \u062A\u062F\u0627\u064A\u0646\u062A \u0645\u0646 \u0627\u0644\u062C\u064A\u0631\u0627\u0646 \u0665\u0660 \u062F\u064A\u0646\u0627\u0631 \u0639\u0634\u0627\u0646 \u0644\u0633\u0627 \u0645\u0627 \u0646\u0632\u0644 \u0627\u0644\u0631\u0627\u062A\u0628. \u062F\u0628\u0651\u0631\u062A \u0643\u0644 \u0627\u0634\u064A. \u0648\u0627\u0644\u0644\u0647 \u0627\u0644\u0627\u0645 \u0645\u0634 \u0633\u0647\u0644\u0647.',
+    questions:[{q:'\u05D4\u05DE\u05E6\u05D1 \u05D4\u05DE\u05E9\u05E4\u05D7\u05EA\u05D9?',a:'\u05D0\u05D1\u05D0 \u05E0\u05E4\u05D8\u05E8, \u05D0\u05DE\u05D0 \u05E2\u05D5\u05D1\u05D3\u05EA'},{q:'\u05DC\u05DE\u05D4 \u05DC\u05D5\u05D5\u05EA\u05D4 \u05DB\u05E1\u05E3?',a:'\u05D0\u05E8\u05D5\u05D7\u05EA \u05D0\u05D9\u05E8\u05D5\u05D7 \u05DC\u05D0\u05E8\u05D5\u05E1'},{q:'\u05D4\u05DE\u05E1\u05E8?',a:'\u05D0\u05DE\u05D0 \u05E2\u05D5\u05E9\u05D4 \u05D4\u05DB\u05DC \u05D1\u05E9\u05D1\u05D9\u05DC \u05D4\u05D9\u05DC\u05D3\u05D9\u05DD'}]
+  },
+  {
+    title:'\u05D1\u05E8\u05DB\u05EA \u05D1\u05D5\u05E7\u05E8 \u05E8\u05DE\u05D3\u05DF',
+    arabic:'\u0635\u0628\u0627\u062D \u0627\u0644\u062E\u064A\u0631 \u064A\u0627 \u062D\u0628\u0627\u064A\u0628\u064A. \u064A\u0627\u0631\u0628 \u064A\u0643\u0648\u0646 \u0647\u0627\u0644\u064A\u0648\u0645 \u0643\u0644\u0648 \u062E\u064A\u0631\u060C \u0628\u0633 \u062E\u064A\u0631. \u0648\u064A\u0627\u0631\u0628 \u0631\u0645\u0636\u0627\u0646 \u0647\u0627\u0644\u0633\u0646\u0647 \u064A\u0643\u0648\u0646 \u0623\u062D\u0644\u0649 \u0645\u0646 \u0643\u0644 \u0633\u0646\u0647. \u0627\u0644\u0644\u0647 \u064A\u062A\u0642\u0628\u0644 \u0635\u064A\u0627\u0645\u0643\u0645 \u0648\u0642\u064A\u0627\u0645\u0643\u0645. \u0627\u062F\u0639\u0648\u0644\u064A \u0648\u0644\u0623\u0647\u0644\u064A. \u0643\u0644 \u0639\u0627\u0645 \u0648\u0627\u0646\u062A\u0648 \u0628\u062E\u064A\u0631.',
+    questions:[{q:'\u05DE\u05D4 \u05DE\u05D0\u05D7\u05DC\u05EA \u05DC\u05D9\u05D5\u05DD?',a:'\u05DB\u05D5\u05DC\u05D5 \u05D8\u05D5\u05D1'},{q:'\u05EA\u05E7\u05D5\u05E4\u05D4?',a:'\u05E8\u05DE\u05D3\u05DF'},{q:'\u05DE\u05D4 \u05DE\u05D1\u05E7\u05E9\u05EA?',a:'\u05EA\u05E4\u05D9\u05DC\u05D4 \u05D1\u05E9\u05D1\u05D9\u05DC\u05D4 \u05D5\u05DE\u05E9\u05E4\u05D7\u05EA\u05D4'}]
+  },
+  {
+    title:'\u05E2\u05DC \u05E9\u05E0\u05D0\u05EA \u05D7\u05D9\u05E0\u05DD',
+    arabic:'\u0631\u0627\u062D \u062A\u062A\u0641\u0627\u062C\u0623 \u0625\u0646\u0648 \u0641\u064A \u0646\u0627\u0633 \u0645\u0645\u0643\u0646 \u062A\u0643\u0631\u0647\u0643 \u0645\u0646 \u063A\u064A\u0631 \u0645\u0627 \u062A\u0639\u0645\u0644\u0647\u0645 \u0634\u064A. \u0648\u064A\u0646\u062D\u0643\u0649 \u0639\u0644\u064A\u0643 \u0643\u0644\u0627\u0645 \u0639\u0645\u0631\u0643 \u0645\u0627 \u062D\u0643\u064A\u062A\u0647\u060C \u0648\u064A\u0646\u062D\u0643\u0649 \u0639\u0646\u0643 \u062D\u0643\u0627\u064A\u0627\u062A \u0645\u0627 \u0635\u0627\u0631\u062A. \u0627\u0644\u062F\u0646\u064A\u0627 \u0647\u064A\u0643. \u0645\u0634 \u0643\u0644 \u0627\u0644\u0646\u0627\u0633 \u0628\u062A\u062D\u0628\u0643 \u0648\u0647\u0627\u062F \u0645\u0634 \u0630\u0646\u0628\u0643. \u062E\u0644\u064A\u0643 \u0628\u062D\u0627\u0644\u0643 \u0648\u062A\u0648\u0643\u0651\u0644 \u0639\u0644\u0649 \u0627\u0644\u0644\u0647.',
+    questions:[{q:'\u05D4\u05DE\u05E1\u05E8?',a:'\u05D9\u05E9 \u05E9\u05E0\u05D0\u05EA \u05D7\u05D9\u05E0\u05DD'},{q:'\u05DE\u05D4 \u05E7\u05D5\u05E8\u05D4?',a:'\u05DE\u05E1\u05E4\u05E8\u05D9\u05DD \u05D3\u05D1\u05E8\u05D9\u05DD \u05E9\u05DC\u05D0 \u05D0\u05DE\u05E8\u05EA'},{q:'\u05D4\u05E2\u05E6\u05D4?',a:'\u05EA\u05D9\u05E9\u05D0\u05E8 \u05E2\u05DD \u05E2\u05E6\u05DE\u05DA, \u05E1\u05DE\u05D5\u05DA \u05E2\u05DC \u05D0\u05DC\u05D5\u05D4\u05D9\u05DD'}]
+  }
+];
+
+// ======== STATE ========
+let currentSlide = 0;
+const totalSlides = 6;
+
+// Letter game state
+let letterQueue = [];
+let letterIdx = 0;
+let letterScoreVal = 0;
+let letterTimer = null;
+let letterTimeLeft = 15;
+let letterResults = {}; // letter -> true/false
+
+// Word game state
+let wordQueue = [];
+let wordIdx = 0;
+let wordScoreVal = 0;
+let wordTimer = null;
+let wordTimeLeft = 15;
+
+// Exercise state
+let exIdx = 0;
+
+// Speed round state
+let speedQueue = [];
+let speedIdx = 0;
+let speedScoreVal = 0;
+let speedTimer = null;
+let speedTimeLeft = 10;
+
+// ======== NAVIGATION ========
+function goSlide(n) {
+  if (n < 0 || n >= totalSlides) return;
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  currentSlide = n;
+  const slide = document.getElementById('slide-' + n);
+  slide.classList.remove('active');
+  void slide.offsetWidth; // trigger reflow for animation
+  slide.classList.add('active');
+  updateNav();
+  // Initialize games when entering slides
+  if (n === 1) initLetterGame();
+  if (n === 2) initWordGame();
+  if (n === 3) loadExercise();
+  if (n === 4) initSpeedRound();
+  if (n === 5) showSummary();
+}
+
+function updateNav() {
+  document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  document.getElementById('btnPrev').disabled = currentSlide === 0;
+  document.getElementById('btnNext').disabled = currentSlide === totalSlides - 1;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') goSlide(currentSlide + 1);
+  if (e.key === 'ArrowRight' || e.key === 'ArrowUp') goSlide(currentSlide - 1);
+});
+
+// ======== UTILITIES ========
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickDistractors(correct, allOptions, key, count = 3) {
+  const others = allOptions.filter(o => o[key] !== correct[key]);
+  const picked = shuffle(others).slice(0, count);
+  return picked;
+}
+
+function spawnParticles(x, y) {
+  const container = document.getElementById('particles');
+  const colors = ['#f0c060', '#3de8d0', '#ffd97d', '#ff6b8a'];
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (Math.PI * 2 * i) / 12;
+    const dist = 40 + Math.random() * 60;
+    p.style.cssText = `
+      left:${x}px; top:${y}px;
+      width:${4 + Math.random() * 6}px;
+      height:${4 + Math.random() * 6}px;
+      background:${colors[i % colors.length]};
+      --dx:${Math.cos(angle) * dist}px;
+      --dy:${Math.sin(angle) * dist}px;
+    `;
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 800);
+  }
+}
+
+// ======== LETTER GAME ========
+function initLetterGame() {
+  clearInterval(letterTimer);
+  letterQueue = shuffle([...arabicLetters]);
+  letterIdx = 0;
+  letterScoreVal = 0;
+  letterResults = {};
+  document.getElementById('letterScore').textContent = '0';
+  buildGroupDots();
+  showLetter();
+}
+
+function buildGroupDots() {
+  const container = document.getElementById('groupDots');
+  container.innerHTML = '';
+  const groups = Math.ceil(arabicLetters.length / 7);
+  for (let i = 0; i < groups; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'group-dot';
+    if (i === 0) dot.classList.add('active');
+    container.appendChild(dot);
+  }
+}
+
+function updateGroupDots() {
+  const dots = document.querySelectorAll('.group-dot');
+  const currentGroup = Math.floor(letterIdx / 7);
+  dots.forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i < currentGroup) d.classList.add('done');
+    if (i === currentGroup) d.classList.add('active');
+  });
+}
+
+function showLetter() {
+  if (letterIdx >= letterQueue.length) {
+    // Letter game done, auto advance
+    setTimeout(() => goSlide(2), 800);
+    return;
+  }
+  clearInterval(letterTimer);
+  const item = letterQueue[letterIdx];
+  document.getElementById('letterDisplay').textContent = item.letter;
+  document.getElementById('letterProgress').textContent = (letterIdx + 1) + '/' + letterQueue.length;
+  document.getElementById('letterHint').textContent = '';
+  updateGroupDots();
+
+  // Build options
+  const distractors = pickDistractors(item, arabicLetters, 'letter', 3);
+  const options = shuffle([item, ...distractors]);
+  const grid = document.getElementById('letterOptions');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.sound;
+    btn.onclick = (e) => handleLetterAnswer(opt, item, e);
+    grid.appendChild(btn);
+  });
+
+  // Start timer
+  letterTimeLeft = 15;
+  const bar = document.getElementById('letterTimer');
+  bar.style.width = '100%';
+  bar.classList.remove('danger');
+  letterTimer = setInterval(() => {
+    letterTimeLeft -= 0.1;
+    const pct = (letterTimeLeft / 15) * 100;
+    bar.style.width = pct + '%';
+    if (letterTimeLeft <= 5) bar.classList.add('danger');
+    if (letterTimeLeft <= 0) {
+      clearInterval(letterTimer);
+      handleLetterTimeout(item);
+    }
+  }, 100);
+}
+
+function handleLetterAnswer(chosen, correct, event) {
+  clearInterval(letterTimer);
+  const btns = document.querySelectorAll('#letterOptions .option-btn');
+  btns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correct.sound) b.classList.add('correct');
+  });
+
+  if (chosen.letter === correct.letter) {
+    letterScoreVal += Math.ceil(letterTimeLeft) + 5;
+    letterResults[correct.letter] = true;
+    document.getElementById('letterHint').textContent = correct.hint;
+    const rect = event.target.getBoundingClientRect();
+    spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  } else {
+    event.target.classList.add('wrong');
+    letterResults[correct.letter] = false;
+    document.getElementById('letterHint').textContent = correct.letter + ' = ' + correct.sound + ' (' + correct.hint + ')';
+  }
+  document.getElementById('letterScore').textContent = letterScoreVal;
+  letterIdx++;
+  setTimeout(showLetter, 1200);
+}
+
+function handleLetterTimeout(correct) {
+  const btns = document.querySelectorAll('#letterOptions .option-btn');
+  btns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correct.sound) b.classList.add('correct');
+  });
+  letterResults[correct.letter] = false;
+  document.getElementById('letterHint').textContent = '\u05D6\u05DE\u05DF! ' + correct.letter + ' = ' + correct.sound + ' (' + correct.hint + ')';
+  letterIdx++;
+  setTimeout(showLetter, 1500);
+}
+
+// ======== WORD GAME ========
+function initWordGame() {
+  clearInterval(wordTimer);
+  wordQueue = shuffle([...wordList]);
+  wordIdx = 0;
+  wordScoreVal = 0;
+  document.getElementById('wordScore').textContent = '0';
+  showWord();
+}
+
+function showWord() {
+  if (wordIdx >= wordQueue.length) {
+    setTimeout(() => goSlide(3), 800);
+    return;
+  }
+  clearInterval(wordTimer);
+  const item = wordQueue[wordIdx];
+  document.getElementById('wordDisplay').textContent = item.arabic;
+  document.getElementById('wordProgress').textContent = (wordIdx + 1) + '/' + wordQueue.length;
+  document.getElementById('wordHint').textContent = '';
+
+  const distractors = pickDistractors(item, wordList, 'arabic', 3);
+  const options = shuffle([item, ...distractors]);
+  const grid = document.getElementById('wordOptions');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.hebrew;
+    btn.onclick = (e) => handleWordAnswer(opt, item, e);
+    grid.appendChild(btn);
+  });
+
+  wordTimeLeft = 15;
+  const bar = document.getElementById('wordTimer');
+  bar.style.width = '100%';
+  bar.classList.remove('danger');
+  wordTimer = setInterval(() => {
+    wordTimeLeft -= 0.1;
+    const pct = (wordTimeLeft / 15) * 100;
+    bar.style.width = pct + '%';
+    if (wordTimeLeft <= 5) bar.classList.add('danger');
+    if (wordTimeLeft <= 0) {
+      clearInterval(wordTimer);
+      handleWordTimeout(item);
+    }
+  }, 100);
+}
+
+function handleWordAnswer(chosen, correct, event) {
+  clearInterval(wordTimer);
+  const btns = document.querySelectorAll('#wordOptions .option-btn');
+  btns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correct.hebrew) b.classList.add('correct');
+  });
+
+  if (chosen.arabic === correct.arabic) {
+    wordScoreVal += Math.ceil(wordTimeLeft) + 5;
+    document.getElementById('wordHint').textContent = correct.transliteration;
+    const rect = event.target.getBoundingClientRect();
+    spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  } else {
+    event.target.classList.add('wrong');
+    document.getElementById('wordHint').textContent = correct.arabic + ' = ' + correct.hebrew + ' (' + correct.transliteration + ')';
+  }
+  document.getElementById('wordScore').textContent = wordScoreVal;
+  wordIdx++;
+  setTimeout(showWord, 1200);
+}
+
+function handleWordTimeout(correct) {
+  const btns = document.querySelectorAll('#wordOptions .option-btn');
+  btns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correct.hebrew) b.classList.add('correct');
+  });
+  document.getElementById('wordHint').textContent = '\u05D6\u05DE\u05DF! ' + correct.arabic + ' = ' + correct.hebrew;
+  wordIdx++;
+  setTimeout(showWord, 1500);
+}
+
+// ======== SENTENCE READING ========
+function loadExercise() {
+  const ex = readingExercises[exIdx];
+  document.getElementById('sentenceDisplay').textContent = ex.arabic;
+  document.getElementById('sentenceTitle').textContent = ex.title;
+  document.getElementById('exProgress').textContent = (exIdx + 1) + '/' + readingExercises.length;
+  document.getElementById('exPrev').disabled = exIdx === 0;
+  document.getElementById('exNext').disabled = exIdx === readingExercises.length - 1;
+
+  const qContainer = document.getElementById('sentenceQuestions');
+  qContainer.innerHTML = '';
+  ex.questions.forEach(qa => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.innerHTML = '<div class="q">' + qa.q + '</div><div class="a">' + qa.a + '</div>';
+    card.onclick = () => card.classList.toggle('revealed');
+    qContainer.appendChild(card);
+  });
+}
+
+function changeExercise(dir) {
+  exIdx = Math.max(0, Math.min(readingExercises.length - 1, exIdx + dir));
+  loadExercise();
+}
+
+// ======== SPEED ROUND ========
+function initSpeedRound() {
+  clearInterval(speedTimer);
+  // Mix 10 letters + 10 words
+  const letters = shuffle([...arabicLetters]).slice(0, 10).map(l => ({type:'letter', display:l.letter, answer:l.sound, data:l}));
+  const words = shuffle([...wordList]).slice(0, 10).map(w => ({type:'word', display:w.arabic, answer:w.hebrew, data:w}));
+  speedQueue = shuffle([...letters, ...words]);
+  speedIdx = 0;
+  speedScoreVal = 0;
+  document.getElementById('speedScore').textContent = '0';
+  showSpeedItem();
+}
+
+function showSpeedItem() {
+  if (speedIdx >= speedQueue.length) {
+    document.getElementById('speedDisplay').textContent = '\u{1F389}';
+    document.getElementById('speedOptions').innerHTML = '';
+    document.getElementById('speedHint').textContent = '\u05E1\u05D9\u05D9\u05DE\u05EA\u05DD! \u05E0\u05D9\u05E7\u05D5\u05D3: ' + speedScoreVal;
+    setTimeout(() => goSlide(5), 2000);
+    return;
+  }
+  clearInterval(speedTimer);
+  const item = speedQueue[speedIdx];
+  document.getElementById('speedDisplay').textContent = item.display;
+  document.getElementById('speedProgress').textContent = (speedIdx + 1) + '/' + speedQueue.length;
+  document.getElementById('speedHint').textContent = '';
+
+  // Build options
+  let options;
+  if (item.type === 'letter') {
+    const dists = pickDistractors(item.data, arabicLetters, 'letter', 3);
+    options = shuffle([{val: item.data.sound}, ...dists.map(d => ({val: d.sound}))]);
+  } else {
+    const dists = pickDistractors(item.data, wordList, 'arabic', 3);
+    options = shuffle([{val: item.data.hebrew}, ...dists.map(d => ({val: d.hebrew}))]);
+  }
+
+  const grid = document.getElementById('speedOptions');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.val;
+    btn.onclick = (e) => handleSpeedAnswer(opt.val, item, e);
+    grid.appendChild(btn);
+  });
+
+  speedTimeLeft = 10;
+  const bar = document.getElementById('speedTimer');
+  bar.style.width = '100%';
+  bar.classList.remove('danger');
+  speedTimer = setInterval(() => {
+    speedTimeLeft -= 0.1;
+    const pct = (speedTimeLeft / 10) * 100;
+    bar.style.width = pct + '%';
+    if (speedTimeLeft <= 3) bar.classList.add('danger');
+    if (speedTimeLeft <= 0) {
+      clearInterval(speedTimer);
+      handleSpeedTimeout(item);
+    }
+  }, 100);
+}
+
+function handleSpeedAnswer(chosen, item, event) {
+  clearInterval(speedTimer);
+  const correctVal = item.answer;
+  const btns = document.querySelectorAll('#speedOptions .option-btn');
+  btns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correctVal) b.classList.add('correct');
+  });
+
+  if (chosen === correctVal) {
+    speedScoreVal += Math.ceil(speedTimeLeft) + 5;
+    const rect = event.target.getBoundingClientRect();
+    spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    if (item.type === 'letter') {
+      document.getElementById('speedHint').textContent = item.data.hint;
+    } else {
+      document.getElementById('speedHint').textContent = item.data.transliteration;
+    }
+  } else {
+    event.target.classList.add('wrong');
+    document.getElementById('speedHint').textContent = item.display + ' = ' + correctVal;
+  }
+  document.getElementById('speedScore').textContent = speedScoreVal;
+  speedIdx++;
+  setTimeout(showSpeedItem, 900);
+}
+
+function handleSpeedTimeout(item) {
+  const correctVal = item.answer;
+  const btns = document.querySelectorAll('#speedOptions .option-btn');
+  btns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correctVal) b.classList.add('correct');
+  });
+  document.getElementById('speedHint').textContent = '\u05D6\u05DE\u05DF! ' + item.display + ' = ' + correctVal;
+  speedIdx++;
+  setTimeout(showSpeedItem, 1200);
+}
+
+// ======== SUMMARY ========
+function showSummary() {
+  clearInterval(letterTimer);
+  clearInterval(wordTimer);
+  clearInterval(speedTimer);
+
+  const total = letterScoreVal + wordScoreVal + speedScoreVal;
+  document.getElementById('finalScore').textContent = total;
+
+  const correctLetters = Object.values(letterResults).filter(v => v).length;
+  document.getElementById('statLetters').textContent = correctLetters + '/' + arabicLetters.length;
+  document.getElementById('statWords').textContent = wordScoreVal;
+  document.getElementById('statSpeed').textContent = speedScoreVal;
+
+  // Letters review
+  const review = document.getElementById('lettersReview');
+  review.innerHTML = '';
+  arabicLetters.forEach(l => {
+    const chip = document.createElement('span');
+    chip.className = 'letter-chip ' + (letterResults[l.letter] ? 'mastered' : 'practice');
+    chip.textContent = l.letter;
+    chip.title = l.sound + ' - ' + l.hint;
+    review.appendChild(chip);
+  });
+
+  // Celebration particles
+  setTimeout(() => {
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        spawnParticles(
+          100 + Math.random() * (window.innerWidth - 200),
+          100 + Math.random() * (window.innerHeight - 200)
+        );
+      }, i * 200);
+    }
+  }, 300);
+}
+
+// ======== INIT ========
+updateNav();
+</script>
+</body>
+</html>

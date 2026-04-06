@@ -1,0 +1,8 @@
+yt-dlp>=2024.0
+youtube-transcript-api>=0.6.0
+openai-whisper>=20231117
+typer>=0.9.0
+rich>=13.0
+sqlmodel>=0.0.14
+pydantic-settings>=2.0
+langdetect>=1.0.9

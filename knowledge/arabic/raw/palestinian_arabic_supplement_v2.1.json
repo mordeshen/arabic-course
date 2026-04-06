@@ -1,0 +1,1501 @@
+{
+  "meta": {
+    "title": "לדבר ערבית - חילוץ נוסף מהמילון",
+    "source": "מילון לדבר ערבית (מינרווה/אליחי)",
+    "version": "2.1-supplement",
+    "pages_processed": "pp.2-90 (intro+א), pp.60-90 (א-ג), pp.238-265 (כ-ל), pp.392-417 (ס-ע), pp.432-461 (צ-פ)",
+    "note": "עיבוד מובנה לבסיס ידע RAG/fine-tuning. ניסוח מחדש, לא העתקה."
+  },
+  "introduction_notes": {
+    "purpose": "מילון ערבית פלסטינית מדוברת עם עברית, כולל 10,000+ ערכים",
+    "dialect_info": "הדיאלקט הפלסטיני העירוני, עם הערות לגבי הבדלים אזוריים",
+    "regional_variants": {
+      "note": "יש הבדלים קלים בין אזורים. מילים ייחודיות מסומנות",
+      "examples": [
+        {
+          "word": "חַסּוּעַ",
+          "region": "specific_villages",
+          "meaning": "טוב"
+        },
+        {
+          "word": "מָאוֹן",
+          "region": "specific_areas",
+          "meaning": "variant"
+        },
+        {
+          "word": "חַלְחִין",
+          "region": "hebron_area",
+          "meaning": "variant"
+        }
+      ]
+    },
+    "literary_vs_spoken": "המילון מתמקד בערבית מדוברת, עם הפניות לצורות ספרותיות",
+    "phonology_key_features": [
+      {
+        "feature": "ק (qaf)",
+        "literary": "q",
+        "palestinian_urban": "אְ (glottal stop)",
+        "rural": "כּ (k) באזורים כפריים"
+      },
+      {
+        "feature": "כּ בין תנועות",
+        "realization": "צ׳/tsh באזורים כפריים"
+      },
+      {
+        "feature": "ה בסוף מילה",
+        "note": "לעיתים לא נשמעת"
+      }
+    ]
+  },
+  "alphabet_and_phonology": {
+    "consonants": [
+      {
+        "letter": "א",
+        "arabic": "أ/ع",
+        "notes": "glottal stop או pharyngeal"
+      },
+      {
+        "letter": "בּ",
+        "arabic": "ب",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "ג׳",
+        "arabic": "ج",
+        "notes": "כמו J באנגלית"
+      },
+      {
+        "letter": "ד",
+        "arabic": "د",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "ה",
+        "arabic": "ه",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "ו",
+        "arabic": "و",
+        "notes": "w או תנועת u"
+      },
+      {
+        "letter": "ז",
+        "arabic": "ز",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "ח",
+        "arabic": "ح",
+        "notes": "pharyngeal חזק"
+      },
+      {
+        "letter": "ט",
+        "arabic": "ط",
+        "notes": "emphatic t"
+      },
+      {
+        "letter": "י",
+        "arabic": "ي",
+        "notes": "y או תנועת i"
+      },
+      {
+        "letter": "כּ/כ",
+        "arabic": "ك/خ",
+        "notes": "k או fricative"
+      },
+      {
+        "letter": "ל",
+        "arabic": "ل",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "מ",
+        "arabic": "م",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "נ",
+        "arabic": "ن",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "ס",
+        "arabic": "س",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "ע",
+        "arabic": "ع",
+        "notes": "pharyngeal voiced"
+      },
+      {
+        "letter": "פ",
+        "arabic": "ف",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "צ",
+        "arabic": "ص",
+        "notes": "emphatic s"
+      },
+      {
+        "letter": "ק",
+        "arabic": "ق",
+        "notes": "glottal stop בדיבור עירוני"
+      },
+      {
+        "letter": "ר",
+        "arabic": "ر",
+        "notes": "כמו בעברית"
+      },
+      {
+        "letter": "שׁ/שׂ",
+        "arabic": "ش/س",
+        "notes": "sh או s"
+      },
+      {
+        "letter": "תּ/ת",
+        "arabic": "ت/ث",
+        "notes": "t או th"
+      }
+    ],
+    "stress_rules": "בדרך כלל על ההברה לפני האחרונה, אלא אם ההברה האחרונה כבדה"
+  },
+  "vocabulary_entries": {
+    "letter_alef": [
+      {
+        "entry": "אַרְבַּע",
+        "meaning": "ארבע",
+        "category": "numbers",
+        "usage": "אַרְבַּע סַבְיָאן וְאַרְבַּע בַּנָאת = ארבעה בנים וארבע בנות"
+      },
+      {
+        "entry": "אַרְבַּעָה",
+        "meaning": "ארבעה (נ)",
+        "category": "numbers",
+        "note": "צורת נקבה: יום אַל-אַרְבַּעָא = יום רביעי"
+      },
+      {
+        "entry": "אַרְבַּעְתַּעְשַׁר",
+        "meaning": "ארבע-עשרה",
+        "category": "numbers"
+      },
+      {
+        "entry": "אַרְבְּעִין",
+        "meaning": "ארבעים",
+        "category": "numbers",
+        "usage": "אַרְבְּעִין קַלְבּ = 40 סטודנטים"
+      },
+      {
+        "entry": "אָרַד",
+        "meaning": "רצה, חפץ",
+        "category": "verbs",
+        "pattern": 1
+      },
+      {
+        "entry": "אָרִד",
+        "meaning": "ארז (ארץ)",
+        "category": "nouns"
+      },
+      {
+        "entry": "אַרְדְּן",
+        "meaning": "ירדן",
+        "category": "geography"
+      },
+      {
+        "entry": "אָרְדִיָּה",
+        "meaning": "ארדיה, חלוק",
+        "category": "clothing"
+      },
+      {
+        "entry": "אַרְנַב",
+        "meaning": "ארנב",
+        "category": "animals"
+      },
+      {
+        "entry": "אַרְמַל",
+        "meaning": "אלמון",
+        "category": "family"
+      },
+      {
+        "entry": "אַרְמַלָה",
+        "meaning": "אלמנה",
+        "category": "family"
+      },
+      {
+        "entry": "אַרְתְּבַּכּ",
+        "meaning": "הסתבך, התבלבל",
+        "category": "verbs",
+        "usage": "פִּיל-אַרְתְּבַּכּ = סיפור מבולבל"
+      },
+      {
+        "entry": "אָשְׁתָא",
+        "meaning": "רגיל בלשון נקבה: חורף",
+        "category": "seasons"
+      },
+      {
+        "entry": "אַשְׁתַּעַל",
+        "meaning": "הדליק, הצית",
+        "category": "verbs",
+        "pattern": 10
+      },
+      {
+        "entry": "אִשְׁתָרַכ",
+        "meaning": "השתתף",
+        "category": "verbs",
+        "pattern": 8
+      },
+      {
+        "entry": "אַשְׁכַּר",
+        "meaning": "שיקרן",
+        "category": "adjectives"
+      },
+      {
+        "entry": "אֻשְׁרֻב",
+        "meaning": "עבודת אילנות, עבודת אנשים אחרים",
+        "category": "nouns"
+      },
+      {
+        "entry": "אָתְמָאתִיכִּי",
+        "meaning": "אוטומטי",
+        "category": "adjectives"
+      },
+      {
+        "entry": "אַתְפָּאק",
+        "meaning": "הסכמה, חוכמה",
+        "category": "nouns",
+        "usage": "פִּיהּ אִתְפָּאק בֵּינָא = יש הסכם בינינו"
+      },
+      {
+        "entry": "אַתְקַל",
+        "meaning": "היה כבד, הכביד",
+        "category": "verbs"
+      },
+      {
+        "entry": "אַתְעַב",
+        "meaning": "חייב, עייף",
+        "category": "nouns/verbs",
+        "usage": "אַתְעַב נַי = העב, חייב עניין"
+      }
+    ],
+    "letter_bet": [
+      {
+        "entry": "בּ",
+        "meaning": "ב, בתוך (אותיות יחס)",
+        "category": "prepositions",
+        "note": "מילת יחס נפוצה"
+      },
+      {
+        "entry": "בַּאבּ",
+        "meaning": "1) אבא 2) דלת, שער",
+        "category": "nouns",
+        "usage": [
+          "בַּאבָּא, תַּעָאל קוּאאָם! = אבא, בוא מהר!",
+          "יָא בַּאבָּא, בְּלָאשׁ תַּבְכִּי = אבא, אל תבכי"
+        ]
+      },
+      {
+        "entry": "בָּאד",
+        "meaning": "בדואי",
+        "category": "nouns"
+      },
+      {
+        "entry": "בַּאדוּר",
+        "meaning": "באדור, באבור",
+        "category": "nouns"
+      },
+      {
+        "entry": "בָּאלֵא",
+        "meaning": "בלי, חינם",
+        "category": "adverbs"
+      },
+      {
+        "entry": "בָּאס",
+        "meaning": "אוטובוס",
+        "category": "transportation",
+        "usage": "מָרַד אַל-בָּאס וְלָא לְסָא? = האוטובוס עבר או עוד לא?"
+      },
+      {
+        "entry": "בַּדְרִי",
+        "meaning": "מוקדם, מוקדם בבוקר",
+        "category": "time",
+        "usage": "אַל-יוֹם רְבַּע בַּדְרִי = היום הוא חרד מוקדם"
+      },
+      {
+        "entry": "בַּחְת",
+        "meaning": "באופן סתור, ארך רוק, גרידא",
+        "category": "adverbs"
+      },
+      {
+        "entry": "בַּדַל",
+        "meaning": "החליף, החלפה",
+        "category": "verbs"
+      },
+      {
+        "entry": "בַּחַר",
+        "meaning": "1) אדום 2) בינלאומי",
+        "category": "adjectives"
+      },
+      {
+        "entry": "בַּחְתּ",
+        "meaning": "מזל, מאזן סתור",
+        "category": "nouns"
+      },
+      {
+        "entry": "בָּחִירָא",
+        "meaning": "אם",
+        "category": "family"
+      },
+      {
+        "entry": "בַּחְר",
+        "meaning": "ים",
+        "category": "geography"
+      },
+      {
+        "entry": "בַּיְת",
+        "meaning": "בית",
+        "category": "nouns",
+        "usage": [
+          "בַּיְת אַל-שַׁעַר = אוהל בדואי בקטן",
+          "בַּיְת-אַל-מָאל = אוצר ציבורי"
+        ]
+      },
+      {
+        "entry": "בַּלָּא",
+        "meaning": "בלי",
+        "category": "prepositions",
+        "usage": "בַּלָּא שַׁק = בלי ספק"
+      },
+      {
+        "entry": "בַּלַּד",
+        "meaning": "1) ישוב 2) ארץ, מדינה",
+        "category": "geography"
+      },
+      {
+        "entry": "בַּלִּיט",
+        "meaning": "בלוט, אלון",
+        "category": "nature"
+      },
+      {
+        "entry": "בְּנַאת",
+        "meaning": "בנות",
+        "category": "family"
+      },
+      {
+        "entry": "בְּנָאיָה",
+        "meaning": "בנייה, מבנה",
+        "category": "construction"
+      },
+      {
+        "entry": "בַּנְדּוּרָא",
+        "meaning": "עגבנייה",
+        "category": "food"
+      },
+      {
+        "entry": "בַּנְזִין",
+        "meaning": "בנזין, דלק",
+        "category": "transportation"
+      },
+      {
+        "entry": "בּוּרְטְקָאל",
+        "meaning": "פורטוגל",
+        "category": "geography"
+      },
+      {
+        "entry": "בּוּסְטָה",
+        "meaning": "מעטפה (של מכתב)",
+        "category": "stationery"
+      },
+      {
+        "entry": "בּוּפֵּה",
+        "meaning": "מזנון, שולחן אוכל (buffet)",
+        "category": "food"
+      },
+      {
+        "entry": "בּוּקְ",
+        "meaning": "רע, הפוך של טוב",
+        "category": "adjectives"
+      },
+      {
+        "entry": "בִּירָא",
+        "meaning": "בירה (משקה)",
+        "category": "drinks"
+      },
+      {
+        "entry": "בִּסְכּוֹת",
+        "meaning": "ביסקוויט",
+        "category": "food"
+      },
+      {
+        "entry": "בְּסִיט",
+        "meaning": "ברכה, ניצוץ",
+        "category": "nouns"
+      },
+      {
+        "entry": "בַּסְמַלָה",
+        "meaning": "שם",
+        "category": "religious"
+      },
+      {
+        "entry": "בַּטָּל",
+        "meaning": "בטל, חסר ערך",
+        "category": "adjectives",
+        "usage": "הַאדָּא בַּטָּל = זה חסר ערך"
+      }
+    ],
+    "letter_gimel": [
+      {
+        "entry": "ג",
+        "meaning": "האות ג׳ בערבית = ج",
+        "category": "alphabet",
+        "note": "נהגית כמו J באנגלית"
+      },
+      {
+        "entry": "גָ׳מַע",
+        "meaning": "אסף, קיבץ",
+        "category": "verbs"
+      },
+      {
+        "entry": "גָ׳מִיל",
+        "meaning": "יפה, נאה",
+        "category": "adjectives"
+      },
+      {
+        "entry": "גָ׳דִיד",
+        "meaning": "חדש",
+        "category": "adjectives"
+      },
+      {
+        "entry": "גַ׳נְב",
+        "meaning": "צד, לצד",
+        "category": "prepositions"
+      },
+      {
+        "entry": "גָ׳רִידָה",
+        "meaning": "עיתון",
+        "category": "media"
+      }
+    ],
+    "letter_kaf_lamed": [
+      {
+        "entry": "כַּלָּאם",
+        "meaning": "דיבור, מילים, שיחה",
+        "category": "communication",
+        "usage": [
+          "כְּלָאמוֹ כַּלְבוּרוּט פִּי מַחְלוֹ = דבריו ונמוכים ובמקומם",
+          "מָא חַדָּא כְּלָאם! = זה הרבה דיבור, שקט!"
+        ]
+      },
+      {
+        "entry": "כְּלְב",
+        "meaning": "כלב",
+        "category": "animals"
+      },
+      {
+        "entry": "כְּלְמָה",
+        "meaning": "מילה",
+        "category": "language",
+        "usage": "כְּלְמַת מַפְתָּאח = מילת מפתח"
+      },
+      {
+        "entry": "כַּמָאן",
+        "meaning": "משהו",
+        "category": "pronouns"
+      },
+      {
+        "entry": "כָּמָאשׁ",
+        "meaning": "כמו שצריך, חזק",
+        "category": "adverbs"
+      },
+      {
+        "entry": "כַּנִיסָה",
+        "meaning": "כנסייה",
+        "category": "religion"
+      },
+      {
+        "entry": "כָּרְסִי",
+        "meaning": "כיסא",
+        "category": "furniture"
+      },
+      {
+        "entry": "כָּתַב",
+        "meaning": "כתב",
+        "category": "verbs",
+        "pattern": 1,
+        "conjugation": {
+          "past": "כָּתַב",
+          "present": "בִּיכְתּוּב",
+          "future": "רַח יִכְתּוּב"
+        }
+      },
+      {
+        "entry": "כְּתָּאב",
+        "meaning": "כתב, ספר",
+        "category": "stationery",
+        "usage": "כְּתָּאבּ אַל-מְקַדָּס = ספר הקודש"
+      },
+      {
+        "entry": "כָּתִיר",
+        "meaning": "הרבה, רב",
+        "category": "quantity",
+        "usage": [
+          "כָּתִיר מַע אַל-מְדִיר = הרבה עם המנהל",
+          "מְרָאתּ-בַּתִיר! = פעמים רבות!"
+        ]
+      },
+      {
+        "entry": "כָּפִיף",
+        "meaning": "עוגה, קפיף",
+        "category": "food"
+      },
+      {
+        "entry": "כַּרְט",
+        "meaning": "כרטיס",
+        "category": "nouns"
+      },
+      {
+        "entry": "כַּרְטוּנָא",
+        "meaning": "קרטון",
+        "category": "nouns"
+      },
+      {
+        "entry": "כֻּלּ",
+        "meaning": "כל, כולם",
+        "category": "quantity",
+        "usage": "כֻּלּ וָאחַד = כל אחד"
+      },
+      {
+        "entry": "כַּלָּאם פָּארְע",
+        "meaning": "דיבור ללא חסכים, דיבור חופשי",
+        "category": "expressions"
+      },
+      {
+        "entry": "כָּסַר",
+        "meaning": "שבר, הפסיד",
+        "category": "verbs"
+      },
+      {
+        "entry": "כָּסְרָא",
+        "meaning": "הפסד",
+        "category": "nouns"
+      },
+      {
+        "entry": "לָא",
+        "meaning": "לא (שלילה)",
+        "category": "negation",
+        "usage": [
+          "לָא וְלָא תְחּ = לא הוא ולא",
+          "לָא תִנְסָא אָגוֹ = אל תשכח אותי"
+        ]
+      },
+      {
+        "entry": "לָאזִם",
+        "meaning": "חייב, מוכרח",
+        "category": "modals",
+        "usage": "לָאזִם תִּרוּח = אתה חייב ללכת"
+      },
+      {
+        "entry": "לֵא",
+        "meaning": "ל (מילת יחס לכיוון)",
+        "category": "prepositions"
+      },
+      {
+        "entry": "לָאחֵם",
+        "meaning": "ריב, מריבה",
+        "category": "verbs/nouns"
+      },
+      {
+        "entry": "לָבַּן",
+        "meaning": "1) לבן (צבע) 2) לבנה, חלב",
+        "category": "colors/food",
+        "usage": [
+          "בְּיָאד אַל-לָבַּן = לבן העין",
+          "בְּיָאד אַל-סְתָּאם-אוֹ = לבן כמו שלג"
+        ]
+      },
+      {
+        "entry": "לְבַּס",
+        "meaning": "לבש, התלבש",
+        "category": "verbs",
+        "usage": "לְבַּס בִּדְלָא = לבש חליפה"
+      },
+      {
+        "entry": "לְחָם",
+        "meaning": "לחם, בשר",
+        "category": "food",
+        "usage": [
+          "לְחַם אַל-לַחְמָה פִּיתּ-חַלְאָנְצָא = שים את הבשר במקרר",
+          "חֻס אַל-לְחַמָּה = חתיכת בשר"
+        ]
+      },
+      {
+        "entry": "לְחֵן",
+        "meaning": "מנגינה, לחן",
+        "category": "music"
+      },
+      {
+        "entry": "לֶד",
+        "meaning": "ילד",
+        "category": "family"
+      },
+      {
+        "entry": "לֵילָה",
+        "meaning": "לילה",
+        "category": "time",
+        "usage": "לֵילָא רַאס אַס-סָנָה = ערב ראש השנה"
+      },
+      {
+        "entry": "לוּגָה",
+        "meaning": "שפה",
+        "category": "language"
+      },
+      {
+        "entry": "לוֹן",
+        "meaning": "צבע",
+        "category": "colors",
+        "usage": "שׁוּ לוֹן? = מה הצבע?"
+      },
+      {
+        "entry": "לוּחָה",
+        "meaning": "לוח, טבלה",
+        "category": "nouns"
+      },
+      {
+        "entry": "לִישׁ",
+        "meaning": "למה, מדוע",
+        "category": "question_words",
+        "usage": "לִישׁ מָא קָלַתּ-לִי-שׁ? = למה לא אמרת לי?"
+      }
+    ],
+    "letter_samekh_ayin": [
+      {
+        "entry": "סוּר",
+        "meaning": "תמונה, צילום",
+        "category": "nouns",
+        "usage": "סוּר מַתְחוּכָּה = תמונות מצחיקות"
+      },
+      {
+        "entry": "סוּרָה",
+        "meaning": "צורה, תמונה (באופן כללי)",
+        "category": "nouns"
+      },
+      {
+        "entry": "סֻכָּר",
+        "meaning": "סוכר",
+        "category": "food"
+      },
+      {
+        "entry": "סַלָּאם",
+        "meaning": "שלום (ברכה)",
+        "category": "greetings",
+        "usage": "אַס-סַלָּאם עַלֵיכוּם = שלום עליכם"
+      },
+      {
+        "entry": "סַלַח",
+        "meaning": "1) ישר, תקן 2) שלח",
+        "category": "verbs"
+      },
+      {
+        "entry": "סָלְחָה",
+        "meaning": "שליחות, מסירה",
+        "category": "nouns"
+      },
+      {
+        "entry": "סְלָחִיָּה",
+        "meaning": "מריבה, מלחמה",
+        "category": "nouns"
+      },
+      {
+        "entry": "סָמַע",
+        "meaning": "שמע",
+        "category": "verbs",
+        "pattern": 1
+      },
+      {
+        "entry": "סָנָה",
+        "meaning": "שנה",
+        "category": "time"
+      },
+      {
+        "entry": "סָפַר",
+        "meaning": "חודש שני בשנה המוסלמית",
+        "category": "time"
+      },
+      {
+        "entry": "סָפְרָא",
+        "meaning": "נקבה של אָסְפַר",
+        "category": "adjectives"
+      },
+      {
+        "entry": "סִתּ",
+        "meaning": "שש",
+        "category": "numbers"
+      },
+      {
+        "entry": "סִכִּין",
+        "meaning": "סכין",
+        "category": "kitchen"
+      },
+      {
+        "entry": "עָאד",
+        "meaning": "חזר, שוב",
+        "category": "verbs"
+      },
+      {
+        "entry": "עָאדָא",
+        "meaning": "חזר, היה שוב, נגיל שוב",
+        "category": "verbs"
+      },
+      {
+        "entry": "עָאדִי",
+        "meaning": "רגיל, נורמלי",
+        "category": "adjectives",
+        "usage": "הָאדָּא אָשִׁי עָאדִי = זה דבר רגיל"
+      },
+      {
+        "entry": "עָאזַל",
+        "meaning": "רווק, לא נשוי",
+        "category": "family"
+      },
+      {
+        "entry": "עָאלַם",
+        "meaning": "עולם",
+        "category": "nouns",
+        "usage": "כֻּלּ אַל-עָאלַם = כל העולם"
+      },
+      {
+        "entry": "עָאמוּד",
+        "meaning": "עמוד (של ספר/בניין)",
+        "category": "nouns"
+      },
+      {
+        "entry": "עַבְד",
+        "meaning": "עבד, שירת",
+        "category": "verbs",
+        "pattern": 1
+      },
+      {
+        "entry": "עָבְרָה",
+        "meaning": "עבירה, קללה, מסירה, חשבון",
+        "category": "nouns"
+      },
+      {
+        "entry": "עַבְרָאנִי",
+        "meaning": "עברי",
+        "category": "adjectives"
+      },
+      {
+        "entry": "עָדָד",
+        "meaning": "מספר, כמות",
+        "category": "nouns"
+      },
+      {
+        "entry": "עָדָל",
+        "meaning": "צדק, יושר, הגינות",
+        "category": "nouns/adjectives"
+      },
+      {
+        "entry": "עִיד",
+        "meaning": "חג, מועד",
+        "category": "holidays",
+        "usage": "עִיד מִילַאד = יום הולדת"
+      },
+      {
+        "entry": "עֵין",
+        "meaning": "עין",
+        "category": "body",
+        "usage": [
+          "בּ-עֵין וָחְדָא = בעין אחת",
+          "עֵין אַשׁ-שַׁמְס = עין השמש (הכינוי לשמש)"
+        ]
+      },
+      {
+        "entry": "עָלָא",
+        "meaning": "על",
+        "category": "prepositions"
+      },
+      {
+        "entry": "עַלָּאם",
+        "meaning": "מדע, ידע, מדעי",
+        "category": "nouns"
+      },
+      {
+        "entry": "עָלֵיכ",
+        "meaning": "עליך (בביטוי ברכה)",
+        "category": "pronouns"
+      },
+      {
+        "entry": "עָמַל",
+        "meaning": "עבודה, מלאכה",
+        "category": "work"
+      }
+    ],
+    "letter_tsadi_pe": [
+      {
+        "entry": "צָאלִי",
+        "meaning": "יקר מאוד, דבר יקר",
+        "category": "adjectives"
+      },
+      {
+        "entry": "צָאפִי",
+        "meaning": "נקי, ברור",
+        "category": "adjectives"
+      },
+      {
+        "entry": "צַבָּאח",
+        "meaning": "בוקר",
+        "category": "time",
+        "usage": "צַבָּאח אַל-חֵיר! = בוקר טוב!"
+      },
+      {
+        "entry": "צַגִ׳יר",
+        "meaning": "קטן, צעיר",
+        "category": "adjectives"
+      },
+      {
+        "entry": "צָחָּה",
+        "meaning": "בריאות",
+        "category": "health",
+        "usage": "כֵיף צָחָּה (-חִם)? = מה שלומך בריאותית?"
+      },
+      {
+        "entry": "צַדִיק",
+        "meaning": "חבר, ידיד",
+        "category": "social",
+        "usage": "הָאדָּא צַדִיקִי = זה חבר שלי"
+      },
+      {
+        "entry": "צָפָּא",
+        "meaning": "פנים, מוח",
+        "category": "body"
+      },
+      {
+        "entry": "צוּת",
+        "meaning": "קול",
+        "category": "nouns"
+      },
+      {
+        "entry": "צוּרָה",
+        "meaning": "צורה, אופן",
+        "category": "nouns",
+        "usage": "בְּאִי צוּרָא? = באיזה אופן?"
+      },
+      {
+        "entry": "פָאאִד",
+        "meaning": "תועלת",
+        "category": "nouns"
+      },
+      {
+        "entry": "פָאאִדָא",
+        "meaning": "תועלת, רווח",
+        "category": "nouns"
+      },
+      {
+        "entry": "פָאל",
+        "meaning": "סימן, מזל, אמונות",
+        "category": "nouns"
+      },
+      {
+        "entry": "פָאלְטָא",
+        "meaning": "פשלה, כישלון",
+        "category": "nouns"
+      },
+      {
+        "entry": "פָאנוּס",
+        "meaning": "פנס, מנורה",
+        "category": "household"
+      },
+      {
+        "entry": "פָּארַק",
+        "meaning": "הפריד, מינוי",
+        "category": "verbs"
+      },
+      {
+        "entry": "פָּארְע",
+        "meaning": "דיבור חופשי / מותר",
+        "category": "adjectives"
+      },
+      {
+        "entry": "פָּאתוּרָא",
+        "meaning": "חשבון (במסעדה)",
+        "category": "commerce"
+      },
+      {
+        "entry": "פַדָּא",
+        "meaning": "פדיון, כופר",
+        "category": "finance"
+      },
+      {
+        "entry": "פָּהֵם",
+        "meaning": "הבין, מבין",
+        "category": "verbs",
+        "usage": "אַנְתָא פָּהֵם? = אתה מבין?"
+      },
+      {
+        "entry": "פַחְס",
+        "meaning": "בדק, חיפש",
+        "category": "verbs"
+      },
+      {
+        "entry": "פַלָּאח",
+        "meaning": "איכר, חקלאי",
+        "category": "occupations"
+      },
+      {
+        "entry": "פַלַסְטִין",
+        "meaning": "פלסטין",
+        "category": "geography"
+      },
+      {
+        "entry": "פָלְס",
+        "meaning": "כסף, פלוס",
+        "category": "finance"
+      },
+      {
+        "entry": "פַסְטוּק",
+        "meaning": "פיסטוק",
+        "category": "food"
+      },
+      {
+        "entry": "פַתַח",
+        "meaning": "פתח",
+        "category": "verbs",
+        "pattern": 1,
+        "usage": [
+          "פַתַח אַל-בָּאב = פתח את הדלת",
+          "פַתַח-הָא = פתח אותה"
+        ]
+      },
+      {
+        "entry": "פָּתְחָא",
+        "meaning": "פתיחה, התחלה",
+        "category": "nouns"
+      },
+      {
+        "entry": "פֵיסְבּוּכּ",
+        "meaning": "פייסבוק",
+        "category": "technology"
+      },
+      {
+        "entry": "פִלְם",
+        "meaning": "סרט (צילום/קולנוע)",
+        "category": "entertainment"
+      },
+      {
+        "entry": "פָּלַסְטִינִי",
+        "meaning": "פלסטיני",
+        "category": "demonyms"
+      },
+      {
+        "entry": "פַסְטְנָא",
+        "meaning": "חגיגה, סעודה",
+        "category": "celebrations"
+      },
+      {
+        "entry": "פִילוֹסוּפְיָא",
+        "meaning": "פילוסופיה",
+        "category": "academic"
+      },
+      {
+        "entry": "פְּרָאנְסָא",
+        "meaning": "צרפת",
+        "category": "geography"
+      },
+      {
+        "entry": "פְּרַאנְסִי",
+        "meaning": "צרפתי",
+        "category": "demonyms"
+      },
+      {
+        "entry": "פֵּרְדָא",
+        "meaning": "פרדה",
+        "category": "nouns"
+      },
+      {
+        "entry": "פַּרְח",
+        "meaning": "שמחה, פרח",
+        "category": "nouns",
+        "usage": "אַל-בַּיְת חָאדָּא פַּרְחָא = הבית הזה שמחה"
+      },
+      {
+        "entry": "פֻּרְסָה",
+        "meaning": "הזדמנות, הפסקה",
+        "category": "nouns"
+      },
+      {
+        "entry": "פָּשַׁל",
+        "meaning": "1) הכשיל 2) אהב (בצחוק)",
+        "category": "verbs"
+      }
+    ]
+  },
+  "common_expressions": [
+    {
+      "arabic_translit": "יַעְטִיכ אַל-עָאפְיָה",
+      "meaning": "יישר כוח / עבודה טובה",
+      "response": "תִּסְלַם",
+      "context": "ברכה לאחר עבודה"
+    },
+    {
+      "arabic_translit": "אַס-סַלָּאם עַלֵיכוּם",
+      "meaning": "שלום עליכם",
+      "response": "וַעַלֵיכוּם אַס-סַלָּאם",
+      "context": "ברכת שלום פורמלית"
+    },
+    {
+      "arabic_translit": "צַבָּאח אַל-חֵיר",
+      "meaning": "בוקר טוב",
+      "response": "צַבָּאח אַנ-נוּר",
+      "context": "ברכת בוקר"
+    },
+    {
+      "arabic_translit": "מָא שָׁא אַללַּה",
+      "meaning": "בעזרת ה׳, מדהים",
+      "context": "הפתעה חיובית"
+    },
+    {
+      "arabic_translit": "אִנְשָׁאלְלַּה",
+      "meaning": "אם ירצה ה׳",
+      "context": "תקווה לעתיד"
+    },
+    {
+      "arabic_translit": "אַלְחַמְדוּ לִלְלַּה",
+      "meaning": "תודה לאל",
+      "context": "הודיה"
+    },
+    {
+      "arabic_translit": "כִיפַכ?",
+      "meaning": "מה שלומך? (ז)",
+      "response": "אַלְחַמְדוּ לִלְלַּה",
+      "context": "שאלת שלום"
+    },
+    {
+      "arabic_translit": "כִיפִכ?",
+      "meaning": "מה שלומך? (נ)",
+      "context": "שאלת שלום לנקבה"
+    },
+    {
+      "arabic_translit": "שׁוּ בִּדָּכ?",
+      "meaning": "מה אתה רוצה?",
+      "context": "שאלה ישירה"
+    },
+    {
+      "arabic_translit": "וֵין רָאיַח?",
+      "meaning": "לאן אתה הולך?",
+      "context": "שאלת כיוון"
+    },
+    {
+      "arabic_translit": "מָא בַּעְרַפְשׁ",
+      "meaning": "אני לא יודע",
+      "context": "שלילה עם -ש"
+    },
+    {
+      "arabic_translit": "יַלְלָא",
+      "meaning": "קדימה, בואו",
+      "context": "עידוד"
+    },
+    {
+      "arabic_translit": "תַּעָאל",
+      "meaning": "בוא (ז)",
+      "context": "הזמנה"
+    },
+    {
+      "arabic_translit": "תַּעָאלִי",
+      "meaning": "בואי (נ)",
+      "context": "הזמנה לנקבה"
+    },
+    {
+      "arabic_translit": "אָלְלָה יִרְחָמוּ",
+      "meaning": "שאלוהים ירחם עליו",
+      "context": "תנחומים"
+    },
+    {
+      "arabic_translit": "מַבְרוּכּ",
+      "meaning": "ברוך, מזל טוב",
+      "context": "ברכה לאירוע"
+    },
+    {
+      "arabic_translit": "בְּסָּלָאמָה",
+      "meaning": "בשלום, להתראות",
+      "context": "פרידה"
+    },
+    {
+      "arabic_translit": "לָא סַלָּאמָה",
+      "meaning": "אין ספק, לא סליחה",
+      "context": "מענה"
+    },
+    {
+      "arabic_translit": "מִשׁ מַעְקוּל",
+      "meaning": "לא סביר, לא מתקבל על הדעת",
+      "context": "הפתעה שלילית"
+    },
+    {
+      "arabic_translit": "אַפְּוָאן!",
+      "meaning": "סליחה!",
+      "context": "התנצלות"
+    },
+    {
+      "arabic_translit": "כֻּלּ עָאם וְאַנְתוּ בְּחֵיר",
+      "meaning": "שתהיו בטוב כל שנה",
+      "context": "ברכה לחג"
+    }
+  ],
+  "grammar_patterns": {
+    "negation": {
+      "standard": {
+        "pattern": "مَا + verb + ش",
+        "translit": "מָא...שׁ",
+        "example": "מָא בַּעְרַפְשׁ = אני לא יודע",
+        "note": "שלילה עוטפת - מָא לפני הפועל ו-שׁ בסופו"
+      },
+      "imperative_negation": {
+        "pattern": "لا + verb",
+        "translit": "לָא + פועל",
+        "example": "לָא תִּרוּח = אל תלך"
+      },
+      "existential_negation": {
+        "pattern": "مَا فِيشْ",
+        "translit": "מָא פִישׁ",
+        "meaning": "אין",
+        "example": "מָא פִישׁ חָאדָּא = אין דבר כזה"
+      },
+      "nominal_negation": {
+        "pattern": "مش",
+        "translit": "מִשׁ",
+        "meaning": "לא (לשמות ותארים)",
+        "example": "מִשׁ מַעְקוּל = לא סביר"
+      }
+    },
+    "question_words": [
+      {
+        "arabic": "شو",
+        "translit": "שׁוּ",
+        "meaning": "מה",
+        "example": "שׁוּ בִּדָּכ? = מה אתה רוצה?"
+      },
+      {
+        "arabic": "وين",
+        "translit": "וֵין",
+        "meaning": "איפה",
+        "example": "וֵין אַל-מַחַטָּא? = איפה התחנה?"
+      },
+      {
+        "arabic": "كيف",
+        "translit": "כֵּיף",
+        "meaning": "איך",
+        "example": "כֵּיפַכ? = מה שלומך?"
+      },
+      {
+        "arabic": "ليش",
+        "translit": "לֵישׁ",
+        "meaning": "למה",
+        "example": "לֵישׁ מָא אָגִ׳יתְ? = למה לא באת?"
+      },
+      {
+        "arabic": "مين",
+        "translit": "מִין",
+        "meaning": "מי",
+        "example": "מִין הָאדָּא? = מי זה?"
+      },
+      {
+        "arabic": "قديش",
+        "translit": "אַדֵּישׁ",
+        "meaning": "כמה",
+        "example": "אַדֵּישׁ אַל-חִסָּאב? = כמה החשבון?"
+      },
+      {
+        "arabic": "إيمتى",
+        "translit": "אֵימְתָא",
+        "meaning": "מתי",
+        "example": "אֵימְתָא בִּתְרוּח? = מתי אתה הולך?"
+      },
+      {
+        "arabic": "كم",
+        "translit": "כַּם",
+        "meaning": "כמה (מספר)",
+        "example": "כַּם וָאחַד? = כמה (יחידות)?"
+      }
+    ],
+    "demonstratives": [
+      {
+        "arabic": "هاد",
+        "translit": "הָאד",
+        "meaning": "זה (ז)",
+        "formal": "هذا"
+      },
+      {
+        "arabic": "هادي",
+        "translit": "הָאדִי",
+        "meaning": "זאת (נ)",
+        "formal": "هذه"
+      },
+      {
+        "arabic": "هدول",
+        "translit": "הָדוֹל",
+        "meaning": "אלה",
+        "formal": "هؤلاء"
+      },
+      {
+        "arabic": "هداك",
+        "translit": "הָדָאכ",
+        "meaning": "ההוא",
+        "formal": "ذلك"
+      },
+      {
+        "arabic": "هديك",
+        "translit": "הָדִיכ",
+        "meaning": "ההיא",
+        "formal": "تلك"
+      }
+    ],
+    "possessive_suffixes": {
+      "note": "סיומות קניין מתחברות לשם העצם",
+      "examples": [
+        {
+          "suffix": "-י",
+          "meaning": "שלי",
+          "example": "כְּתָּאבִּי = הספר שלי"
+        },
+        {
+          "suffix": "-כַּ",
+          "meaning": "שלך (ז)",
+          "example": "בֵּיתָכ = הבית שלך"
+        },
+        {
+          "suffix": "-כִּ",
+          "meaning": "שלך (נ)",
+          "example": "בֵּיתִכ = הבית שלך"
+        },
+        {
+          "suffix": "-וּ",
+          "meaning": "שלו",
+          "example": "כְּתָּאבוּ = הספר שלו"
+        },
+        {
+          "suffix": "-הָא",
+          "meaning": "שלה",
+          "example": "כְּתָּאבְהָא = הספר שלה"
+        },
+        {
+          "suffix": "-נָא",
+          "meaning": "שלנו",
+          "example": "בֵּיתְנָא = הבית שלנו"
+        },
+        {
+          "suffix": "-כוּם",
+          "meaning": "שלכם",
+          "example": "בֵּיתְכוּם = הבית שלכם"
+        },
+        {
+          "suffix": "-הוּם",
+          "meaning": "שלהם",
+          "example": "בֵּיתְהוּם = הבית שלהם"
+        }
+      ]
+    },
+    "verb_tense_markers": {
+      "present_prefix": {
+        "marker": "בּ-",
+        "example": "בַּכְתּוּב = אני כותב",
+        "note": "מוסיפים בּ- לפני הפועל לציון הווה"
+      },
+      "future_markers": [
+        {
+          "marker": "רַח",
+          "example": "רַח אָרוּח = אני אלך",
+          "note": "סמן עתיד נפוץ"
+        },
+        {
+          "marker": "בִּדִּי",
+          "example": "בִּדִּי אָרוּח = אני רוצה/הולך ללכת",
+          "note": "גם רצון וגם עתיד קרוב"
+        }
+      ],
+      "past": {
+        "note": "ללא קידומת מיוחדת, הפועל עצמו בזמן עבר",
+        "example": "רֻחְתּ = הלכתי"
+      }
+    }
+  },
+  "thematic_vocabulary": {
+    "food_and_drink": [
+      {
+        "translit": "חוּבְּז",
+        "meaning": "לחם (פיתה)",
+        "note": "סוג הלחם העיקרי"
+      },
+      {
+        "translit": "לְחָם",
+        "meaning": "בשר",
+        "note": "שים לב: לחם בערבית = בשר!"
+      },
+      {
+        "translit": "סֻכָּר",
+        "meaning": "סוכר"
+      },
+      {
+        "translit": "מַיָּא/מוֹיָא",
+        "meaning": "מים"
+      },
+      {
+        "translit": "קַהְוָא",
+        "meaning": "קפה"
+      },
+      {
+        "translit": "שָׁאי",
+        "meaning": "תה"
+      },
+      {
+        "translit": "בַּנְדּוּרָא",
+        "meaning": "עגבנייה"
+      },
+      {
+        "translit": "זֵית",
+        "meaning": "זית"
+      },
+      {
+        "translit": "חוּמוּץ",
+        "meaning": "חומוס"
+      },
+      {
+        "translit": "פוּל",
+        "meaning": "פול"
+      },
+      {
+        "translit": "פַסְטוּק",
+        "meaning": "פיסטוק"
+      },
+      {
+        "translit": "תוּפָּאח",
+        "meaning": "תפוח"
+      }
+    ],
+    "family": [
+      {
+        "translit": "אַבוּ",
+        "meaning": "אב, אבא"
+      },
+      {
+        "translit": "אוּמּ",
+        "meaning": "אם, אמא"
+      },
+      {
+        "translit": "אִבְן",
+        "meaning": "בן"
+      },
+      {
+        "translit": "בִּנְת",
+        "meaning": "בת"
+      },
+      {
+        "translit": "אָח",
+        "meaning": "אח"
+      },
+      {
+        "translit": "אֻחְת",
+        "meaning": "אחות"
+      },
+      {
+        "translit": "ג׳ֵדּ",
+        "meaning": "סבא"
+      },
+      {
+        "translit": "סִתּ",
+        "meaning": "סבתא"
+      },
+      {
+        "translit": "עַמּ",
+        "meaning": "דוד (מצד האב)"
+      },
+      {
+        "translit": "חָאל",
+        "meaning": "דוד (מצד האם)"
+      },
+      {
+        "translit": "מָרָא/מָרָת",
+        "meaning": "אישה/גבר (בעל/אשה)"
+      },
+      {
+        "translit": "עָרוּס/עָרוּסָא",
+        "meaning": "חתן/כלה"
+      }
+    ],
+    "time": [
+      {
+        "translit": "יוֹם",
+        "meaning": "יום"
+      },
+      {
+        "translit": "לֵילָה",
+        "meaning": "לילה"
+      },
+      {
+        "translit": "צַבָּאח",
+        "meaning": "בוקר"
+      },
+      {
+        "translit": "מַסָא",
+        "meaning": "ערב"
+      },
+      {
+        "translit": "סָנָה",
+        "meaning": "שנה"
+      },
+      {
+        "translit": "שַׁהְר",
+        "meaning": "חודש"
+      },
+      {
+        "translit": "אֻסְבּוּע",
+        "meaning": "שבוע"
+      },
+      {
+        "translit": "סָאעָא",
+        "meaning": "שעה"
+      },
+      {
+        "translit": "דַּקִיקָא",
+        "meaning": "דקה"
+      },
+      {
+        "translit": "הַלָּא",
+        "meaning": "עכשיו"
+      },
+      {
+        "translit": "בֻּכְרָא",
+        "meaning": "מחר"
+      },
+      {
+        "translit": "אָמְבָּארַח",
+        "meaning": "אתמול"
+      }
+    ],
+    "colors": [
+      {
+        "translit": "אַבְיַד",
+        "meaning": "לבן"
+      },
+      {
+        "translit": "אַסְוַד",
+        "meaning": "שחור"
+      },
+      {
+        "translit": "אַחְמַר",
+        "meaning": "אדום"
+      },
+      {
+        "translit": "אַזְרַק",
+        "meaning": "כחול"
+      },
+      {
+        "translit": "אַחְדַ׳ר",
+        "meaning": "ירוק"
+      },
+      {
+        "translit": "אַצְפַר",
+        "meaning": "צהוב"
+      }
+    ]
+  }
+}

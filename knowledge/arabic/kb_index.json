@@ -1,0 +1,510 @@
+{
+  "meta": {
+    "file": "kb_index.json",
+    "layer": "orchestrator",
+    "version": "2.1",
+    "updated": "2026-03-25",
+    "description": "Master index and routing layer for Palestinian Arabic KB",
+    "kb_files": [
+      "kb_core.json",
+      "kb_dictionary.json",
+      "kb_phrases.json",
+      "kb_conjugations.json",
+      "kb_culture.json"
+    ]
+  },
+  "routing": {
+    "description": "Which file to query based on query type",
+    "rules": [
+      {
+        "query_type": "word_lookup",
+        "description": "User asks meaning of a specific word",
+        "signals": [
+          "what does X mean",
+          "מה זה",
+          "מה פירוש",
+          "translate"
+        ],
+        "primary": "kb_dictionary.json",
+        "fallback": "kb_phrases.json"
+      },
+      {
+        "query_type": "pronunciation",
+        "description": "How to pronounce, sun/moon letters, vowels",
+        "signals": [
+          "how to say",
+          "pronounce",
+          "sun letter",
+          "moon letter",
+          "stress"
+        ],
+        "primary": "kb_core.json",
+        "section": "phonology"
+      },
+      {
+        "query_type": "grammar",
+        "description": "Grammar rules — negation, questions, prepositions",
+        "signals": [
+          "how to negate",
+          "how to ask",
+          "plural",
+          "grammar",
+          "rule"
+        ],
+        "primary": "kb_core.json",
+        "section": "grammar_essentials"
+      },
+      {
+        "query_type": "verb_conjugation",
+        "description": "How to conjugate a verb",
+        "signals": [
+          "conjugate",
+          "past tense",
+          "present tense",
+          "imperative",
+          "how do I say I did"
+        ],
+        "primary": "kb_conjugations.json",
+        "fallback": "kb_core.json"
+      },
+      {
+        "query_type": "phrase_generation",
+        "description": "How to say a sentence or expression",
+        "signals": [
+          "how do I say",
+          "expression for",
+          "phrase",
+          "sentence"
+        ],
+        "primary": "kb_phrases.json",
+        "fallback": "kb_dictionary.json"
+      },
+      {
+        "query_type": "cultural",
+        "description": "Cultural norms, register, dialect differences",
+        "signals": [
+          "formal vs informal",
+          "polite way",
+          "dialect",
+          "MSA vs colloquial"
+        ],
+        "primary": "kb_culture.json",
+        "fallback": "kb_core.json"
+      },
+      {
+        "query_type": "topic_vocabulary",
+        "description": "Vocabulary around a topic",
+        "signals": [
+          "words for",
+          "vocabulary about",
+          "how to talk about"
+        ],
+        "primary": "kb_dictionary.json",
+        "filter_by": "category"
+      }
+    ]
+  },
+  "ingestion_pipeline": {
+    "description": "How to process new documents and add them to the KB",
+    "supported_source_types": [
+      "dictionary_pages",
+      "conversation_transcripts",
+      "grammar_chapters",
+      "phrase_lists",
+      "cultural_texts"
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "name": "identify_source_type",
+        "description": "Determine what kind of document this is",
+        "decision_tree": {
+          "has_word_definitions": "dictionary_pages → kb_dictionary.json",
+          "is_dialogue_or_conversation": "conversation_transcripts → kb_phrases.json",
+          "explains_grammar_rules": "grammar_chapters → kb_core.json",
+          "is_list_of_sentences": "phrase_lists → kb_phrases.json",
+          "describes_customs_or_society": "cultural_texts → kb_culture.json",
+          "has_verb_tables": "grammar_chapters → kb_conjugations.json"
+        }
+      },
+      {
+        "step": 2,
+        "name": "extract_entries",
+        "description": "Parse document into structured entries",
+        "for_dictionary_pages": {
+          "required_fields": [
+            "word",
+            "translation",
+            "pos"
+          ],
+          "optional_fields": [
+            "root",
+            "forms",
+            "examples",
+            "collocations",
+            "notes"
+          ],
+          "format": {
+            "word": "Arabic word in Hebrew script (Palestinian pronunciation)",
+            "translation": "Hebrew or English meaning",
+            "pos": "verb | noun | adjective | adverb | preposition | particle | pronoun | interjection",
+            "root": "trilateral root e.g. כ-ת-ב",
+            "forms": {
+              "plural": "...",
+              "fem": "...",
+              "active_participle": "..."
+            },
+            "examples": [
+              {
+                "ar": "Arabic example",
+                "he": "Hebrew translation"
+              }
+            ],
+            "collocations": [
+              "phrase1",
+              "phrase2"
+            ],
+            "notes": "dialect notes, usage warnings, cultural context",
+            "register": "colloquial | formal | universal | vulgar",
+            "frequency": "high | medium | low"
+          }
+        },
+        "for_phrases": {
+          "required_fields": [
+            "phrase_ar",
+            "phrase_he",
+            "category"
+          ],
+          "optional_fields": [
+            "register",
+            "response",
+            "notes",
+            "literal_translation"
+          ],
+          "categories": [
+            "greetings",
+            "farewells",
+            "gratitude",
+            "apology",
+            "questions",
+            "responses",
+            "affirmations",
+            "negations",
+            "suggestions",
+            "requests",
+            "emotions",
+            "discourse_markers",
+            "assertiveness",
+            "reassurance",
+            "interpersonal"
+          ]
+        },
+        "for_conjugations": {
+          "required_fields": [
+            "root",
+            "base",
+            "translation"
+          ],
+          "required_tables": [
+            "past",
+            "present"
+          ],
+          "optional_tables": [
+            "imperative",
+            "future",
+            "subjunctive"
+          ],
+          "person_codes": [
+            "1sg",
+            "2sg_m",
+            "2sg_f",
+            "3sg_m",
+            "3sg_f",
+            "1pl",
+            "2pl",
+            "3pl"
+          ]
+        },
+        "for_grammar": {
+          "structure": {
+            "rule_name": "short identifier",
+            "explanation": "plain language explanation",
+            "pattern": "template with slots",
+            "examples": [
+              {
+                "ar": "...",
+                "he": "..."
+              }
+            ],
+            "exceptions": []
+          }
+        }
+      },
+      {
+        "step": 3,
+        "name": "deduplicate",
+        "description": "Check if word/phrase already exists before adding",
+        "method": "compare 'word' field against existing entries in target file",
+        "on_duplicate": "merge examples and collocations, keep most complete entry"
+      },
+      {
+        "step": 4,
+        "name": "tag_and_categorize",
+        "description": "Add category, source, register, frequency tags",
+        "auto_category_by_first_letter": true,
+        "frequency_heuristic": "if has 3+ examples → high; 1-2 examples → medium; 0 → low"
+      },
+      {
+        "step": 5,
+        "name": "write_to_target_file",
+        "description": "Append to correct kb_*.json file",
+        "always_update": [
+          "kb_index.json → word_index section"
+        ]
+      },
+      {
+        "step": 6,
+        "name": "update_index",
+        "description": "Add new words to word_index in kb_index.json",
+        "fields_to_index": [
+          "word",
+          "translation_first_word",
+          "category"
+        ]
+      }
+    ]
+  },
+  "category_map": {
+    "אוכל": "kb_dictionary.json",
+    "בבית": "kb_dictionary.json",
+    "בגדים": "kb_dictionary.json",
+    "ביטויים": "kb_phrases.json",
+    "גוף האדם": "kb_dictionary.json",
+    "דקדוק": "kb_core.json",
+    "דתות וחגים": "kb_culture.json",
+    "זמן": "kb_dictionary.json",
+    "טכנולוגיה ומחשבים": "kb_dictionary.json",
+    "כלכלה": "kb_dictionary.json",
+    "מוסיקה": "kb_dictionary.json",
+    "מזג אוויר": "kb_dictionary.json",
+    "מספרים": "kb_core.json",
+    "מקומות 1 - מדינות": "kb_dictionary.json",
+    "מקומות 2 - ערים": "kb_dictionary.json",
+    "מקצועות": "kb_dictionary.json",
+    "משפחה": "kb_dictionary.json",
+    "פוליטיקה": "kb_culture.json",
+    "ברכות": "kb_phrases.json",
+    "dialect_notes": "kb_culture.json",
+    "cultural_context": "kb_culture.json",
+    "verb_conjugations": "kb_conjugations.json",
+    "phonology": "kb_core.json",
+    "morphology": "kb_core.json",
+    "grammar_essentials": "kb_core.json"
+  },
+  "word_index": {
+    "חאוו": "kb_dictionary.json",
+    "en:narrate": "kb_dictionary.json",
+    "חאכם": "kb_dictionary.json",
+    "en:judge": "kb_dictionary.json",
+    "חאל": "kb_dictionary.json",
+    "en:condition": "kb_dictionary.json",
+    "חבב": "kb_dictionary.json",
+    "en:love": "kb_dictionary.json",
+    "חביב": "kb_dictionary.json",
+    "en:beloved": "kb_dictionary.json",
+    "חדא": "kb_dictionary.json",
+    "en:boundary": "kb_dictionary.json",
+    "חדד": "kb_dictionary.json",
+    "en:sharpen;": "kb_dictionary.json",
+    "חדית": "kb_dictionary.json",
+    "en:conversation": "kb_dictionary.json",
+    "חדס": "kb_dictionary.json",
+    "en:guess": "kb_dictionary.json",
+    "חיאה": "kb_dictionary.json",
+    "en:life": "kb_dictionary.json",
+    "חיט": "kb_dictionary.json",
+    "en:wall": "kb_dictionary.json",
+    "חיילה": "kb_dictionary.json",
+    "en:strength": "kb_dictionary.json",
+    "חין": "kb_dictionary.json",
+    "en:when": "kb_dictionary.json",
+    "חכמה": "kb_dictionary.json",
+    "en:wisdom": "kb_dictionary.json",
+    "חל": "kb_dictionary.json",
+    "en:solution;": "kb_dictionary.json",
+    "חלב": "kb_dictionary.json",
+    "en:milk": "kb_dictionary.json",
+    "חלף": "kb_dictionary.json",
+    "en:pass": "kb_dictionary.json",
+    "חלק": "kb_dictionary.json",
+    "en:part": "kb_dictionary.json",
+    "חמאם": "kb_dictionary.json",
+    "en:bathroom": "kb_dictionary.json",
+    "חמד": "kb_dictionary.json",
+    "en:praise": "kb_dictionary.json",
+    "חמל": "kb_dictionary.json",
+    "en:carry": "kb_dictionary.json",
+    "חמס": "kb_dictionary.json",
+    "en:enthusiasm": "kb_dictionary.json",
+    "חן": "kb_dictionary.json",
+    "en:grace": "kb_dictionary.json",
+    "חסב": "kb_dictionary.json",
+    "en:calculate": "kb_dictionary.json",
+    "חסד": "kb_dictionary.json",
+    "en:envy": "kb_dictionary.json",
+    "חצר": "kb_dictionary.json",
+    "en:attend": "kb_dictionary.json",
+    "חקק": "kb_dictionary.json",
+    "en:right": "kb_dictionary.json",
+    "חרב": "kb_dictionary.json",
+    "en:destroy": "kb_dictionary.json",
+    "חרם": "kb_dictionary.json",
+    "en:forbidden": "kb_dictionary.json",
+    "חרף": "kb_dictionary.json",
+    "en:autumn": "kb_dictionary.json",
+    "חשי": "kb_dictionary.json",
+    "en:feel": "kb_dictionary.json",
+    "טאלע": "kb_dictionary.json",
+    "טב": "kb_dictionary.json",
+    "en:medicine": "kb_dictionary.json",
+    "טבע": "kb_dictionary.json",
+    "en:nature;": "kb_dictionary.json",
+    "טויל": "kb_dictionary.json",
+    "en:long": "kb_dictionary.json",
+    "טיח": "kb_dictionary.json",
+    "en:fall": "kb_dictionary.json",
+    "טיז": "kb_dictionary.json",
+    "en:buttocks": "kb_dictionary.json",
+    "טלב": "kb_dictionary.json",
+    "en:ask": "kb_dictionary.json",
+    "טלע": "kb_dictionary.json",
+    "en:appear": "kb_dictionary.json",
+    "טמן": "kb_dictionary.json",
+    "en:reassure": "kb_dictionary.json",
+    "טרש": "kb_dictionary.json",
+    "en:send": "kb_dictionary.json",
+    "מדפוע": "kb_dictionary.json",
+    "en:paid": "kb_dictionary.json",
+    "מדרסה": "kb_dictionary.json",
+    "en:school": "kb_dictionary.json",
+    "מהם": "kb_dictionary.json",
+    "en:important": "kb_dictionary.json",
+    "מהרג'אן": "kb_dictionary.json",
+    "en:festival": "kb_dictionary.json",
+    "מוב": "kb_dictionary.json",
+    "en:not": "kb_dictionary.json",
+    "מות": "kb_dictionary.json",
+    "en:death;": "kb_dictionary.json",
+    "מוסיקא": "kb_dictionary.json",
+    "en:music": "kb_dictionary.json",
+    "מולד": "kb_dictionary.json",
+    "en:birthday;": "kb_dictionary.json",
+    "מזאג'": "kb_dictionary.json",
+    "en:mood": "kb_dictionary.json",
+    "מזה": "kb_dictionary.json",
+    "en:joke": "kb_dictionary.json",
+    "מחכמה": "kb_dictionary.json",
+    "en:court": "kb_dictionary.json",
+    "מחל": "kb_dictionary.json",
+    "en:place": "kb_dictionary.json",
+    "מחן": "kb_dictionary.json",
+    "en:misfortune": "kb_dictionary.json",
+    "מחנייה": "kb_dictionary.json",
+    "en:unfortunate": "kb_dictionary.json",
+    "מטבח": "kb_dictionary.json",
+    "en:kitchen": "kb_dictionary.json",
+    "מטר": "kb_dictionary.json",
+    "en:rain": "kb_dictionary.json",
+    "מיה": "kb_dictionary.json",
+    "en:water;": "kb_dictionary.json",
+    "מיה-מיה": "kb_dictionary.json",
+    "en:one": "kb_dictionary.json",
+    "מין": "kb_dictionary.json",
+    "en:who?": "kb_dictionary.json",
+    "מכן": "kb_dictionary.json",
+    "en:can": "kb_dictionary.json",
+    "מלי": "kb_dictionary.json",
+    "en:fill;": "kb_dictionary.json",
+    "מנה": "kb_dictionary.json",
+    "en:grant": "kb_dictionary.json",
+    "מרה": "kb_dictionary.json",
+    "en:woman;": "kb_dictionary.json",
+    "מרוח": "kb_dictionary.json",
+    "en:cheerful": "kb_dictionary.json",
+    "משה": "kb_dictionary.json",
+    "en:walk": "kb_dictionary.json",
+    "מע": "kb_dictionary.json",
+    "en:with": "kb_dictionary.json",
+    "מעלוש": "kb_dictionary.json",
+    "en:never": "kb_dictionary.json",
+    "אכל": "kb_dictionary.json",
+    "en:eat;": "kb_dictionary.json",
+    "אלה": "kb_dictionary.json",
+    "en:god": "kb_dictionary.json",
+    "אם": "kb_dictionary.json",
+    "en:mother;": "kb_dictionary.json",
+    "אמר": "kb_dictionary.json",
+    "en:say;": "kb_dictionary.json",
+    "אנא": "kb_dictionary.json",
+    "אנת": "kb_dictionary.json",
+    "en:you": "kb_dictionary.json",
+    "אהל": "kb_dictionary.json",
+    "en:family": "kb_dictionary.json",
+    "אחמר": "kb_dictionary.json",
+    "en:red": "kb_dictionary.json",
+    "אכ'ד": "kb_dictionary.json",
+    "en:take": "kb_dictionary.json",
+    "אסמע": "kb_dictionary.json",
+    "en:listen!": "kb_dictionary.json",
+    "אסלאם": "kb_dictionary.json",
+    "en:islam;": "kb_dictionary.json",
+    "אסמא": "kb_dictionary.json",
+    "en:names": "kb_dictionary.json",
+    "אשי": "kb_dictionary.json",
+    "en:thing": "kb_dictionary.json",
+    "אג'א": "kb_dictionary.json",
+    "en:come": "kb_dictionary.json",
+    "תבע": "kb_dictionary.json",
+    "en:follow;": "kb_dictionary.json",
+    "תבן": "kb_dictionary.json",
+    "en:straw": "kb_dictionary.json",
+    "תג'ר": "kb_dictionary.json",
+    "en:merchant": "kb_dictionary.json",
+    "תחת": "kb_dictionary.json",
+    "en:under": "kb_dictionary.json",
+    "תחכם": "kb_dictionary.json",
+    "תלג": "kb_dictionary.json",
+    "en:snow;": "kb_dictionary.json",
+    "תלפזיון": "kb_dictionary.json",
+    "en:television": "kb_dictionary.json",
+    "תלפון": "kb_dictionary.json",
+    "en:telephone": "kb_dictionary.json",
+    "תמר": "kb_dictionary.json",
+    "en:dates": "kb_dictionary.json",
+    "תמאם": "kb_dictionary.json",
+    "en:perfect": "kb_dictionary.json",
+    "תמן": "kb_dictionary.json",
+    "en:price": "kb_dictionary.json",
+    "תקריבן": "kb_dictionary.json",
+    "en:approximately": "kb_dictionary.json",
+    "תעבאן": "kb_dictionary.json",
+    "en:tired": "kb_dictionary.json",
+    "תغדה": "kb_dictionary.json",
+    "en:tomorrow": "kb_dictionary.json",
+    "תחמיר": "kb_dictionary.json",
+    "en:embarrass": "kb_dictionary.json",
+    "תקיל": "kb_dictionary.json",
+    "en:heavy;": "kb_dictionary.json",
+    "תסא'ל": "kb_dictionary.json",
+    "en:wonder": "kb_dictionary.json",
+    "ת'לת": "kb_dictionary.json",
+    "en:three;": "kb_dictionary.json"
+  },
+  "stats": {
+    "total_word_entries": 3753,
+    "total_phrases": 15,
+    "total_verb_tables": 3,
+    "dictionary_categories": 36,
+    "files": 5
+  }
+}

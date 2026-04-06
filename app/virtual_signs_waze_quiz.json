@@ -1,0 +1,827 @@
+{
+  "meta": {
+    "title": "شلطים وירטואליים — שלטי ווייז בערבית",
+    "description": "שלטי ניווט וירטואליים בסגנון ווייז/GPS, רק בערבית. לשימוש במשחק نوّطني כשאין תמונה אמיתית. כל שלט מעוצב כקומפוננטה SVG/HTML.",
+    "total_signs": 60,
+    "design_note": "כל שלט ייבנה כ-SVG/HTML component בסגנון שלט כביש ישראלי (ירוק/חום/כחול) או בסגנון ווייז מינימלי. הטקסט תמיד בערבית בלבד — השחקן צריך לקרוא.",
+    "last_updated": "2026-03-17"
+  },
+
+  "sign_styles": {
+    "highway_green": {
+      "bg": "#006B3F",
+      "text": "#FFFFFF",
+      "border": "#FFFFFF",
+      "usage": "כבישים ראשיים בין-עירוניים"
+    },
+    "city_blue": {
+      "bg": "#1565C0",
+      "text": "#FFFFFF",
+      "border": "#FFFFFF",
+      "usage": "כניסה לעיר / שלט עירוני"
+    },
+    "brown_tourist": {
+      "bg": "#5D4037",
+      "text": "#FFFFFF",
+      "border": "#FFD54F",
+      "usage": "אתרי תיירות"
+    },
+    "waze_minimal": {
+      "bg": "#FFFFFF",
+      "text": "#333333",
+      "border": "#E0E0E0",
+      "accent": "#33CCFF",
+      "usage": "סגנון ווייז — מודרני ונקי"
+    },
+    "yellow_warning": {
+      "bg": "#FFC107",
+      "text": "#212121",
+      "border": "#F57F17",
+      "usage": "אזהרות ומחסומים"
+    }
+  },
+
+  "virtual_signs": {
+
+    "cities_major": [
+      {
+        "id": "vs_001",
+        "name_arabic": "حيفا",
+        "name_hebrew": "חיפה",
+        "name_english": "Haifa",
+        "transliteration": "ḥēfa",
+        "region": "צפון",
+        "lat": 32.794,
+        "lng": 34.990,
+        "population_tier": "large",
+        "sign_style": "highway_green",
+        "road_numbers": [2, 4, 22],
+        "answer_accepts": ["חיפה", "haifa"],
+        "difficulty": "easy",
+        "learning_note": "حيفا — שם ערבי מקורי! ח=ح, י=ي, פ=ف, ה=ا",
+        "trivia": "העיר הגדולה בצפון, נמל ראשי"
+      },
+      {
+        "id": "vs_002",
+        "name_arabic": "بئر السبع",
+        "name_hebrew": "באר שבע",
+        "name_english": "Be'er Sheva",
+        "transliteration": "bīr es-sabʿ",
+        "region": "דרום",
+        "lat": 31.252,
+        "lng": 34.791,
+        "population_tier": "large",
+        "sign_style": "highway_green",
+        "road_numbers": [25, 40, 60],
+        "answer_accepts": ["באר שבע", "beer sheva", "be'er sheva"],
+        "difficulty": "medium",
+        "learning_note": "بئر = באר (בור מים). السبع = השבע. שם שמי משותף! بئر = באר זה אותו שורש.",
+        "trivia": "בירת הנגב"
+      },
+      {
+        "id": "vs_003",
+        "name_arabic": "عكا",
+        "name_hebrew": "עכו",
+        "name_english": "Akko",
+        "transliteration": "ʿakka",
+        "region": "צפון",
+        "lat": 32.927,
+        "lng": 35.084,
+        "population_tier": "medium",
+        "sign_style": "highway_green",
+        "road_numbers": [4],
+        "answer_accepts": ["עכו", "akko", "acre"],
+        "difficulty": "easy",
+        "learning_note": "عكا — שם ערבי מקורי, קצר וקל. ع (עין) = ע, ك (כאף) = כ",
+        "trivia": "עיר עתיקה עם נמל צלבני"
+      },
+      {
+        "id": "vs_004",
+        "name_arabic": "يافا",
+        "name_hebrew": "יפו",
+        "name_english": "Yafo / Jaffa",
+        "transliteration": "yāfa",
+        "region": "מרכז",
+        "lat": 32.052,
+        "lng": 34.750,
+        "population_tier": "medium",
+        "sign_style": "city_blue",
+        "road_numbers": [1],
+        "answer_accepts": ["יפו", "jaffa", "yafo"],
+        "difficulty": "easy",
+        "learning_note": "يافا = יפו/יפה. שם ערבי מקורי, קשור למילה 'יפה'.",
+        "trivia": "אחת הערים העתיקות בעולם"
+      },
+      {
+        "id": "vs_005",
+        "name_arabic": "الخليل",
+        "name_hebrew": "חברון",
+        "name_english": "Hebron",
+        "transliteration": "el-khalīl",
+        "region": "יהודה ושומרון",
+        "lat": 31.529,
+        "lng": 35.095,
+        "population_tier": "large",
+        "sign_style": "highway_green",
+        "road_numbers": [60, 35],
+        "answer_accepts": ["חברון", "hebron", "אל-חליל"],
+        "difficulty": "hard",
+        "learning_note": "الخليل = 'הידיד' (של אלוהים) — כינוי לאברהם אבינו. שם שונה לחלוטין מ'חברון'! خليل = ידיד/חבר.",
+        "trivia": "מערת המכפלה. בערבית השם קשור לאברהם — خليل الرحمن (ידיד הרחמן)"
+      },
+      {
+        "id": "vs_006",
+        "name_arabic": "نابلس",
+        "name_hebrew": "שכם",
+        "name_english": "Nablus / Shechem",
+        "transliteration": "nāblus",
+        "region": "יהודה ושומרון",
+        "lat": 32.222,
+        "lng": 35.262,
+        "population_tier": "large",
+        "sign_style": "highway_green",
+        "road_numbers": [60],
+        "answer_accepts": ["שכם", "נאבלוס", "nablus", "shechem"],
+        "difficulty": "hard",
+        "learning_note": "نابلس מגיע מ-Neapolis (יוונית = עיר חדשה). בעברית: שכם — שם שונה לגמרי!",
+        "trivia": "ידועה בכנאפה (حلاوة) ובסבון נאבלסי"
+      },
+      {
+        "id": "vs_007",
+        "name_arabic": "اللد",
+        "name_hebrew": "לוד",
+        "name_english": "Lod",
+        "transliteration": "el-ludd",
+        "region": "מרכז",
+        "lat": 31.951,
+        "lng": 34.895,
+        "population_tier": "medium",
+        "sign_style": "city_blue",
+        "road_numbers": [40, 443],
+        "answer_accepts": ["לוד", "lod", "lydda"],
+        "difficulty": "easy",
+        "learning_note": "اللد = הלוד (עם ال הידיעה). قريبה מ-לוד.",
+        "trivia": "ליד נמל התעופה בן גוריון"
+      },
+      {
+        "id": "vs_008",
+        "name_arabic": "الرملة",
+        "name_hebrew": "רמלה",
+        "name_english": "Ramla",
+        "transliteration": "er-ramle",
+        "region": "מרכז",
+        "lat": 31.929,
+        "lng": 34.862,
+        "population_tier": "medium",
+        "sign_style": "city_blue",
+        "road_numbers": [44, 431],
+        "answer_accepts": ["רמלה", "ramla", "ramle"],
+        "difficulty": "easy",
+        "learning_note": "الرملة = הרמלה (עם ال הידיעה). من رمل = חול. עיר שנוסדה בתקופה המוסלמית.",
+        "trivia": "העיר היחידה שנוסדה ע\"י הערבים בארץ ישראל"
+      },
+      {
+        "id": "vs_009",
+        "name_arabic": "طبريا",
+        "name_hebrew": "טבריה",
+        "name_english": "Tiberias",
+        "transliteration": "ṭabariyya",
+        "region": "צפון",
+        "lat": 32.796,
+        "lng": 35.530,
+        "population_tier": "medium",
+        "sign_style": "highway_green",
+        "road_numbers": [77, 90],
+        "answer_accepts": ["טבריה", "tiberias", "tveria"],
+        "difficulty": "medium",
+        "learning_note": "طبريا — ט=ط, ב=ب, ר=ر, י=ي. שם רומי מקורי (ע\"ש הקיסר טיבריוס).",
+        "trivia": "על שפת הכנרת, עיר קדושה ביהדות"
+      },
+      {
+        "id": "vs_010",
+        "name_arabic": "صفد",
+        "name_hebrew": "צפת",
+        "name_english": "Safed / Tzfat",
+        "transliteration": "ṣafad",
+        "region": "צפון",
+        "lat": 32.966,
+        "lng": 35.496,
+        "population_tier": "small",
+        "sign_style": "highway_green",
+        "road_numbers": [89, 90],
+        "answer_accepts": ["צפת", "safed", "tzfat"],
+        "difficulty": "medium",
+        "learning_note": "صفد: ص=צ (צאד!), ف=פ, د=ד. שם שמי משותף.",
+        "trivia": "עיר הקבלה, ארבע ערי הקודש"
+      },
+      {
+        "id": "vs_011",
+        "name_arabic": "بيت لحم",
+        "name_hebrew": "בית לחם",
+        "name_english": "Bethlehem",
+        "transliteration": "bēt laḥm",
+        "region": "יהודה ושומרון",
+        "lat": 31.705,
+        "lng": 35.202,
+        "population_tier": "medium",
+        "sign_style": "highway_green",
+        "road_numbers": [60],
+        "answer_accepts": ["בית לחם", "bethlehem", "beit lehem"],
+        "difficulty": "easy",
+        "learning_note": "بيت لحم = בית לחם. זהה! بيت=בית, لحم=לחם. שם שמי עתיק.",
+        "trivia": "מקום לידת ישו לפי המסורת הנוצרית"
+      },
+      {
+        "id": "vs_012",
+        "name_arabic": "أريحا",
+        "name_hebrew": "יריחו",
+        "name_english": "Jericho",
+        "transliteration": "arīḥa",
+        "region": "בקעת הירדן",
+        "lat": 31.857,
+        "lng": 35.461,
+        "population_tier": "small",
+        "sign_style": "highway_green",
+        "road_numbers": [90, 1],
+        "answer_accepts": ["יריחו", "jericho"],
+        "difficulty": "medium",
+        "learning_note": "أريحا — שורש ר.י.ח (ריח/רוח). העיר העתיקה בעולם.",
+        "trivia": "העיר הנמוכה והעתיקה בעולם, 250 מטר מתחת לפני הים"
+      },
+      {
+        "id": "vs_013",
+        "name_arabic": "رام الله",
+        "name_hebrew": "רמאללה",
+        "name_english": "Ramallah",
+        "transliteration": "rām allāh",
+        "region": "יהודה ושומרון",
+        "lat": 31.903,
+        "lng": 35.204,
+        "population_tier": "large",
+        "sign_style": "highway_green",
+        "road_numbers": [60, 443],
+        "answer_accepts": ["רמאללה", "ramallah"],
+        "difficulty": "medium",
+        "learning_note": "رام الله = גבעת אלוהים. رام = גבעה (ארמית), الله = אלוהים.",
+        "trivia": "מרכז הרשות הפלסטינית"
+      },
+      {
+        "id": "vs_014",
+        "name_arabic": "غزة",
+        "name_hebrew": "עזה",
+        "name_english": "Gaza",
+        "transliteration": "ghazza",
+        "region": "דרום",
+        "lat": 31.517,
+        "lng": 34.456,
+        "population_tier": "large",
+        "sign_style": "highway_green",
+        "road_numbers": [4, 34],
+        "answer_accepts": ["עזה", "gaza"],
+        "difficulty": "medium",
+        "learning_note": "غزة: غ (גין) = ע/ג', ز=ז, ة=ה. שם כנעני עתיק.",
+        "trivia": "אחת הערים העתיקות בעולם"
+      },
+      {
+        "id": "vs_015",
+        "name_arabic": "جنين",
+        "name_hebrew": "ג'נין",
+        "name_english": "Jenin",
+        "transliteration": "janīn",
+        "region": "יהודה ושומרון",
+        "lat": 32.461,
+        "lng": 35.300,
+        "population_tier": "medium",
+        "sign_style": "highway_green",
+        "road_numbers": [60],
+        "answer_accepts": ["ג'נין", "jenin"],
+        "difficulty": "medium",
+        "learning_note": "جنين — من جنة (גן עדן). ج=ג', ن=נ. 'הגנה הקטנה'.",
+        "trivia": "בצפון הגדה, ידועה בשוק וחקלאות"
+      }
+    ],
+
+    "cities_arab_inside_israel": [
+      {
+        "id": "vs_020",
+        "name_arabic": "أم الفحم",
+        "name_hebrew": "אום אל-פחם",
+        "name_english": "Umm al-Fahm",
+        "transliteration": "umm el-faḥm",
+        "region": "משולש",
+        "lat": 32.519,
+        "lng": 35.153,
+        "population_tier": "medium",
+        "sign_style": "city_blue",
+        "road_numbers": [65],
+        "answer_accepts": ["אום אל פחם", "umm al fahm"],
+        "difficulty": "medium",
+        "learning_note": "أم الفحم = אם הפחם. أم=אם, ال=ה, فحم=פחם. שם ערבי מקורי.",
+        "trivia": "העיר הערבית השנייה בגודלה בישראל"
+      },
+      {
+        "id": "vs_021",
+        "name_arabic": "سخنين",
+        "name_hebrew": "סח'נין",
+        "name_english": "Sakhnin",
+        "transliteration": "sakhnīn",
+        "region": "גליל",
+        "lat": 32.863,
+        "lng": 35.296,
+        "population_tier": "small",
+        "sign_style": "city_blue",
+        "road_numbers": [805],
+        "answer_accepts": ["סח'נין", "סחנין", "sakhnin"],
+        "difficulty": "medium",
+        "learning_note": "سخنين — من سخن (חם). خ = ח'.",
+        "trivia": "ידועה ביום האדמה"
+      },
+      {
+        "id": "vs_022",
+        "name_arabic": "الطيبة",
+        "name_hebrew": "טייבה",
+        "name_english": "Tayibe",
+        "transliteration": "eṭ-ṭaybe",
+        "region": "משולש",
+        "lat": 32.267,
+        "lng": 34.951,
+        "population_tier": "medium",
+        "sign_style": "city_blue",
+        "road_numbers": [444],
+        "answer_accepts": ["טייבה", "tayibe", "taybe"],
+        "difficulty": "easy",
+        "learning_note": "الطيبة = הטובה. من طيب = טוב. ט=ط!",
+        "trivia": "העיר הערבית הגדולה במשולש"
+      },
+      {
+        "id": "vs_023",
+        "name_arabic": "باقة الغربية",
+        "name_hebrew": "באקה אל-ע'רביה",
+        "name_english": "Baqa al-Gharbiyye",
+        "transliteration": "bāqa el-gharbiyye",
+        "region": "משולש",
+        "lat": 32.418,
+        "lng": 35.046,
+        "population_tier": "small",
+        "sign_style": "city_blue",
+        "road_numbers": [574],
+        "answer_accepts": ["באקה אל גרביה", "באקה", "baqa"],
+        "difficulty": "hard",
+        "learning_note": "باقة = באקה (צמח/פרח). الغربية = המערבית. غ (גין) = ע'/ר'.",
+        "trivia": "יש גם באקה א-שרקייה (המזרחית) בגדה"
+      },
+      {
+        "id": "vs_024",
+        "name_arabic": "شفاعمرو",
+        "name_hebrew": "שפרעם",
+        "name_english": "Shefa-'Amr",
+        "transliteration": "shfāʿamru",
+        "region": "גליל",
+        "lat": 32.805,
+        "lng": 35.170,
+        "population_tier": "medium",
+        "sign_style": "city_blue",
+        "road_numbers": [781],
+        "answer_accepts": ["שפרעם", "shfaram", "shefa amr"],
+        "difficulty": "hard",
+        "learning_note": "شفاعمرو — שם עתיק, אולי 'שפע עמרו'. ש=ش, פ=ف, ע=ع.",
+        "trivia": "עיר מעורבת: מוסלמים, נוצרים ודרוזים"
+      },
+      {
+        "id": "vs_025",
+        "name_arabic": "دالية الكرمل",
+        "name_hebrew": "דאלית אל-כרמל",
+        "name_english": "Daliyat al-Karmel",
+        "transliteration": "dāliyat el-karmal",
+        "region": "כרמל",
+        "lat": 32.693,
+        "lng": 35.054,
+        "population_tier": "small",
+        "sign_style": "city_blue",
+        "road_numbers": [672],
+        "answer_accepts": ["דאלית אל כרמל", "daliyat al karmel"],
+        "difficulty": "medium",
+        "learning_note": "دالية = גפן/שריג. الكرمل = הכרמל. 'הגפן של הכרמל'.",
+        "trivia": "יישוב דרוזי גדול על הכרמל"
+      },
+      {
+        "id": "vs_026",
+        "name_arabic": "المغار",
+        "name_hebrew": "מגאר",
+        "name_english": "Mughar",
+        "transliteration": "el-mughār",
+        "region": "גליל",
+        "lat": 32.849,
+        "lng": 35.406,
+        "population_tier": "small",
+        "sign_style": "city_blue",
+        "road_numbers": [807],
+        "answer_accepts": ["מגאר", "mughar"],
+        "difficulty": "medium",
+        "learning_note": "المغار = המערות. من مغارة = מערה. غ = ג'.",
+        "trivia": "יישוב דרוזי ונוצרי"
+      }
+    ],
+
+    "kibbutzim_and_moshavim": [
+      {
+        "id": "vs_030",
+        "name_arabic": "ديغانيا",
+        "name_hebrew": "דגניה",
+        "name_english": "Degania",
+        "transliteration": "dīghāniya",
+        "region": "עמק הירדן",
+        "lat": 32.703,
+        "lng": 35.574,
+        "sign_style": "highway_green",
+        "road_numbers": [90],
+        "answer_accepts": ["דגניה", "degania"],
+        "difficulty": "medium",
+        "learning_note": "ديغانيا — תעתיק. ד=د, ג=غ (גין!), נ=ن. הקיבוץ הראשון.",
+        "trivia": "הקיבוץ הראשון בהיסטוריה, 1910"
+      },
+      {
+        "id": "vs_031",
+        "name_arabic": "عين غيدي",
+        "name_hebrew": "עין גדי",
+        "name_english": "Ein Gedi",
+        "transliteration": "ʿēn ghēdi",
+        "region": "ים המלח",
+        "lat": 31.462,
+        "lng": 35.387,
+        "sign_style": "brown_tourist",
+        "road_numbers": [90],
+        "answer_accepts": ["עין גדי", "ein gedi"],
+        "difficulty": "easy",
+        "learning_note": "عين = עין (מעיין). غيدي = גדי. שם שמי זהה!",
+        "trivia": "נווה מדבר ליד ים המלח"
+      }
+    ],
+
+    "landmarks_and_tourist": [
+      {
+        "id": "vs_040",
+        "name_arabic": "البحر الميت",
+        "name_hebrew": "ים המלח",
+        "name_english": "Dead Sea",
+        "transliteration": "el-baḥr el-mayyit",
+        "region": "בקעת הירדן",
+        "lat": 31.500,
+        "lng": 35.500,
+        "sign_style": "brown_tourist",
+        "road_numbers": [90, 1],
+        "answer_accepts": ["ים המלח", "dead sea"],
+        "difficulty": "medium",
+        "learning_note": "البحر الميت = הים המת (לא 'המלח'!). بحر=ים, ميت=מת. תרגום שונה!",
+        "trivia": "הנקודה הנמוכה ביותר על פני כדור הארץ"
+      },
+      {
+        "id": "vs_041",
+        "name_arabic": "بحيرة طبريا",
+        "name_hebrew": "הכנרת",
+        "name_english": "Sea of Galilee",
+        "transliteration": "buḥēret ṭabariyya",
+        "region": "צפון",
+        "lat": 32.830,
+        "lng": 35.585,
+        "sign_style": "brown_tourist",
+        "road_numbers": [90, 77],
+        "answer_accepts": ["כנרת", "הכנרת", "sea of galilee"],
+        "difficulty": "hard",
+        "learning_note": "بحيرة طبريا = אגם טבריה (לא 'כנרת'!). بحيرة=אגם, طبريا=טבריה. שם ערבי שונה לחלוטין.",
+        "trivia": "מקור המים הראשי של ישראל"
+      },
+      {
+        "id": "vs_042",
+        "name_arabic": "جبل الشيخ",
+        "name_hebrew": "הר חרמון",
+        "name_english": "Mount Hermon",
+        "transliteration": "jabal esh-shēkh",
+        "region": "גולן",
+        "lat": 33.416,
+        "lng": 35.857,
+        "sign_style": "brown_tourist",
+        "road_numbers": [98],
+        "answer_accepts": ["חרמון", "הר חרמון", "mount hermon"],
+        "difficulty": "hard",
+        "learning_note": "جبل الشيخ = הר הזקן/השייח'. جبل=הר, الشيخ=הזקן. שם ערבי שונה!",
+        "trivia": "הנקודה הגבוהה ביותר בישראל, 2,236 מ'"
+      },
+      {
+        "id": "vs_043",
+        "name_arabic": "مسادا",
+        "name_hebrew": "מצדה",
+        "name_english": "Masada",
+        "transliteration": "masāda",
+        "region": "ים המלח",
+        "lat": 31.316,
+        "lng": 35.354,
+        "sign_style": "brown_tourist",
+        "road_numbers": [90],
+        "answer_accepts": ["מצדה", "masada"],
+        "difficulty": "easy",
+        "learning_note": "مسادا — תעתיק ישיר. צ הפכה ל-سا (כי אין צ בערבית רגילה).",
+        "trivia": "אתר מורשת עולמית של UNESCO"
+      },
+      {
+        "id": "vs_044",
+        "name_arabic": "المسجد الأقصى",
+        "name_hebrew": "מסגד אל-אקצא",
+        "name_english": "Al-Aqsa Mosque",
+        "transliteration": "el-masjid el-aqṣā",
+        "region": "ירושלים",
+        "lat": 31.776,
+        "lng": 35.236,
+        "sign_style": "brown_tourist",
+        "road_numbers": [],
+        "answer_accepts": ["אל אקצא", "al aqsa", "מסגד אל אקצא"],
+        "difficulty": "hard",
+        "learning_note": "المسجد=המסגד (מקום סגידה), الأقصى=הרחוק ביותר. מקום קדוש באיסלאם.",
+        "trivia": "שלישי בקדושתו באיסלאם"
+      },
+      {
+        "id": "vs_045",
+        "name_arabic": "كنيسة المهد",
+        "name_hebrew": "כנסיית המולד",
+        "name_english": "Church of the Nativity",
+        "transliteration": "kanīset el-mahd",
+        "region": "בית לחם",
+        "lat": 31.704,
+        "lng": 35.208,
+        "sign_style": "brown_tourist",
+        "road_numbers": [],
+        "answer_accepts": ["כנסיית המולד", "church of nativity"],
+        "difficulty": "hard",
+        "learning_note": "كنيسة=כנסייה (אותו שורש!), المهد=העריסה/המולד.",
+        "trivia": "מקום לידת ישו לפי המסורת"
+      },
+      {
+        "id": "vs_046",
+        "name_arabic": "قبة الصخرة",
+        "name_hebrew": "כיפת הסלע",
+        "name_english": "Dome of the Rock",
+        "transliteration": "qubbat eṣ-ṣakhra",
+        "region": "ירושלים",
+        "lat": 31.778,
+        "lng": 35.235,
+        "sign_style": "brown_tourist",
+        "road_numbers": [],
+        "answer_accepts": ["כיפת הסלע", "dome of the rock"],
+        "difficulty": "hard",
+        "learning_note": "قبة=כיפה (אותו שורש!), الصخرة=הסלע. ص=צ/ס.",
+        "trivia": "הכיפה המוזהבת בהר הבית"
+      }
+    ],
+
+    "navigation_phrases": [
+      {
+        "id": "vs_050",
+        "type": "direction_sign",
+        "arabic": "اتجه يمين",
+        "transliteration": "ittajih yamīn",
+        "hebrew": "פנה ימינה",
+        "sign_style": "waze_minimal",
+        "difficulty": "easy"
+      },
+      {
+        "id": "vs_051",
+        "type": "direction_sign",
+        "arabic": "اتجه يسار",
+        "transliteration": "ittajih yasār",
+        "hebrew": "פנה שמאלה",
+        "sign_style": "waze_minimal",
+        "difficulty": "easy"
+      },
+      {
+        "id": "vs_052",
+        "type": "direction_sign",
+        "arabic": "استمر على الطريق",
+        "transliteration": "istamirr ʿala eṭ-ṭarīq",
+        "hebrew": "המשך בדרך",
+        "sign_style": "waze_minimal",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_053",
+        "type": "direction_sign",
+        "arabic": "دوار — اخرج يمين",
+        "transliteration": "dawwār — ukhruj yamīn",
+        "hebrew": "כיכר — צא ימינה",
+        "sign_style": "waze_minimal",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_054",
+        "type": "direction_sign",
+        "arabic": "بعد ٥٠٠ متر اتجه يسار",
+        "transliteration": "baʿd khamsmīt mitr ittajih yasār",
+        "hebrew": "עוד 500 מטר פנה שמאלה",
+        "sign_style": "waze_minimal",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_055",
+        "type": "info_sign",
+        "arabic": "ازدحام مروري",
+        "transliteration": "izdiḥām murūri",
+        "hebrew": "פקק תנועה",
+        "sign_style": "yellow_warning",
+        "difficulty": "hard"
+      },
+      {
+        "id": "vs_056",
+        "type": "info_sign",
+        "arabic": "حادث — طريق مغلق",
+        "transliteration": "ḥādith — ṭarīq maghlūq",
+        "hebrew": "תאונה — כביש סגור",
+        "sign_style": "yellow_warning",
+        "difficulty": "hard"
+      },
+      {
+        "id": "vs_057",
+        "type": "info_sign",
+        "arabic": "محطة وقود",
+        "transliteration": "maḥaṭṭat waqūd",
+        "hebrew": "תחנת דלק",
+        "sign_style": "waze_minimal",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_058",
+        "type": "info_sign",
+        "arabic": "مستشفى",
+        "transliteration": "mustashfa",
+        "hebrew": "בית חולים",
+        "sign_style": "city_blue",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_059",
+        "type": "info_sign",
+        "arabic": "منطقة صناعية",
+        "transliteration": "minṭaqa ṣināʿiyye",
+        "hebrew": "אזור תעשייה",
+        "sign_style": "city_blue",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_060",
+        "type": "distance_sign",
+        "arabic": "القدس ٦٥ كم",
+        "transliteration": "el-quds khamse w-sittīn km",
+        "hebrew": "ירושלים 65 ק\"מ",
+        "sign_style": "highway_green",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_061",
+        "type": "distance_sign",
+        "arabic": "ايلات ٢٤٠ كم",
+        "transliteration": "īlāt mītēn w-arbaʿīn km",
+        "hebrew": "אילת 240 ק\"מ",
+        "sign_style": "highway_green",
+        "difficulty": "easy"
+      },
+      {
+        "id": "vs_062",
+        "type": "info_sign",
+        "arabic": "وصلت إلى وجهتك",
+        "transliteration": "wiṣilt ila wijhtak",
+        "hebrew": "הגעת ליעד שלך",
+        "sign_style": "waze_minimal",
+        "difficulty": "medium"
+      },
+      {
+        "id": "vs_063",
+        "type": "info_sign",
+        "arabic": "أعد الحساب",
+        "transliteration": "aʿid el-ḥisāb",
+        "hebrew": "מחשב מסלול מחדש",
+        "sign_style": "waze_minimal",
+        "difficulty": "hard"
+      }
+    ]
+  },
+
+  "quiz_modes": {
+    "waze_quiz": {
+      "title": "חידון ווייז بالعربي",
+      "description": "הווייז עבר לערבית! תבין את ההוראות.",
+      "rounds": 10,
+      "format": "multiple_choice",
+      "example_question": {
+        "prompt": "הווייז אומר: اتجه يمين بعد الدوار",
+        "options": [
+          {"text": "פנה ימינה אחרי הכיכר", "correct": true},
+          {"text": "פנה שמאלה אחרי הרמזור", "correct": false},
+          {"text": "עשה פרסה בכיכר", "correct": false},
+          {"text": "המשך ישר 200 מטר", "correct": false}
+        ]
+      }
+    },
+
+    "city_name_quiz": {
+      "title": "מה העיר? ما المدينه؟",
+      "description": "רואים שם עיר בערבית, צריכים לזהות.",
+      "rounds": 15,
+      "format": "type_answer",
+      "levels": {
+        "easy": "תעתיקים ישירים: سديروت، كرميئيل، ايلات",
+        "medium": "שמות דומים עם הבדלים: حيفا، طبريا، صفد",
+        "hard": "שמות שונים לגמרי: الخليل (חברון)، القدس (ירושלים)، جبل الشيخ (חרמון)"
+      }
+    },
+
+    "landmark_quiz": {
+      "title": "איפה זה? وين هاد؟",
+      "description": "שם מקום/אתר בערבית → לחץ על המפה.",
+      "rounds": 10,
+      "format": "map_click",
+      "scoring": "מרחק בק\"מ מהמיקום האמיתי"
+    },
+
+    "direction_translation": {
+      "title": "תרגם הוראה! ترجم!",
+      "description": "הוראת ניווט בערבית → בחר תרגום נכון.",
+      "rounds": 10,
+      "format": "multiple_choice"
+    },
+
+    "dual_name_match": {
+      "title": "התאם שמות! طابق الأسماء!",
+      "description": "8 כרטיסים עם שמות בערבית, 8 בעברית — התאם זוגות.",
+      "rounds": 3,
+      "format": "memory_match",
+      "example_pairs": [
+        {"arabic": "الخليل", "hebrew": "חברון"},
+        {"arabic": "القدس", "hebrew": "ירושלים"},
+        {"arabic": "البحر الميت", "hebrew": "ים המלח"},
+        {"arabic": "جبل الشيخ", "hebrew": "הר חרמון"}
+      ],
+      "learning_note": "המשחק הזה הכי חזק לשמות שונים לגמרי בין השפות!"
+    },
+
+    "speed_reading": {
+      "title": "קריאה מהירה! اقرأ بسرعه!",
+      "description": "שלט ווייז מופיע ל-5 שניות. מה כתוב?",
+      "rounds": 12,
+      "format": "timed_type",
+      "time_per_sign_seconds": 5
+    }
+  },
+
+  "special_learning_category": {
+    "title": "שמות עם משמעות — أسماء بمعنى",
+    "description": "ערים ששמותיהן בערבית שונים לגמרי מהעברית — כאן הלמידה הכי עמוקה",
+    "items": [
+      {
+        "hebrew": "ירושלים",
+        "arabic": "القدس",
+        "meaning": "הקדושה",
+        "root": "ق.د.س (קדושה)"
+      },
+      {
+        "hebrew": "חברון",
+        "arabic": "الخليل",
+        "meaning": "הידיד (של אלוהים = אברהם)",
+        "root": "خ.ل.ل (ידידות)"
+      },
+      {
+        "hebrew": "הר חרמון",
+        "arabic": "جبل الشيخ",
+        "meaning": "הר הזקן/השייח'",
+        "root": "ش.ي.خ (זקנה/חוכמה)"
+      },
+      {
+        "hebrew": "ים המלח",
+        "arabic": "البحر الميت",
+        "meaning": "הים המת",
+        "root": "م.و.ت (מוות)"
+      },
+      {
+        "hebrew": "הכנרת",
+        "arabic": "بحيرة طبريا",
+        "meaning": "אגם טבריה",
+        "root": "بحيرة = אגם (מצומצם)"
+      },
+      {
+        "hebrew": "שכם",
+        "arabic": "نابلس",
+        "meaning": "מ-Neapolis (יוונית = עיר חדשה)",
+        "root": "שם יווני"
+      },
+      {
+        "hebrew": "שפרעם",
+        "arabic": "شفاعمرو",
+        "meaning": "אולי 'שפע עמרו'",
+        "root": "שם עתיק"
+      },
+      {
+        "hebrew": "באר שבע",
+        "arabic": "بئر السبع",
+        "meaning": "באר השבע (זהה!)",
+        "root": "ب.ئ.ر (בור/באר) — שורש שמי משותף"
+      }
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "file": "kb_conjugations.json",
+    "layer": "conjugations",
+    "version": "2.1",
+    "updated": "2026-03-25",
+    "description": "Full verb conjugation tables — past/present/imperative",
+    "rag_tags": [
+      "conjugation",
+      "verb",
+      "past",
+      "present",
+      "imperative",
+      "tense",
+      "inflection",
+      "binyans",
+      "verb_forms"
+    ]
+  },
+  "verb_tables": {
+    "טלע_go_out": {
+      "root": "ط-ل-ع",
+      "base": "טלע",
+      "translation": "go out, turn out",
+      "conjugations": {
+        "past": {
+          "1sg": "טלעת",
+          "2sg_m": "טלעת",
+          "2sg_f": "טלעתי",
+          "3sg_m": "טלע",
+          "3sg_f": "טלעת",
+          "1pl": "טלענא",
+          "2pl": "טלעתו",
+          "3pl": "טלעו"
+        },
+        "present": {
+          "1sg": "בטלע",
+          "2sg_m": "בתטלע",
+          "2sg_f": "בתטלעי",
+          "3sg_m": "ביטלע",
+          "3sg_f": "בתטלע",
+          "1pl": "מנטלע",
+          "2pl": "בתטלעו",
+          "3pl": "ביטלעו"
+        },
+        "imperative": {
+          "sg_m": "טלע",
+          "sg_f": "טלעי",
+          "pl": "טלעו"
+        }
+      }
+    },
+    "ג'א_come": {
+      "root": "ج-ي-أ",
+      "base": "ג'א",
+      "translation": "come",
+      "conjugations": {
+        "past": {
+          "1sg": "ג'יית",
+          "2sg_m": "ג'יית",
+          "2sg_f": "ג'ייתי",
+          "3sg_m": "ג'א",
+          "3sg_f": "ג'ית",
+          "1pl": "ג'ינא",
+          "2pl": "ג'ייתו",
+          "3pl": "ג'ו"
+        },
+        "present": {
+          "1sg": "בג'י",
+          "2sg_m": "בתג'י",
+          "3sg_m": "ביג'י",
+          "3pl": "ביג'ו"
+        },
+        "imperative": {
+          "sg_m": "ג'י",
+          "sg_f": "ג'י",
+          "pl": "ג'ו"
+        }
+      }
+    },
+    "משי_walk_go": {
+      "root": "م-ش-ي",
+      "base": "מש'י",
+      "translation": "walk, go",
+      "conjugations": {
+        "past": {
+          "1sg": "מש'ית",
+          "3sg_m": "מש'י",
+          "3sg_f": "מש'ית",
+          "3pl": "מש'יו"
+        },
+        "present": {
+          "1sg": "במש'י",
+          "2sg_m": "בתמש'י",
+          "3sg_m": "ביימש'י",
+          "1pl": "מנמש'י"
+        },
+        "imperative": {
+          "sg_m": "מש'י / רוח",
+          "pl": "רוחו"
+        }
+      }
+    }
+  },
+  "binyan_patterns": {}
+}

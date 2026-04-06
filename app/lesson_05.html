@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 5 — המשפחה — אֵלְאַהֵל</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700;900&family=Heebo:wght@300;400;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a14;
+    --bg2: #111128;
+    --gold: #f0c060;
+    --gold2: #ffd97d;
+    --teal: #3de8d0;
+    --rose: #ff6b8a;
+    --text: #e8e0d0;
+    --muted: #8880a0;
+    --card: rgba(255,255,255,0.04);
+    --glow: rgba(240,192,96,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(600px 600px at 70% 20%, rgba(61,232,208,0.04) 0%, transparent 60%),
+      radial-gradient(800px 800px at 20% 80%, rgba(240,192,96,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide { display: none; width: 100%; animation: fadeSlide 0.5s ease; }
+  .slide.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    align-items: center;
+  }
+
+  .nav-btn {
+    background: rgba(240,192,96,0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 26px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn:hover { background: rgba(240,192,96,0.25); transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .slide-counter {
+    color: var(--muted);
+    font-size: 13px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .title-slide {
+    text-align: center;
+    padding: 60px 20px 120px;
+  }
+  .title-slide .subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: pop 0.6s 0.2s forwards;
+  }
+  .title-slide h1 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(36px, 7vw, 64px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: pop 0.6s 0.4s forwards;
+  }
+  .title-slide .arabic-title {
+    font-size: clamp(22px, 5vw, 40px);
+    color: var(--teal);
+    direction: rtl;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: pop 0.6s 0.6s forwards;
+  }
+  .title-slide .desc {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: pop 0.6s 0.8s forwards;
+  }
+  .ornament {
+    font-size: 40px;
+    margin: 20px 0;
+    opacity: 0;
+    animation: pop 0.6s 1s forwards;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .section-header { text-align: center; margin-bottom: 36px; }
+  .section-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), #1ea8a0);
+    color: #0a0a14;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.2);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border-right: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 80px;
+    background: linear-gradient(to left, var(--glow), transparent);
+    pointer-events: none;
+  }
+  .rule-card .rule-text {
+    font-size: clamp(14px, 2.5vw, 17px);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .rule-card .highlight { color: var(--gold); font-weight: 700; }
+  .rule-card .teal { color: var(--teal); font-weight: 700; }
+  .rule-card .rose { color: var(--rose); font-weight: 700; }
+
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .example-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card:hover {
+    border-color: rgba(240,192,96,0.3);
+    transform: translateY(-2px);
+    background: rgba(240,192,96,0.05);
+  }
+  .example-card .parts {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    direction: rtl;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .part-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    padding: 3px 10px;
+    background: rgba(240,192,96,0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(240,192,96,0.3);
+  }
+  .part-sep { color: var(--muted); font-size: 14px; }
+  .part-result {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal);
+    padding: 3px 10px;
+    background: rgba(61,232,208,0.08);
+    border-radius: 8px;
+    border: 1px solid rgba(61,232,208,0.25);
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .example-card.revealed .part-result { opacity: 1; transform: scale(1); }
+  .example-card .translation {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    direction: rtl;
+  }
+  .click-hint {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1px;
+  }
+  .example-card.revealed .click-hint { display: none; }
+
+  .quiz-question {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.15);
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+  }
+  .quiz-q-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    direction: rtl;
+    text-align: right;
+  }
+  .quiz-words {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    direction: rtl;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .quiz-word {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-arrow { color: var(--muted); font-size: 18px; }
+  .quiz-answer {
+    display: inline-block;
+    min-width: 140px;
+    padding: 6px 14px;
+    background: rgba(61,232,208,0.05);
+    border: 2px dashed rgba(61,232,208,0.3);
+    border-radius: 8px;
+    color: transparent;
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    direction: rtl;
+    user-select: none;
+  }
+  .quiz-answer.revealed {
+    color: var(--teal);
+    border-color: var(--teal);
+    border-style: solid;
+    background: rgba(61,232,208,0.1);
+    animation: resultPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .quiz-hint { font-size: 12px; color: var(--muted); }
+
+  @keyframes resultPop {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .reveal-all-btn {
+    background: transparent;
+    border: 1px solid rgba(61,232,208,0.4);
+    color: var(--teal);
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .reveal-all-btn:hover { background: rgba(61,232,208,0.1); }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  .bg-arabic {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 400px;
+    font-weight: 900;
+    color: rgba(240,192,96,0.025);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .separator-line {
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(240,192,96,0.2), transparent);
+    margin: 20px 0;
+  }
+
+  .slide-inner { padding-bottom: 100px; }
+
+  .back-link {
+    position: fixed;
+    top: 14px;
+    right: 20px;
+    z-index: 200;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  .particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle 0.8s ease-out forwards;
+  }
+  @keyframes particle {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  /* Conjugation table */
+  .conj-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  .conj-table th {
+    background: rgba(240,192,96,0.1);
+    color: var(--gold);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid rgba(240,192,96,0.15);
+  }
+  .conj-table td {
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .conj-table td.gold-cell { color: var(--gold); }
+  .conj-table td.teal-cell { color: var(--teal); }
+  .conj-table tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* Family cards */
+  .family-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .family-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .family-card:hover {
+    border-color: rgba(240,192,96,0.4);
+    transform: translateY(-3px);
+    background: rgba(240,192,96,0.05);
+  }
+  .family-card .fc-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+  .family-card .fc-arabic {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .family-card .fc-hebrew {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .family-card.revealed-fc {
+    border-color: var(--teal);
+    background: rgba(61,232,208,0.06);
+  }
+  .family-card.revealed-fc .fc-arabic { color: var(--teal); }
+
+  /* Fill-in exercise */
+  .fill-sentence {
+    background: var(--card);
+    border: 1px solid rgba(240,192,96,0.15);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    direction: rtl;
+    text-align: right;
+  }
+  .fill-text {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 2;
+  }
+  .fill-blank {
+    display: inline-block;
+    min-width: 100px;
+    padding: 2px 12px;
+    background: rgba(61,232,208,0.05);
+    border: 2px dashed rgba(61,232,208,0.3);
+    border-radius: 6px;
+    color: transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    user-select: none;
+  }
+  .fill-blank.revealed {
+    color: var(--teal);
+    border-color: var(--teal);
+    border-style: solid;
+    background: rgba(61,232,208,0.1);
+    animation: resultPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .fill-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .arabic-script {
+    font-family: 'Noto Naskh Arabic', serif;
+    direction: rtl;
+    font-size: 1.2em;
+  }
+
+  .memory-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; max-width:500px; margin:0 auto; }
+  .memory-card { aspect-ratio:1; background:var(--card); border:1px solid rgba(255,255,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; font-weight:700; color:transparent; transition:all 0.3s; user-select:none; padding:8px; text-align:center; }
+  .memory-card.flipped { color:var(--gold); border-color:var(--gold); background:rgba(240,192,96,0.1); }
+  .memory-card.matched { color:var(--teal); border-color:var(--teal); background:rgba(61,232,208,0.1); pointer-events:none; }
+
+  @media (max-width: 600px) {
+    .examples-grid { grid-template-columns: 1fr; }
+    .family-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    .conj-table td, .conj-table th { padding: 6px 8px; font-size: 13px; }
+    .memory-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-arabic">5</div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+<a href="../index.html" class="back-link">-> חזרה לקורס</a>
+
+<div id="app">
+
+  <!-- SLIDE 0: Title -->
+  <div class="slide active" id="s0">
+    <div class="title-slide">
+      <div class="subtitle">שיעור 5 — ערבית מדוברת פלסטינית</div>
+      <h1>המשפחה<br>אֵלְאַהֵל</h1>
+      <div class="arabic-title">العائلة</div>
+      <div class="ornament">~ ~ ~</div>
+      <div class="desc">נלמד לדבר על המשפחה, ונכיר את המבנה "עִנְדי / מַעי" — יש לי / איתי.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: Grammar - endi/maei -->
+  <div class="slide" id="s1">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">דקדוק</div>
+        <h2>עִנְדי / מַעי — יש לי</h2>
+      </div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">עִנְדי</span> = יש לי / אצלי<br>
+          <span class="teal">מַעי</span> = יש עליי / איתי<br><br>
+          ההבדל: <span class="highlight">עִנְדי</span> מתייחס לבעלות כללית או מיקום ("אצל"), בעוד <span class="teal">מַעי</span> מתייחס למה שנמצא פיזית עליך/איתך.<br><br>
+          <span class="rose">דוגמאות:</span><br>
+          <span class="highlight">עִנְדי</span> מֻפְתַאח = יש לי מפתח (בכלל — בבית, בכספת, באוטו)<br>
+          <span class="teal">מַעי</span> מֻפְתַאח = יש עליי מפתח (כרגע)
+        </p>
+      </div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="rose">שלילה:</span><br>
+          מא <span class="highlight">עִנְדי</span> / פִש <span class="highlight">עִנְדי</span> = אין לי<br>
+          <span class="teal">מַעיש</span> = אין עליי / לא איתי
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Conjugation table -->
+  <div class="slide" id="s2">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">נטיות</div>
+        <h2>עִנְד / מַע — כל הגופים</h2>
+      </div>
+      <table class="conj-table">
+        <tr>
+          <th>גוף</th>
+          <th>עִנְד (יש / אצל)</th>
+          <th>מַע (עליי / איתי)</th>
+        </tr>
+        <tr><td>אני</td><td class="gold-cell">עִנְדי</td><td class="teal-cell">מַעי</td></tr>
+        <tr><td>אתה</td><td class="gold-cell">עִנְדַכּ</td><td class="teal-cell">מַעַכּ</td></tr>
+        <tr><td>את</td><td class="gold-cell">עִנְדֵכּ</td><td class="teal-cell">מַעֵכּ</td></tr>
+        <tr><td>הוא</td><td class="gold-cell">עִנְדוֹ</td><td class="teal-cell">מַעוֹ</td></tr>
+        <tr><td>היא</td><td class="gold-cell">עִנְדְהא</td><td class="teal-cell">מַעְהא</td></tr>
+        <tr><td>אנחנו</td><td class="gold-cell">עִננא</td><td class="teal-cell">מַעְנא</td></tr>
+        <tr><td>אתם/ן</td><td class="gold-cell">עִנְדְכּוּ</td><td class="teal-cell">מַעְכּוּ</td></tr>
+        <tr><td>הם/הן</td><td class="gold-cell">עִנְדְהֹם</td><td class="teal-cell">מַעְהֹם</td></tr>
+      </table>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="teal">שימו לב לדפוס:</span> השורש <span class="highlight">עִנְד</span> נשאר קבוע, ורק הסיומת משתנה לפי הגוף.<br>
+          באותו אופן, <span class="teal">מַע</span> + סיומת הגוף.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Family vocabulary 1 -->
+  <div class="slide" id="s3">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">אוצר מילים</div>
+        <h2>בני המשפחה</h2>
+      </div>
+      <p style="text-align:center;color:var(--muted);margin-bottom:20px;font-size:13px">לחצו על כרטיס כדי להדגיש אותו</p>
+      <div class="family-grid">
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">מַרַתי</div>
+          <div class="fc-hebrew">אשתי</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">ג'וֹזי</div>
+          <div class="fc-hebrew">בעלי</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">אַבּוּי</div>
+          <div class="fc-hebrew">אבא שלי</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">אִממי</div>
+          <div class="fc-hebrew">אמא שלי</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">אַח'</div>
+          <div class="fc-hebrew">אח</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">אֻחְ'ת</div>
+          <div class="fc-hebrew">אחות</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">וַלַד</div>
+          <div class="fc-hebrew">ילד / בן</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">בִּנְת</div>
+          <div class="fc-hebrew">ילדה / בת</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">סידי</div>
+          <div class="fc-hebrew">סבא שלי</div>
+        </div>
+        <div class="family-card" onclick="toggleFamily(this)">
+          <div class="fc-arabic">סִתתי</div>
+          <div class="fc-hebrew">סבתא שלי</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Usage examples -->
+  <div class="slide" id="s4">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">דוגמאות</div>
+        <h2>עִנְדי + משפחה</h2>
+      </div>
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עִנְדַכּ אַוְלאד?</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">יש לך ילדים?</span>
+          </div>
+          <div class="translation">שאלה לגבר</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עִנְדי וַלַד ואחַד</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">יש לי בן אחד</span>
+          </div>
+          <div class="translation">עִנְדי + מספר</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עִנְדי תַלַת בַּנאת</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">יש לי שלוש בנות</span>
+          </div>
+          <div class="translation">מספרים + משפחה</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">מא עִנְדי אַוְלאד</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">אין לי ילדים</span>
+          </div>
+          <div class="translation">שלילה</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">כַּם אַח' עִנְדַכּ?</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">כמה אחים יש לך?</span>
+          </div>
+          <div class="translation">כמה + עִנְד</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עִנְדי אַח' ואחַד וּאֻחְ'תֵין</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">יש לי אח אחד ושתי אחיות</span>
+          </div>
+          <div class="translation">תשובה מורכבת</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Spiral review -->
+  <div class="slide" id="s5">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">חזרה ספיראלית</div>
+        <h2>הכל מתחבר!</h2>
+      </div>
+      <div class="rule-card">
+        <p class="rule-text">
+          נשלב את כל מה שלמדנו עד עכשיו: ברכות (שיעור 1), הצגה עצמית (שיעור 2), גיל (שיעור 3), מספרים (שיעור 4), ומשפחה (שיעור 5).
+        </p>
+      </div>
+      <div class="examples-grid">
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">מַרְחַבּא! אַנא סָמי</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">שלום! אני סמי</span>
+          </div>
+          <div class="translation">ברכה + הצגה (שיעור 1+2)</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עֹמְרי תַלאתֵה וּתַלאתין סִנֵה</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">אני בן 33</span>
+          </div>
+          <div class="translation">גיל + מספרים (שיעור 3+4)</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">עִנְדי תַלַת אַוְלאד</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">יש לי 3 ילדים</span>
+          </div>
+          <div class="translation">עִנְדי + מספר + משפחה (שיעור 4+5)</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">מַרַתי אִסֵמְהא לינא</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">לאשתי קוראים לינא</span>
+          </div>
+          <div class="translation">משפחה + הצגה (שיעור 2+5)</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">כּיף (א)לְאַהֵל?</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">איך המשפחה?</span>
+          </div>
+          <div class="translation">ברכה + משפחה (שיעור 1+5)</div>
+        </div>
+        <div class="example-card" onclick="revealCard(this)">
+          <div class="click-hint">לחץ</div>
+          <div class="parts">
+            <span class="part-word">סידי מִן סוּרְיא</span>
+            <span class="part-sep">→</span>
+            <span class="part-result">סבא שלי מסוריה</span>
+          </div>
+          <div class="translation">משפחה + מוצא (שיעור 2+5)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Fill-in exercise -->
+  <div class="slide" id="s6">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">תרגול</div>
+        <h2>תארו את המשפחה שלכם</h2>
+      </div>
+      <p style="text-align:center;color:var(--muted);margin-bottom:20px;font-size:13px">לחצו על הריבועים לגלות את התשובה</p>
+      <button class="reveal-all-btn" onclick="revealAll()">גלה הכל</button>
+
+      <div class="fill-sentence">
+        <div class="fill-text">
+          1. יש לי שני ילדים:
+          <span class="fill-blank" onclick="revealBlank(this)" data-ans="עִנְדי תְנֵין אַוְלאד">?</span>
+        </div>
+        <div class="fill-hint">עִנְדי + מספר + ילדים</div>
+      </div>
+
+      <div class="fill-sentence">
+        <div class="fill-text">
+          2. אין לי אחים:
+          <span class="fill-blank" onclick="revealBlank(this)" data-ans="מא עִנְדי אִחְ'וֵה">?</span>
+        </div>
+        <div class="fill-hint">שלילה + עִנְדי + אחים</div>
+      </div>
+
+      <div class="fill-sentence">
+        <div class="fill-text">
+          3. יש לה ארבע בנות:
+          <span class="fill-blank" onclick="revealBlank(this)" data-ans="עִנְדְהא אַרְבַּע בַּנאת">?</span>
+        </div>
+        <div class="fill-hint">עִנְדְהא + מספר + בנות</div>
+      </div>
+
+      <div class="fill-sentence">
+        <div class="fill-text">
+          4. לאשתי קוראים דנה:
+          <span class="fill-blank" onclick="revealBlank(this)" data-ans="מַרַתי אִסֵמְהא דנה">?</span>
+        </div>
+        <div class="fill-hint">מַרַתי + שם</div>
+      </div>
+
+      <div class="fill-sentence">
+        <div class="fill-text">
+          5. כמה אחיות יש לך?
+          <span class="fill-blank" onclick="revealBlank(this)" data-ans="כַּם אֻחְ'ת עִנְדַכּ?">?</span>
+        </div>
+        <div class="fill-hint">כַּם + אחות + עִנְדַכּ</div>
+      </div>
+
+      <div class="fill-sentence">
+        <div class="fill-text">
+          6. יש לנו חמישה ילדים:
+          <span class="fill-blank" onclick="revealBlank(this)" data-ans="עִננא חַ'מְס אַוְלאד">?</span>
+        </div>
+        <div class="fill-hint">עִננא + מספר + ילדים</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Game -->
+  <div class="slide" id="sGAME">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">משחק</div>
+        <h2>משחק זיכרון</h2>
+      </div>
+      <p style="color:var(--muted);text-align:center;margin-bottom:16px;font-size:13px;">מצאו את הזוגות — מילה ותרגום</p>
+      <div id="memoryGrid" class="memory-grid"></div>
+      <div id="memoryTimer" style="text-align:center;color:var(--muted);font-size:13px;margin-top:8px;">⏱ 0:00</div>
+      <div id="memoryScore" style="text-align:center;margin-top:14px;color:var(--gold);font-size:14px;"></div>
+      <button onclick="initMemory()" style="display:block;margin:12px auto 0;background:rgba(61,232,208,0.1);border:1px solid var(--teal);color:var(--teal);padding:8px 20px;border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;">שחק שוב</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Summary -->
+  <div class="slide" id="s8">
+    <div class="slide-inner">
+      <div class="section-header">
+        <div class="section-tag">סיכום</div>
+        <h2>שיעור 5 — המשפחה</h2>
+      </div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">עִנְדי / מַעי</span><br><br>
+          <span class="highlight">עִנְדי</span> = יש לי / אצלי (בעלות כללית, מיקום)<br>
+          <span class="teal">מַעי</span> = איתי / עליי (נוכחות פיזית)<br><br>
+          <span class="rose">שלילה:</span> מא עִנְדי / מַעיש
+        </p>
+      </div>
+      <div class="separator-line"></div>
+      <div class="rule-card">
+        <p class="rule-text">
+          <span class="highlight">מילות משפחה:</span><br>
+          מַרַתי (אשתי) | ג'וֹזי (בעלי) | אַבּוּי (אבא שלי) | אִממי (אמא שלי)<br>
+          אַח' (אח) | אֻחְ'ת (אחות) | וַלַד (ילד) | בִּנְת (ילדה)<br>
+          סידי (סבא שלי) | סִתתי (סבתא שלי)
+        </p>
+      </div>
+      <div class="separator-line"></div>
+      <div class="rule-card" style="text-align:center; border-right: none; border-top: 4px solid var(--teal);">
+        <p class="rule-text" style="text-align:center">
+          <span class="teal">בשיעור הבא:</span> משפטים הכרחיים ליום-יום<br>
+          בִּדדי (אני רוצה), לאזֵם (חייב), יַללא (יאללה)<br>
+          + כלל אלף עזר ותנועת עזר!
+        </p>
+      </div>
+      <div class="celebration" style="text-align:center; margin-top:30px;">
+        <div style="font-size:48px; margin-bottom:10px;">🎉</div>
+        <div style="color: var(--gold); font-family: 'Noto Serif Hebrew', serif; font-size: 24px; font-weight:700; margin-bottom:8px;">כל הכבוד! סיימת את השיעור!</div>
+        <div style="color: var(--teal); font-size: 14px; margin-bottom: 20px;">אַלְף מַבְּרוּכּ!</div>
+        <a href="../index.html" style="display:inline-block; background: linear-gradient(135deg, var(--gold), #e0a030); color: #0a0a14; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">← חזרה לדף הקורס</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>-> הקודם</button>
+  <span class="slide-counter" id="slideCounter">1 / 9</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">הבא <-</button>
+</div>
+
+<script>
+const totalSlides = 9;
+let currentSlide = 0;
+
+function changeSlide(dir) {
+  const slides = document.querySelectorAll('.slide');
+  slides[currentSlide].classList.remove('active');
+  currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+  slides[currentSlide].classList.add('active');
+  updateNav();
+}
+
+function updateNav() {
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  const nextBtn = document.getElementById('nextBtn');
+  if (currentSlide === totalSlides - 1) {
+    // Mark lesson as completed
+    const lessonNum = parseInt(document.title.match(/\d+/)?.[0] || '0');
+    if (lessonNum > 0) {
+      const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+      if (!completed.includes(lessonNum)) {
+        completed.push(lessonNum);
+        localStorage.setItem('completedLessons', JSON.stringify(completed));
+      }
+    }
+    nextBtn.disabled = false;
+    nextBtn.textContent = '← חזרה לקורס';
+    nextBtn.onclick = function(){ window.location.href = '../index.html'; };
+  } else {
+    nextBtn.disabled = false;
+    nextBtn.textContent = 'הבא ←';
+    nextBtn.onclick = function(){ changeSlide(1); };
+  }
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+}
+
+function revealCard(card) {
+  if (!card.classList.contains('revealed')) {
+    card.classList.add('revealed');
+    const rect = card.getBoundingClientRect();
+    spawnParticlesAt(rect.left + rect.width/2, rect.top + rect.height/2);
+  }
+}
+
+function toggleFamily(card) {
+  card.classList.toggle('revealed-fc');
+  const rect = card.getBoundingClientRect();
+  spawnParticlesAt(rect.left + rect.width/2, rect.top + rect.height/2);
+}
+
+function revealAnswer(el) {
+  if (!el.classList.contains('revealed')) {
+    el.classList.add('revealed');
+    el.textContent = el.dataset.ans;
+    const rect = el.getBoundingClientRect();
+    spawnParticlesAt(rect.left + rect.width/2, rect.top + rect.height/2);
+  }
+}
+
+function revealBlank(el) {
+  if (!el.classList.contains('revealed')) {
+    el.classList.add('revealed');
+    el.textContent = el.dataset.ans;
+    const rect = el.getBoundingClientRect();
+    spawnParticlesAt(rect.left + rect.width/2, rect.top + rect.height/2);
+  }
+}
+
+function revealAll() {
+  document.querySelectorAll('.quiz-answer:not(.revealed)').forEach(el => revealAnswer(el));
+  document.querySelectorAll('.fill-blank:not(.revealed)').forEach(el => revealBlank(el));
+}
+
+function spawnParticlesAt(x, y) {
+  const colors = ['#f0c060','#3de8d0','#ff6b8a','#ffffff'];
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i / 10) * Math.PI * 2;
+    const dist = 25 + Math.random() * 45;
+    p.style.cssText = `
+      left: ${x - 3}px;
+      top: ${y - 3}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      position: fixed;
+      --tx: ${Math.cos(angle) * dist}px;
+      --ty: ${Math.sin(angle) * dist}px;
+      z-index: 9999;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+// Memory Game - Lesson 5: Family
+const memoryPairs = [['מַרַתי','אשתי'], ['אַבּוּי','אבא'], ['אִממי','אמא'], ['וַלַד','ילד'], ['בִּנְת','ילדה'], ['עִנְדי','יש לי']];
+let memoryCards=[], memoryFlipped=[], memoryMatched=0, memoryAttempts=0;
+let memoryTimerInterval = null, memorySeconds = 0;
+function initMemory(){
+  memoryMatched=0; memoryAttempts=0;
+  document.getElementById('memoryScore').textContent='';
+  memorySeconds = 0;
+  if(memoryTimerInterval) clearInterval(memoryTimerInterval);
+  const mtEl = document.getElementById('memoryTimer'); if(mtEl) mtEl.textContent = '⏱ 0:00';
+  memoryTimerInterval = setInterval(() => { memorySeconds++; const m=Math.floor(memorySeconds/60); const s=memorySeconds%60; const el=document.getElementById('memoryTimer'); if(el) el.textContent='⏱ '+m+':'+(s<10?'0':'')+s; }, 1000);
+  const all=[]; memoryPairs.forEach(([a,h])=>{all.push({text:a,id:a},{text:h,id:a});});
+  for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
+  const grid=document.getElementById('memoryGrid');
+  grid.innerHTML='';
+  all.forEach(c=>{const d=document.createElement('div');d.className='memory-card';d.dataset.id=c.id;d.textContent=c.text;d.onclick=()=>flipMemory(d);grid.appendChild(d);});
+}
+function flipMemory(card){
+  if(card.classList.contains('flipped')||card.classList.contains('matched')||memoryFlipped.length>=2)return;
+  card.classList.add('flipped');card.style.color='var(--gold)';memoryFlipped.push(card);
+  if(memoryFlipped.length===2){memoryAttempts++;
+    if(memoryFlipped[0].dataset.id===memoryFlipped[1].dataset.id){
+      memoryFlipped.forEach(c=>{c.classList.add('matched');c.style.color='var(--teal)';});
+      memoryMatched++; memoryFlipped=[];
+      if(memoryMatched===memoryPairs.length){if(memoryTimerInterval) clearInterval(memoryTimerInterval); const m=Math.floor(memorySeconds/60); const s=memorySeconds%60; const timeStr=m+':'+(s<10?'0':'')+s; document.getElementById('memoryScore').innerHTML='<span style="color:var(--teal)">🎉 כל הכבוד! '+memoryAttempts+' ניסיונות, זמן: '+timeStr+'</span>'; celebrateWin();}
+    } else {setTimeout(()=>{memoryFlipped.forEach(c=>{c.classList.remove('flipped');c.style.color='transparent';});memoryFlipped=[];},800);}
+  }
+}
+function celebrateWin(){for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const x=Math.random()*window.innerWidth,y=Math.random()*window.innerHeight;p.style.cssText='left:'+x+'px;top:'+y+'px;background:'+['#f0c060','#3de8d0','#ff6b8a','#ffffff'][Math.floor(Math.random()*4)]+';position:fixed;width:8px;height:8px;--tx:'+(Math.random()*100-50)+'px;--ty:'+(Math.random()*-100-50)+'px;z-index:9999;';document.body.appendChild(p);setTimeout(()=>p.remove(),1000);}}
+document.addEventListener('DOMContentLoaded',()=>{if(document.getElementById('memoryGrid'))initMemory();});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') changeSlide(1);
+  if (e.key === 'ArrowRight') changeSlide(-1);
+});
+
+updateNav();
+</script>
+</body>
+</html>
