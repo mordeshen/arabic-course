@@ -388,7 +388,10 @@ body::before {
         </div>
       </button>
     </div>
-    <p class="arabic-medium" style="margin-top:16px;opacity:0.5;">يالله ننطلق!</p>
+    <button onclick="localStorage.removeItem('nawwitni_nav_tutorial_seen'); startNavigation();" style="background:none;border:none;color:var(--text-muted);font-size:0.85rem;text-decoration:underline;cursor:pointer;margin-top:8px;font-family:inherit;">
+      ❓ איך משחקים? (טוטוריאל)
+    </button>
+    <p class="arabic-medium" style="margin-top:8px;opacity:0.5;">يالله ننطلق!</p>
   </div>
 </div>
 
@@ -758,7 +761,69 @@ let navState = { junction: 0, fuel: 5, score: 0, mistakes: 0, hints: 0 };
 
 function startNavigation() {
   navState = { junction: 0, fuel: MISSION.fuel, score: 0, mistakes: 0, hints: 0 };
+  // Show tutorial on first play
+  if (!localStorage.getItem('nawwitni_nav_tutorial_seen')) {
+    showNavTutorial();
+    return;
+  }
   showScreen('navigation');
+  renderNavigation();
+}
+
+function showNavTutorial() {
+  showScreen('navigation');
+  const content = document.getElementById('junctionContent');
+  document.getElementById('missionInfo').textContent = 'איך משחקים?';
+  renderFuel();
+  renderProgressRoad();
+  document.getElementById('navScore').textContent = `🎯 0`;
+
+  content.className = 'animate-slide';
+  content.innerHTML = `
+    <div style="background:rgba(51,204,255,0.08);border:1px solid rgba(51,204,255,0.3);border-radius:16px;padding:20px 24px;max-width:520px;line-height:1.8;text-align:right;direction:rtl;">
+      <h2 style="color:var(--waze-blue);margin-bottom:14px;font-size:1.3rem;">🧭 ברוכים הבאים לניווט!</h2>
+
+      <p style="margin-bottom:12px;">
+        <strong style="color:var(--text-primary);">המטרה:</strong>
+        להגיע מ-<span class="arabic-medium" style="color:var(--waze-blue);">حيفا</span> (חיפה)
+        ל-<span class="arabic-medium" style="color:var(--waze-blue);">تل أبيب</span> (תל אביב)
+        — בלי שייגמר הדלק ⛽.
+      </p>
+
+      <p style="margin-bottom:12px;">
+        <strong style="color:var(--text-primary);">בכל צומת</strong> תראו שלט בערבית, ושני כפתורים: ימינה / שמאלה.
+        קראו את השלט ובחרו לאן להמשיך כדי להתקרב ליעד.
+      </p>
+
+      <div style="background:rgba(102,187,106,0.08);border-right:3px solid #66BB6A;padding:10px 14px;margin:14px 0;border-radius:6px;">
+        <strong>דוגמה:</strong> אם רואים שלט עם
+        <span class="arabic-medium" style="color:var(--waze-blue);">تل أبيب →</span>
+        ואתם רוצים להגיע לתל אביב — פשוט תפנו לכיוון של החץ!
+      </div>
+
+      <p style="margin-bottom:12px;">
+        🎯 <strong>תשובה נכונה</strong> = 10 נקודות, בלי לאבד דלק.
+      </p>
+      <p style="margin-bottom:12px;">
+        ❌ <strong>תשובה שגויה</strong> = מאבדים חצי דלק (תיזהרו!).
+      </p>
+      <p style="margin-bottom:12px;">
+        💡 <strong>תקועים?</strong> לחצו על הכפתור עם הנורה לקבל תרגום לעברית — עולה חצי דלק.
+      </p>
+
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-top:14px;">
+        טיפ: השלטים האמיתיים בכבישי ישראל כתובים בערבית — המשחק הזה יעזור לכם לקרוא אותם בחיים האמיתיים!
+      </p>
+    </div>
+
+    <button class="btn btn-primary" onclick="dismissNavTutorial()" style="margin-top:8px;">
+      🚗 יאללה, מתחילים!
+    </button>
+  `;
+}
+
+function dismissNavTutorial() {
+  localStorage.setItem('nawwitni_nav_tutorial_seen', '1');
   renderNavigation();
 }
 
