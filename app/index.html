@@ -358,6 +358,34 @@
   .reading-card .rc-text { color: var(--teal); font-size: 11px; font-weight: 600; line-height: 1.3; }
   .reading-card .rc-arabic { font-family: 'Noto Naskh Arabic', sans-serif; color: var(--gold); font-size: 18px; direction: rtl; margin-top: 4px; }
 
+  /* Reading-lesson variant of lesson-card: full lesson, but visually marked as a reading drill */
+  .lesson-card.reading-lesson {
+    background: rgba(61,232,208,0.04);
+    border-color: rgba(61,232,208,0.25);
+  }
+  .lesson-card.reading-lesson:hover {
+    border-color: rgba(61,232,208,0.55);
+    background: rgba(61,232,208,0.08);
+    box-shadow: 0 12px 40px rgba(61,232,208,0.08);
+  }
+  .lesson-card.reading-lesson::before {
+    background: linear-gradient(to left, rgba(61,232,208,0.18), transparent);
+  }
+  .lesson-card.reading-lesson .lesson-num { color: var(--teal); }
+  .lesson-card.reading-lesson .card-arabic { color: var(--gold); opacity: 0.9; }
+  .reading-tag {
+    display: inline-block;
+    background: rgba(61,232,208,0.15);
+    color: var(--teal);
+    border: 1px solid rgba(61,232,208,0.35);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
   @media (max-width: 600px) {
     .lessons-grid { grid-template-columns: 1fr; }
     .hero { padding: 40px 10px 30px; }
@@ -408,71 +436,6 @@
   </div>
 
   <div class="lessons-grid">
-    <a class="lesson-card" href="lesson.html?id=100">
-      <div class="card-top">
-        <span class="lesson-num">א</span>
-        <span class="lesson-icon">🔤</span>
-      </div>
-      <div class="card-title">אותיות ראשונות</div>
-      <div class="card-arabic">ب ت ك ل م ن</div>
-      <div class="card-meta">
-        <span class="meta-tag meta-words">6 אותיות</span>
-        <span class="meta-tag meta-grammar">זיהוי + כתיבה</span>
-      </div>
-    </a>
-
-    <a class="lesson-card" href="lesson.html?id=101">
-      <div class="card-top">
-        <span class="lesson-num">ב</span>
-        <span class="lesson-icon">🔤</span>
-      </div>
-      <div class="card-title">אותיות מוכרות לעברית</div>
-      <div class="card-arabic">ش س ع ف و ي ه</div>
-      <div class="card-meta">
-        <span class="meta-tag meta-words">7 אותיות</span>
-        <span class="meta-tag meta-grammar">כולל ע׳ ייחודית</span>
-      </div>
-    </a>
-
-    <a class="lesson-card" href="lesson.html?id=102">
-      <div class="card-top">
-        <span class="lesson-num">ג</span>
-        <span class="lesson-icon">🔥</span>
-      </div>
-      <div class="card-title">האותיות הכועסות</div>
-      <div class="card-arabic">ص ض ط ظ</div>
-      <div class="card-meta">
-        <span class="meta-tag meta-words">4 אותיות</span>
-        <span class="meta-tag meta-grammar">צליל חזק ועמוק</span>
-      </div>
-    </a>
-
-    <a class="lesson-card" href="lesson.html?id=103">
-      <div class="card-top">
-        <span class="lesson-num">ד</span>
-        <span class="lesson-icon">✨</span>
-      </div>
-      <div class="card-title">אותיות ייחודיות (חלק א)</div>
-      <div class="card-arabic">ث ج ح خ ذ</div>
-      <div class="card-meta">
-        <span class="meta-tag meta-words">5 אותיות</span>
-        <span class="meta-tag meta-grammar">צלילים לא מעברית</span>
-      </div>
-    </a>
-
-    <a class="lesson-card" href="lesson.html?id=104">
-      <div class="card-top">
-        <span class="lesson-num">ה</span>
-        <span class="lesson-icon">🎯</span>
-      </div>
-      <div class="card-title">ייחודיות (ב) ואַלֵף</div>
-      <div class="card-arabic">غ ق ر ز د ا</div>
-      <div class="card-meta">
-        <span class="meta-tag meta-words">6 אותיות</span>
-        <span class="meta-tag meta-grammar">מסיימים את האלפבית</span>
-      </div>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_01.html">
       <div class="card-top">
         <span class="lesson-num">01</span>
@@ -486,10 +449,18 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=1">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 1</span>
-      <span class="rc-arabic">تدريب القراءة</span>
+    <a class="lesson-card reading-lesson" href="lesson.html?id=100">
+      <div class="card-top">
+        <span class="lesson-num">א</span>
+        <span class="lesson-icon">🔤</span>
+      </div>
+      <div class="reading-tag">תרגול קריאה אחרי שיעור 1</div>
+      <div class="card-title">אותיות ראשונות</div>
+      <div class="card-arabic">ب ت ك ل م ن</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">6 אותיות</span>
+        <span class="meta-tag meta-grammar">זיהוי + כתיבה</span>
+      </div>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_02.html">
@@ -505,10 +476,18 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=2">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 2</span>
-      <span class="rc-arabic">تدريب القراءة</span>
+    <a class="lesson-card reading-lesson" href="lesson.html?id=101">
+      <div class="card-top">
+        <span class="lesson-num">ב</span>
+        <span class="lesson-icon">🔤</span>
+      </div>
+      <div class="reading-tag">תרגול קריאה אחרי שיעור 2</div>
+      <div class="card-title">אותיות מוכרות לעברית</div>
+      <div class="card-arabic">ش س ع ف و ي ه</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">7 אותיות</span>
+        <span class="meta-tag meta-grammar">כולל ע׳ ייחודית</span>
+      </div>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_03.html">
@@ -524,10 +503,18 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=3">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 3</span>
-      <span class="rc-arabic">تدريب القراءة</span>
+    <a class="lesson-card reading-lesson" href="lesson.html?id=102">
+      <div class="card-top">
+        <span class="lesson-num">ג</span>
+        <span class="lesson-icon">🔥</span>
+      </div>
+      <div class="reading-tag">תרגול קריאה אחרי שיעור 3</div>
+      <div class="card-title">האותיות הכועסות</div>
+      <div class="card-arabic">ص ض ط ظ</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">4 אותיות</span>
+        <span class="meta-tag meta-grammar">צליל חזק ועמוק</span>
+      </div>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_04.html">
@@ -543,10 +530,18 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=4">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 4</span>
-      <span class="rc-arabic">تدريب القراءة</span>
+    <a class="lesson-card reading-lesson" href="lesson.html?id=103">
+      <div class="card-top">
+        <span class="lesson-num">ד</span>
+        <span class="lesson-icon">✨</span>
+      </div>
+      <div class="reading-tag">תרגול קריאה אחרי שיעור 4</div>
+      <div class="card-title">אותיות ייחודיות (חלק א)</div>
+      <div class="card-arabic">ث ج ح خ ذ</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">5 אותיות</span>
+        <span class="meta-tag meta-grammar">צלילים לא מעברית</span>
+      </div>
     </a>
   </div>
 
@@ -571,10 +566,18 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=5">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 5</span>
-      <span class="rc-arabic">تدريب القراءة</span>
+    <a class="lesson-card reading-lesson" href="lesson.html?id=104">
+      <div class="card-top">
+        <span class="lesson-num">ה</span>
+        <span class="lesson-icon">🎯</span>
+      </div>
+      <div class="reading-tag">תרגול קריאה אחרי שיעור 5</div>
+      <div class="card-title">ייחודיות (ב) ואַלֵף</div>
+      <div class="card-arabic">غ ق ر ز د ا</div>
+      <div class="card-meta">
+        <span class="meta-tag meta-words">6 אותיות</span>
+        <span class="meta-tag meta-grammar">מסיימים את האלפבית</span>
+      </div>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_06.html">
@@ -590,12 +593,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=6">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 6</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_07.html">
       <div class="card-top">
         <span class="lesson-num">07</span>
@@ -607,12 +604,6 @@
         <span class="meta-tag meta-words">8 מילים</span>
         <span class="meta-tag meta-grammar">שלילה</span>
       </div>
-    </a>
-
-    <a class="reading-card" href="lessons/reading_practice?lesson=7">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 7</span>
-      <span class="rc-arabic">تدريب القراءة</span>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_08.html">
@@ -628,11 +619,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=8">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 8</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
   </div>
 
   <!-- Module C -->
@@ -656,12 +642,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=9">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 9</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_10.html">
       <div class="card-top">
         <span class="lesson-num">10</span>
@@ -673,12 +653,6 @@
         <span class="meta-tag meta-words">8 מילים</span>
         <span class="meta-tag meta-grammar">עבר</span>
       </div>
-    </a>
-
-    <a class="reading-card" href="lessons/reading_practice?lesson=10">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 10</span>
-      <span class="rc-arabic">تدريب القراءة</span>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_11.html">
@@ -694,12 +668,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=11">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 11</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_12.html">
       <div class="card-top">
         <span class="lesson-num">12</span>
@@ -713,11 +681,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=12">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 12</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
   </div>
 
   <!-- Module D -->
@@ -741,12 +704,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=13">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 13</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_14.html">
       <div class="card-top">
         <span class="lesson-num">14</span>
@@ -758,12 +715,6 @@
         <span class="meta-tag meta-words">8 מילים</span>
         <span class="meta-tag meta-grammar">ריבוי שלם ושבור</span>
       </div>
-    </a>
-
-    <a class="reading-card" href="lessons/reading_practice?lesson=14">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 14</span>
-      <span class="rc-arabic">تدريب القراءة</span>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_15.html">
@@ -779,12 +730,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=15">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 15</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_16.html">
       <div class="card-top">
         <span class="lesson-num">16</span>
@@ -796,12 +741,6 @@
         <span class="meta-tag meta-words">10 מילים</span>
         <span class="meta-tag meta-grammar">ברכות מתקדמות</span>
       </div>
-    </a>
-
-    <a class="reading-card" href="lessons/reading_practice?lesson=16">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 16</span>
-      <span class="rc-arabic">تدريب القراءة</span>
     </a>
 
     <a class="lesson-card" href="lessons/lesson_17.html">
@@ -817,12 +756,6 @@
       </div>
     </a>
 
-    <a class="reading-card" href="lessons/reading_practice?lesson=17">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 17</span>
-      <span class="rc-arabic">تدريب القراءة</span>
-    </a>
-
     <a class="lesson-card" href="lessons/lesson_18.html">
       <div class="card-top">
         <span class="lesson-num">18</span>
@@ -834,12 +767,6 @@
         <span class="meta-tag meta-words">סיכום 180+ מילים</span>
         <span class="meta-tag meta-grammar">3 תרחישים מלאים</span>
       </div>
-    </a>
-
-    <a class="reading-card" href="lessons/reading_practice?lesson=18">
-      <span class="rc-icon">📝</span>
-      <span class="rc-text">תרגול קריאה בערבית — מילים משיעור 18</span>
-      <span class="rc-arabic">تدريب القراءة</span>
     </a>
 
     <a class="lesson-card" href="lessons/nawwitni.html" style="border: 1px solid rgba(51,204,255,0.3);">
