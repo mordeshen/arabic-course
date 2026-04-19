@@ -387,8 +387,7 @@ function initLetterTrace(visibleCanvas) {
   const targetCtx = targetCanvas.getContext("2d");
   const tolCtx = toleranceCanvas.getContext("2d");
 
-  const clearBtn = wrap.querySelector(".trace-clear");
-  const checkBtn = wrap.querySelector(".trace-check");
+  const clearBtn = wrap.querySelector(".trace-clear-btn");
   const feedback = wrap.querySelector(".trace-feedback");
   const progressEl = wrap.querySelector(".trace-progress");
   const timerEl = wrap.querySelector(".trace-timer");
@@ -419,7 +418,7 @@ function initLetterTrace(visibleCanvas) {
       if (timerText) timerText.textContent = String(Math.ceil(remaining));
       if (remaining <= 0) {
         stopTimer();
-        checkBtn?.click();
+        runCheck();
       }
     }, 120);
   }
@@ -538,7 +537,7 @@ function initLetterTrace(visibleCanvas) {
     clearInk();
     stopTimer();
     feedback.className = "trace-feedback";
-    feedback.textContent = 'ציירו את האות בתוך המסגרת, ואז לחצו "בדוק".';
+    feedback.textContent = 'ציירו את האות בתוך המסגרת. הבדיקה תתבצע אוטומטית אחרי 8 שניות.';
   });
 
   function computeScores() {
@@ -561,7 +560,7 @@ function initLetterTrace(visibleCanvas) {
     };
   }
 
-  checkBtn?.addEventListener("click", () => {
+  function runCheck() {
     stopTimer();
     const s = computeScores();
     const metrics = `<span class="trace-metrics">כיסוי ${(s.coverage*100).toFixed(0)}% · דיוק ${(s.precision*100).toFixed(0)}% · דיו ${(s.inkRatio*100).toFixed(0)}%</span>`;
@@ -596,7 +595,7 @@ function initLetterTrace(visibleCanvas) {
       feedback.className = "trace-feedback success final";
       feedback.innerHTML = `🎉 כל הכבוד! השלמתם ${REPS} תרגולים ✓ האות הזו כבר שלכם.${metrics}`;
     }
-  });
+  }
 
   function celebrate(isFinal) {
     const frame = wrap.querySelector(".trace-frame");
@@ -897,6 +896,7 @@ const TEMPLATES = {
           <div class="trace-progress"></div>
           <div class="trace-frame">
             <canvas class="trace-canvas" data-trace-letter="${esc(letter)}"></canvas>
+            <button class="trace-clear-btn" type="button" aria-label="נקה ציור" title="נקה ציור">↻</button>
             <div class="trace-timer" hidden>
               <svg viewBox="0 0 50 50" aria-hidden="true">
                 <circle class="trace-timer-track" cx="25" cy="25" r="22"></circle>
@@ -905,11 +905,7 @@ const TEMPLATES = {
               <div class="trace-timer-text">8</div>
             </div>
           </div>
-          <div class="trace-controls">
-            <button class="trace-clear">מחק</button>
-            <button class="trace-check">בדוק</button>
-          </div>
-          <div class="trace-feedback">ציירו את האות בתוך המסגרת, ואז לחצו "בדוק".</div>
+          <div class="trace-feedback">ציירו את האות בתוך המסגרת. הבדיקה תתבצע אוטומטית אחרי 8 שניות.</div>
         </div>
         ${c.note ? `<div class="rule-card" style="margin-top:16px;border-right-color:var(--teal);"><p class="rule-text">${c.note}</p></div>` : ""}
       </div>`;

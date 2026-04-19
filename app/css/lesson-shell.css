@@ -703,9 +703,14 @@ body::before {
   right: 10px;
   width: 48px;
   height: 48px;
-  pointer-events: none;
   z-index: 2;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+  pointer-events: none;
+  touch-action: none;
+}
+.trace-timer, .trace-timer * {
+  pointer-events: none !important;
+  touch-action: none !important;
 }
 .trace-timer[hidden] { display: none; }
 .trace-timer svg {
@@ -744,25 +749,31 @@ body::before {
   touch-action: none;
   cursor: crosshair;
 }
-.trace-controls { display: flex; gap: 10px; }
-.trace-controls button {
+.trace-clear-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,107,138,0.18);
+  border: 2px solid var(--rose);
+  color: var(--rose);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   font-family: 'Heebo', sans-serif;
-  font-size: 14px; font-weight: 700;
-  padding: 10px 22px; border-radius: 10px;
-  border: 1px solid; cursor: pointer;
-  transition: transform 0.1s, background 0.15s, filter 0.15s;
+  transition: background 0.15s, transform 0.1s, filter 0.15s;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
 }
-.trace-controls button:active { transform: scale(0.97); }
-.trace-clear {
-  background: rgba(255,107,138,0.12);
-  border-color: var(--rose); color: var(--rose);
-}
-.trace-clear:hover { background: rgba(255,107,138,0.22); }
-.trace-check {
-  background: linear-gradient(135deg, var(--gold), #e0a030);
-  border-color: var(--gold); color: #0a0a14;
-}
-.trace-check:hover { filter: brightness(1.1); }
+.trace-clear-btn:hover { background: rgba(255,107,138,0.32); filter: brightness(1.1) drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
+.trace-clear-btn:active { transform: scale(0.92); }
 .trace-feedback {
   min-height: 54px;
   width: min(600px, 100%);
