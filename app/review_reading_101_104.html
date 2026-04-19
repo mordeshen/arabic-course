@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>אישור תוכן — שיעורי קריאה 101-104</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Serif+Hebrew:wght@400;700&family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @page { size: A4 portrait; margin: 1.2cm 1cm; }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #fff; color: #111;
+      font-family: 'Heebo', 'Noto Serif Hebrew', sans-serif;
+      font-size: 11px; line-height: 1.35;
+    }
+    .page-header {
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+    .page-header h1 {
+      font-family: 'Noto Serif Hebrew', serif;
+      font-size: 22px; margin: 0 0 4px;
+    }
+    .page-header .subtitle {
+      font-size: 12px; color: #333;
+    }
+    .instructions {
+      background: #fafafa;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      border-radius: 4px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .instructions b { color: #000; }
+
+    h2.lesson-title {
+      font-family: 'Noto Serif Hebrew', serif;
+      font-size: 15px;
+      margin: 14px 0 6px;
+      padding: 6px 10px;
+      background: #f0f0f0;
+      border-right: 4px solid #333;
+    }
+    h2.lesson-title .lesson-meta {
+      float: left;
+      font-size: 11px;
+      font-weight: 400;
+      color: #555;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      page-break-inside: auto;
+    }
+    thead th {
+      background: #e8e8e8;
+      border: 1px solid #999;
+      padding: 5px 4px;
+      font-size: 10.5px;
+      text-align: center;
+      font-weight: 700;
+    }
+    tbody td {
+      border: 1px solid #bbb;
+      padding: 6px 5px;
+      vertical-align: middle;
+      text-align: center;
+    }
+    tbody tr { page-break-inside: avoid; }
+
+    .col-num     { width: 4%; color: #666; }
+    .col-letter  { width: 9%; font-family: 'Noto Naskh Arabic', serif; font-size: 26px; font-weight: 700; color: #000; }
+    .col-name    { width: 10%; font-weight: 700; font-size: 12px; }
+    .col-sound   { width: 10%; font-style: italic; color: #444; font-size: 11px; }
+    .col-ex      { width: 14%; }
+    .col-ex .arabic {
+      font-family: 'Noto Naskh Arabic', serif;
+      font-size: 18px; color: #000; display: block; line-height: 1.2;
+    }
+    .col-ex .meaning { font-size: 10.5px; color: #333; display: block; margin-top: 2px; }
+    .col-ex .translit { font-size: 9.5px; color: #777; font-style: italic; display: block; }
+    .col-correct {
+      width: 19%;
+      background: #fffef5;
+      text-align: right;
+      padding: 6px 8px;
+    }
+    .col-correct::before {
+      content: "תיקון / אישור:";
+      display: block;
+      font-size: 9.5px;
+      color: #888;
+      margin-bottom: 2px;
+      font-weight: 700;
+    }
+
+    .non-connector { background: #fff5f5; }
+    .non-connector .col-letter::after {
+      content: " ✕";
+      color: #c00;
+      font-size: 14px;
+      font-family: 'Heebo', sans-serif;
+      vertical-align: super;
+    }
+
+    .lesson-footer {
+      margin-top: 6px;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border: 1px dashed #888;
+      min-height: 50px;
+      background: #fcfcfc;
+    }
+    .lesson-footer::before {
+      content: "הערות כלליות על השיעור:";
+      display: block;
+      font-weight: 700;
+      font-size: 11px;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .signoff {
+      margin-top: 20px;
+      padding: 14px 12px;
+      border: 2px solid #333;
+      text-align: right;
+      background: #fafafa;
+    }
+    .signoff b { display: inline-block; min-width: 120px; }
+    .signoff .sig-line {
+      display: inline-block;
+      border-bottom: 1px solid #000;
+      min-width: 180px;
+      height: 22px;
+      vertical-align: bottom;
+    }
+
+    @media print {
+      .no-print { display: none; }
+    }
+    .no-print {
+      position: fixed;
+      top: 10px; left: 10px;
+      background: #333; color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+
+<button class="no-print" onclick="window.print()">🖨️ הדפסה</button>
+
+<div class="page-header">
+  <h1>אישור תוכן — שיעורי קריאה 101-104</h1>
+  <div class="subtitle">קורס ערבית פלסטינית לדוברי עברית · החלק של הקריאה והכתיבה · 22 אותיות</div>
+</div>
+
+<div class="instructions">
+  <b>אחי היקר,</b><br>
+  זהו מסמך לאישור תוכן שבניתי לארבעת השיעורים הבאים בחלק הקריאה. לכל אות יש:
+  שם עברי, הצליל, ושלוש מילים המדגימות אותה בתחילה / באמצע / בסוף המילה.<br>
+  אנא <b>סמן ✓</b> במשבצת "תיקון / אישור" אם התוכן נכון,
+  או <b>כתוב תיקון בעט</b> אם משהו לא מדויק (מילה לא טבעית, הגייה שגויה, שם עברי לא מתאים וכו׳).<br>
+  <b>✕ אדום</b> ליד אות = האות לא מתחברת לאות הבאה. <b>שורה בצבע ורדרד</b> = אות לא-מתחברת.
+</div>
+
+<!-- ============ LESSON 101 ============ -->
+<h2 class="lesson-title">שיעור 101 — קריאה: אותיות מוכרות לעברית <span class="lesson-meta">7 אותיות · ش س ع ف و ي ه</span></h2>
+<table>
+  <thead>
+    <tr>
+      <th class="col-num">#</th>
+      <th class="col-letter">אות</th>
+      <th class="col-name">שם</th>
+      <th class="col-sound">צליל</th>
+      <th class="col-ex">תחילת מילה</th>
+      <th class="col-ex">אמצע מילה</th>
+      <th class="col-ex">סוף מילה</th>
+      <th class="col-correct">תיקון</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="col-num">1</td><td class="col-letter">ش</td><td class="col-name">שִין</td><td class="col-sound">sh</td>
+      <td class="col-ex"><span class="arabic">شمس</span><span class="translit">shams</span><span class="meaning">שמש</span></td>
+      <td class="col-ex"><span class="arabic">ماشي</span><span class="translit">mashi</span><span class="meaning">הולך</span></td>
+      <td class="col-ex"><span class="arabic">مش</span><span class="translit">mish</span><span class="meaning">לא (שלילה)</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">2</td><td class="col-letter">س</td><td class="col-name">סִין</td><td class="col-sound">s</td>
+      <td class="col-ex"><span class="arabic">سلام</span><span class="translit">salam</span><span class="meaning">שלום</span></td>
+      <td class="col-ex"><span class="arabic">مساء</span><span class="translit">masa</span><span class="meaning">ערב</span></td>
+      <td class="col-ex"><span class="arabic">كاس</span><span class="translit">kas</span><span class="meaning">כוס</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">3</td><td class="col-letter">ع</td><td class="col-name">עַיְן</td><td class="col-sound">ʿ גרונית</td>
+      <td class="col-ex"><span class="arabic">عين</span><span class="translit">ʿayn</span><span class="meaning">עין</span></td>
+      <td class="col-ex"><span class="arabic">شعر</span><span class="translit">shaʿr</span><span class="meaning">שיער</span></td>
+      <td class="col-ex"><span class="arabic">مع</span><span class="translit">maʿ</span><span class="meaning">עם</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">4</td><td class="col-letter">ف</td><td class="col-name">פַא</td><td class="col-sound">f</td>
+      <td class="col-ex"><span class="arabic">فول</span><span class="translit">ful</span><span class="meaning">פול</span></td>
+      <td class="col-ex"><span class="arabic">سفر</span><span class="translit">safar</span><span class="meaning">נסיעה</span></td>
+      <td class="col-ex"><span class="arabic">كيف</span><span class="translit">kif</span><span class="meaning">איך</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr class="non-connector">
+      <td class="col-num">5</td><td class="col-letter">و</td><td class="col-name">וַאו</td><td class="col-sound">w / u</td>
+      <td class="col-ex"><span class="arabic">ولد</span><span class="translit">walad</span><span class="meaning">ילד</span></td>
+      <td class="col-ex"><span class="arabic">يوم</span><span class="translit">yawm</span><span class="meaning">יום</span></td>
+      <td class="col-ex"><span class="arabic">دلو</span><span class="translit">dalw</span><span class="meaning">דלי</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">6</td><td class="col-letter">ي</td><td class="col-name">יַא</td><td class="col-sound">y / i</td>
+      <td class="col-ex"><span class="arabic">يوم</span><span class="translit">yawm</span><span class="meaning">יום</span></td>
+      <td class="col-ex"><span class="arabic">بين</span><span class="translit">bayn</span><span class="meaning">בין</span></td>
+      <td class="col-ex"><span class="arabic">في</span><span class="translit">fi</span><span class="meaning">ב־ / יש</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">7</td><td class="col-letter">ه</td><td class="col-name">הַא</td><td class="col-sound">h</td>
+      <td class="col-ex"><span class="arabic">هذا</span><span class="translit">hadha</span><span class="meaning">זה</span></td>
+      <td class="col-ex"><span class="arabic">فهم</span><span class="translit">fahm</span><span class="meaning">הבנה</span></td>
+      <td class="col-ex"><span class="arabic">وجه</span><span class="translit">wajh</span><span class="meaning">פנים</span></td>
+      <td class="col-correct"></td>
+    </tr>
+  </tbody>
+</table>
+<div class="lesson-footer"></div>
+
+<!-- ============ LESSON 102 ============ -->
+<h2 class="lesson-title">שיעור 102 — קריאה: האותיות הכועסות <span class="lesson-meta">4 אותיות · ص ض ط ظ</span></h2>
+<table>
+  <thead>
+    <tr>
+      <th class="col-num">#</th><th class="col-letter">אות</th><th class="col-name">שם</th><th class="col-sound">צליל</th>
+      <th class="col-ex">תחילת מילה</th><th class="col-ex">אמצע מילה</th><th class="col-ex">סוף מילה</th><th class="col-correct">תיקון</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="col-num">1</td><td class="col-letter">ص</td><td class="col-name">סַֿאד</td><td class="col-sound">ṣ כועסת</td>
+      <td class="col-ex"><span class="arabic">صباح</span><span class="translit">sabah</span><span class="meaning">בוקר</span></td>
+      <td class="col-ex"><span class="arabic">مصر</span><span class="translit">misr</span><span class="meaning">מצרים</span></td>
+      <td class="col-ex"><span class="arabic">فص</span><span class="translit">fass</span><span class="meaning">שן / חתיכה</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">2</td><td class="col-letter">ض</td><td class="col-name">דַֿאד</td><td class="col-sound">ḍ כועסת</td>
+      <td class="col-ex"><span class="arabic">ضيف</span><span class="translit">dayf</span><span class="meaning">אורח</span></td>
+      <td class="col-ex"><span class="arabic">فاضي</span><span class="translit">faadi</span><span class="meaning">פנוי</span></td>
+      <td class="col-ex"><span class="arabic">أبيض</span><span class="translit">abyad</span><span class="meaning">לבן</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">3</td><td class="col-letter">ط</td><td class="col-name">טַא</td><td class="col-sound">ṭ כועסת</td>
+      <td class="col-ex"><span class="arabic">طيب</span><span class="translit">tayyib</span><span class="meaning">טוב</span></td>
+      <td class="col-ex"><span class="arabic">قطع</span><span class="translit">qataʿ</span><span class="meaning">חתך</span></td>
+      <td class="col-ex"><span class="arabic">خط</span><span class="translit">khatt</span><span class="meaning">קו / כתב</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">4</td><td class="col-letter">ظ</td><td class="col-name">זַֿא</td><td class="col-sound">ẓ כועסת</td>
+      <td class="col-ex"><span class="arabic">ظهر</span><span class="translit">zuhr</span><span class="meaning">צוהריים</span></td>
+      <td class="col-ex"><span class="arabic">نظيف</span><span class="translit">nazif</span><span class="meaning">נקי</span></td>
+      <td class="col-ex"><span class="arabic">حافظ</span><span class="translit">hafiz</span><span class="meaning">זוכר / שומר</span></td>
+      <td class="col-correct"></td>
+    </tr>
+  </tbody>
+</table>
+<div class="lesson-footer"></div>
+
+<!-- ============ LESSON 103 ============ -->
+<h2 class="lesson-title">שיעור 103 — קריאה: אותיות ייחודיות (חלק א) <span class="lesson-meta">5 אותיות · ث ج ح خ ذ</span></h2>
+<table>
+  <thead>
+    <tr>
+      <th class="col-num">#</th><th class="col-letter">אות</th><th class="col-name">שם</th><th class="col-sound">צליל</th>
+      <th class="col-ex">תחילת מילה</th><th class="col-ex">אמצע מילה</th><th class="col-ex">סוף מילה</th><th class="col-correct">תיקון</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="col-num">1</td><td class="col-letter">ث</td><td class="col-name">תַ'א</td><td class="col-sound">th (think)</td>
+      <td class="col-ex"><span class="arabic">ثلاثة</span><span class="translit">thalatha</span><span class="meaning">שלוש</span></td>
+      <td class="col-ex"><span class="arabic">مثل</span><span class="translit">mithl</span><span class="meaning">כמו</span></td>
+      <td class="col-ex"><span class="arabic">حديث</span><span class="translit">hadith</span><span class="meaning">שיחה / חדש</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">2</td><td class="col-letter">ج</td><td class="col-name">גִ'ים</td><td class="col-sound">j / zh</td>
+      <td class="col-ex"><span class="arabic">جو</span><span class="translit">jaw</span><span class="meaning">אווירה</span></td>
+      <td class="col-ex"><span class="arabic">رجل</span><span class="translit">rajul</span><span class="meaning">גבר</span></td>
+      <td class="col-ex"><span class="arabic">زوج</span><span class="translit">zawj</span><span class="meaning">בעל / זוג</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">3</td><td class="col-letter">ح</td><td class="col-name">חַא</td><td class="col-sound">ḥ נקייה</td>
+      <td class="col-ex"><span class="arabic">حبيبي</span><span class="translit">ḥabibi</span><span class="meaning">אהובי</span></td>
+      <td class="col-ex"><span class="arabic">رحمة</span><span class="translit">raḥma</span><span class="meaning">חמלה</span></td>
+      <td class="col-ex"><span class="arabic">صباح</span><span class="translit">sabaḥ</span><span class="meaning">בוקר</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">4</td><td class="col-letter">خ</td><td class="col-name">חַ'א</td><td class="col-sound">kh גרונית</td>
+      <td class="col-ex"><span class="arabic">خير</span><span class="translit">khayr</span><span class="meaning">טוב / טובה</span></td>
+      <td class="col-ex"><span class="arabic">دخل</span><span class="translit">dakhal</span><span class="meaning">נכנס</span></td>
+      <td class="col-ex"><span class="arabic">طبخ</span><span class="translit">tabakh</span><span class="meaning">בישל</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr class="non-connector">
+      <td class="col-num">5</td><td class="col-letter">ذ</td><td class="col-name">דַ'אל</td><td class="col-sound">th (that)</td>
+      <td class="col-ex"><span class="arabic">ذهب</span><span class="translit">dhahab</span><span class="meaning">זהב / הלך</span></td>
+      <td class="col-ex"><span class="arabic">هذا</span><span class="translit">hadha</span><span class="meaning">זה</span></td>
+      <td class="col-ex"><span class="arabic">أستاذ</span><span class="translit">ustadh</span><span class="meaning">מורה</span></td>
+      <td class="col-correct"></td>
+    </tr>
+  </tbody>
+</table>
+<div class="lesson-footer"></div>
+
+<!-- ============ LESSON 104 ============ -->
+<h2 class="lesson-title">שיעור 104 — קריאה: ייחודיות (ב) ואַלֵף <span class="lesson-meta">6 אותיות · غ ق ر ز د ا</span></h2>
+<table>
+  <thead>
+    <tr>
+      <th class="col-num">#</th><th class="col-letter">אות</th><th class="col-name">שם</th><th class="col-sound">צליל</th>
+      <th class="col-ex">תחילת מילה</th><th class="col-ex">אמצע מילה</th><th class="col-ex">סוף מילה</th><th class="col-correct">תיקון</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="col-num">1</td><td class="col-letter">غ</td><td class="col-name">עַ'יְן</td><td class="col-sound">gh גרונית</td>
+      <td class="col-ex"><span class="arabic">غابة</span><span class="translit">ghaba</span><span class="meaning">יער</span></td>
+      <td class="col-ex"><span class="arabic">صغير</span><span class="translit">saghir</span><span class="meaning">קטן</span></td>
+      <td class="col-ex"><span class="arabic">فارغ</span><span class="translit">farigh</span><span class="meaning">ריק</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr>
+      <td class="col-num">2</td><td class="col-letter">ق</td><td class="col-name">קַאף</td><td class="col-sound">q / עצירה</td>
+      <td class="col-ex"><span class="arabic">قلب</span><span class="translit">qalb / ʾalb</span><span class="meaning">לב</span></td>
+      <td class="col-ex"><span class="arabic">وقت</span><span class="translit">waqt</span><span class="meaning">זמן</span></td>
+      <td class="col-ex"><span class="arabic">فوق</span><span class="translit">fawq</span><span class="meaning">מעל</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr class="non-connector">
+      <td class="col-num">3</td><td class="col-letter">ر</td><td class="col-name">רַא</td><td class="col-sound">r</td>
+      <td class="col-ex"><span class="arabic">رجل</span><span class="translit">rajul</span><span class="meaning">גבר</span></td>
+      <td class="col-ex"><span class="arabic">كريم</span><span class="translit">karim</span><span class="meaning">נדיב / שם</span></td>
+      <td class="col-ex"><span class="arabic">نور</span><span class="translit">nur</span><span class="meaning">אור</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr class="non-connector">
+      <td class="col-num">4</td><td class="col-letter">ز</td><td class="col-name">זַאי</td><td class="col-sound">z</td>
+      <td class="col-ex"><span class="arabic">زيت</span><span class="translit">zayt</span><span class="meaning">שמן</span></td>
+      <td class="col-ex"><span class="arabic">أزرق</span><span class="translit">azraq</span><span class="meaning">כחול</span></td>
+      <td class="col-ex"><span class="arabic">أرز</span><span class="translit">aruzz</span><span class="meaning">אורז</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr class="non-connector">
+      <td class="col-num">5</td><td class="col-letter">د</td><td class="col-name">דַאל</td><td class="col-sound">d</td>
+      <td class="col-ex"><span class="arabic">دار</span><span class="translit">dar</span><span class="meaning">בית</span></td>
+      <td class="col-ex"><span class="arabic">مدينة</span><span class="translit">madina</span><span class="meaning">עיר</span></td>
+      <td class="col-ex"><span class="arabic">ولد</span><span class="translit">walad</span><span class="meaning">ילד</span></td>
+      <td class="col-correct"></td>
+    </tr>
+    <tr class="non-connector">
+      <td class="col-num">6</td><td class="col-letter">ا</td><td class="col-name">אַלֵף</td><td class="col-sound">a ארוכה</td>
+      <td class="col-ex"><span class="arabic">اسم</span><span class="translit">ism</span><span class="meaning">שם</span></td>
+      <td class="col-ex"><span class="arabic">باب</span><span class="translit">bab</span><span class="meaning">דלת</span></td>
+      <td class="col-ex"><span class="arabic">أنا</span><span class="translit">ana</span><span class="meaning">אני</span></td>
+      <td class="col-correct"></td>
+    </tr>
+  </tbody>
+</table>
+<div class="lesson-footer"></div>
+
+<div class="signoff">
+  <div style="margin-bottom: 10px;"><b>תאריך הבדיקה:</b> <span class="sig-line"></span></div>
+  <div style="margin-bottom: 10px;"><b>חתימת הבודק:</b> <span class="sig-line"></span></div>
+  <div><b>הערות כלליות על הקורס:</b></div>
+  <div style="border: 1px dashed #888; min-height: 80px; margin-top: 6px; background: #fcfcfc;"></div>
+</div>
+
+</body>
+</html>

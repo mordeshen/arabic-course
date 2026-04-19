@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>POC — תרגול כתיבת אות</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Serif+Hebrew:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a14;
+      --panel: rgba(20,20,35,0.85);
+      --gold: #f0c060;
+      --teal: #3de8d0;
+      --rose: #ff6b8a;
+      --text: #e8e8f0;
+      --muted: #8888a0;
+      --border: rgba(240,192,96,0.25);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at top, #141428 0%, var(--bg) 70%);
+      color: var(--text);
+      font-family: 'Heebo', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      font-family: 'Noto Serif Hebrew', serif;
+      color: var(--gold);
+      font-size: 26px;
+      margin: 10px 0 4px;
+    }
+    .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    .letter-info {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 14px 22px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .letter-info .big-letter {
+      font-family: 'Noto Naskh Arabic', serif;
+      color: var(--gold);
+      font-size: 48px;
+      line-height: 1;
+    }
+    .letter-info .labels { font-size: 15px; line-height: 1.5; }
+    .letter-info .labels b { color: var(--teal); }
+
+    .trace-frame {
+      position: relative;
+      background: #fafaf4;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 0 2px var(--border);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    canvas.trace-canvas {
+      display: block;
+      width: min(560px, 92vw);
+      height: min(360px, calc(92vw * 0.64));
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    button {
+      font-family: 'Heebo', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 10px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: transform 0.1s, background 0.15s;
+    }
+    button:active { transform: scale(0.97); }
+    .btn-clear { background: rgba(255,107,138,0.12); border-color: var(--rose); color: var(--rose); }
+    .btn-clear:hover { background: rgba(255,107,138,0.22); }
+    .btn-check { background: linear-gradient(135deg, var(--gold), #e0a030); border-color: var(--gold); color: #0a0a14; }
+    .btn-check:hover { filter: brightness(1.1); }
+
+    .feedback {
+      min-height: 56px;
+      max-width: 560px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      font-size: 15px;
+      line-height: 1.6;
+      text-align: center;
+    }
+    .feedback.success { border-color: var(--teal); color: var(--teal); }
+    .feedback.error { border-color: var(--rose); color: var(--rose); }
+    .feedback .metrics {
+      display: block;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: ui-monospace, monospace;
+    }
+
+    .debug-toggle {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .debug-toggle input { margin-left: 6px; vertical-align: middle; }
+    .debug-masks {
+      display: none;
+      margin-top: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .debug-masks.visible { display: flex; }
+    .debug-masks canvas {
+      width: 160px; height: 100px;
+      background: #222; border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .debug-masks .label {
+      font-size: 11px; color: var(--muted); text-align: center;
+      display: block; margin-bottom: 4px;
+    }
+    .debug-item { text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>תרגול כתיבה — POC</h1>
+  <div class="subtitle">כתבו את האות בתוך המסגרת המקווקוות</div>
+
+  <div class="letter-info">
+    <div class="big-letter" id="letterDisplay">ب</div>
+    <div class="labels">
+      <div>שם: <b id="letterName">ba (בא)</b></div>
+      <div>צליל: <b id="letterSound">b</b></div>
+    </div>
+  </div>
+
+  <div class="trace-frame">
+    <canvas id="traceCanvas" class="trace-canvas"></canvas>
+  </div>
+
+  <div class="controls">
+    <button class="btn-clear" id="btnClear">מחק</button>
+    <button class="btn-check" id="btnCheck">בדוק</button>
+  </div>
+
+  <div class="feedback" id="feedback">
+    ציירו את האות בתוך המסגרת, ואז לחצו "בדוק".
+  </div>
+
+  <label class="debug-toggle">
+    <input type="checkbox" id="debugToggle"> הצג מסכות debug (עבור פיתוח)
+  </label>
+  <div class="debug-masks" id="debugMasks">
+    <div class="debug-item"><span class="label">Target (מה צריך לכסות)</span><canvas id="dbgTarget"></canvas></div>
+    <div class="debug-item"><span class="label">Tolerance (גבול חריגה)</span><canvas id="dbgTolerance"></canvas></div>
+    <div class="debug-item"><span class="label">User ink (מה ציירת)</span><canvas id="dbgUser"></canvas></div>
+  </div>
+
+  <script>
+    // ── Config ──────────────────────────────────────────────
+    // The letter to trace. Swap this to test other letters.
+    const LETTER = "ب";
+    // Internal (offscreen) canvas resolution — independent of display size.
+    const W = 700, H = 450;
+    // Font size in the internal resolution. Tune so the letter fills most of the frame.
+    const FONT_SIZE = 300;
+    const FONT_FAMILY = "'Noto Naskh Arabic', serif";
+    // How much wider the "tolerance zone" is than the letter (in pixels at internal resolution).
+    // Higher = more forgiving. 60px ≈ generous, 30px ≈ strict.
+    const TOLERANCE_PADDING = 55;
+    // Stroke width of user's pen (in internal pixels).
+    const PEN_WIDTH = 28;
+    // Thresholds for success.
+    const MIN_COVERAGE = 0.45;      // at least 45% of target must be inked
+    const MIN_PRECISION = 0.78;     // at least 78% of user's ink must be inside tolerance zone
+    const MIN_USER_INK_RATIO = 0.18; // user must draw at least this fraction of target area (prevents tiny dots)
+
+    // ── Elements ────────────────────────────────────────────
+    const canvas = document.getElementById("traceCanvas");
+    const ctx = canvas.getContext("2d");
+    const feedback = document.getElementById("feedback");
+    const debugToggle = document.getElementById("debugToggle");
+    const debugMasks = document.getElementById("debugMasks");
+
+    // Set internal resolution (for drawing accuracy) independent of CSS size
+    canvas.width = W;
+    canvas.height = H;
+
+    // ── Offscreen masks ────────────────────────────────────
+    function makeCanvas() {
+      const c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      return c;
+    }
+    const guideCanvas = makeCanvas();
+    const inkCanvas = makeCanvas();
+    const targetCanvas = makeCanvas();
+    const toleranceCanvas = makeCanvas();
+    const guideCtx = guideCanvas.getContext("2d");
+    const inkCtx = inkCanvas.getContext("2d");
+    const targetCtx = targetCanvas.getContext("2d");
+    const tolCtx = toleranceCanvas.getContext("2d");
+
+    // ── Build masks and guide ──────────────────────────────
+    function buildMasks() {
+      // TARGET: solid filled letter — defines "what needs to be covered"
+      targetCtx.clearRect(0, 0, W, H);
+      targetCtx.fillStyle = "#000";
+      targetCtx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
+      targetCtx.textAlign = "center";
+      targetCtx.textBaseline = "middle";
+      targetCtx.fillText(LETTER, W/2, H/2);
+
+      // TOLERANCE: the letter drawn with a thick stroke (expanded outline) + fill.
+      // This gives an expanded mask = "acceptable zone" including small overshoot.
+      tolCtx.clearRect(0, 0, W, H);
+      tolCtx.strokeStyle = "#000";
+      tolCtx.fillStyle = "#000";
+      tolCtx.lineWidth = TOLERANCE_PADDING * 2;
+      tolCtx.lineJoin = "round";
+      tolCtx.lineCap = "round";
+      tolCtx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
+      tolCtx.textAlign = "center";
+      tolCtx.textBaseline = "middle";
+      tolCtx.strokeText(LETTER, W/2, H/2);
+      tolCtx.fillText(LETTER, W/2, H/2);
+    }
+
+    function buildGuide() {
+      guideCtx.clearRect(0, 0, W, H);
+
+      // Notebook-like horizontal dashed helper lines (top/middle/baseline)
+      guideCtx.strokeStyle = "rgba(90, 90, 110, 0.35)";
+      guideCtx.setLineDash([7, 7]);
+      guideCtx.lineWidth = 1.2;
+      const margin = 24;
+      [H * 0.22, H * 0.5, H * 0.78].forEach(y => {
+        guideCtx.beginPath();
+        guideCtx.moveTo(margin, y);
+        guideCtx.lineTo(W - margin, y);
+        guideCtx.stroke();
+      });
+      guideCtx.setLineDash([]);
+
+      // Faded guide letter
+      guideCtx.fillStyle = "rgba(50, 50, 80, 0.18)";
+      guideCtx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
+      guideCtx.textAlign = "center";
+      guideCtx.textBaseline = "middle";
+      guideCtx.fillText(LETTER, W/2, H/2);
+
+      // Optional dashed outline emphasis on top
+      guideCtx.save();
+      guideCtx.setLineDash([6, 5]);
+      guideCtx.strokeStyle = "rgba(120, 120, 160, 0.55)";
+      guideCtx.lineWidth = 1.4;
+      guideCtx.strokeText(LETTER, W/2, H/2);
+      guideCtx.restore();
+    }
+
+    // ── Composite render to visible canvas ────────────────
+    function repaint() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(guideCanvas, 0, 0);
+      ctx.drawImage(inkCanvas, 0, 0);
+    }
+
+    // ── Drawing (pointer + touch) ─────────────────────────
+    let drawing = false;
+    let lastX = 0, lastY = 0;
+
+    function canvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+      const cy = e.clientY ?? (e.touches && e.touches[0]?.clientY);
+      return {
+        x: (cx - rect.left) * (W / rect.width),
+        y: (cy - rect.top) * (H / rect.height)
+      };
+    }
+
+    function startDraw(e) {
+      e.preventDefault();
+      drawing = true;
+      const { x, y } = canvasCoords(e);
+      lastX = x; lastY = y;
+      // Dot on click
+      inkCtx.fillStyle = "#d08020";
+      inkCtx.beginPath();
+      inkCtx.arc(x, y, PEN_WIDTH / 2, 0, Math.PI * 2);
+      inkCtx.fill();
+      repaint();
+    }
+    function moveDraw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const { x, y } = canvasCoords(e);
+      inkCtx.strokeStyle = "#d08020";
+      inkCtx.lineWidth = PEN_WIDTH;
+      inkCtx.lineCap = "round";
+      inkCtx.lineJoin = "round";
+      inkCtx.beginPath();
+      inkCtx.moveTo(lastX, lastY);
+      inkCtx.lineTo(x, y);
+      inkCtx.stroke();
+      lastX = x; lastY = y;
+      repaint();
+    }
+    function endDraw(e) {
+      drawing = false;
+    }
+
+    canvas.addEventListener("pointerdown", startDraw);
+    canvas.addEventListener("pointermove", moveDraw);
+    window.addEventListener("pointerup", endDraw);
+    canvas.addEventListener("pointercancel", endDraw);
+
+    // ── Clear ──────────────────────────────────────────────
+    document.getElementById("btnClear").addEventListener("click", () => {
+      inkCtx.clearRect(0, 0, W, H);
+      repaint();
+      feedback.className = "feedback";
+      feedback.textContent = 'ציירו את האות בתוך המסגרת, ואז לחצו "בדוק".';
+      updateDebug();
+    });
+
+    // ── Check ──────────────────────────────────────────────
+    function computeScores() {
+      const targetData = targetCtx.getImageData(0, 0, W, H).data;
+      const tolData = tolCtx.getImageData(0, 0, W, H).data;
+      const userData = inkCtx.getImageData(0, 0, W, H).data;
+
+      let userPixels = 0;
+      let userInsideTolerance = 0;
+      let targetPixels = 0;
+      let targetCovered = 0;
+
+      // Step through pixels — use alpha channel (index+3) as 1-bit mask.
+      for (let i = 0; i < userData.length; i += 4) {
+        const userInk = userData[i + 3] > 30;
+        const inTarget = targetData[i + 3] > 30;
+        const inTol = tolData[i + 3] > 30;
+        if (userInk) {
+          userPixels++;
+          if (inTol) userInsideTolerance++;
+        }
+        if (inTarget) {
+          targetPixels++;
+          if (userInk) targetCovered++;
+        }
+      }
+
+      const coverage = targetPixels ? targetCovered / targetPixels : 0;
+      const precision = userPixels ? userInsideTolerance / userPixels : 0;
+      const inkRatio = targetPixels ? userPixels / targetPixels : 0;
+
+      return { coverage, precision, inkRatio, userPixels, targetPixels };
+    }
+
+    document.getElementById("btnCheck").addEventListener("click", () => {
+      const s = computeScores();
+      const metrics = `כיסוי: ${(s.coverage*100).toFixed(0)}% · דיוק: ${(s.precision*100).toFixed(0)}% · דיו: ${(s.inkRatio*100).toFixed(0)}%`;
+
+      if (s.userPixels === 0) {
+        feedback.className = "feedback error";
+        feedback.innerHTML = `עוד לא ציירת כלום 🙂<span class="metrics">${metrics}</span>`;
+        return;
+      }
+      if (s.inkRatio < MIN_USER_INK_RATIO) {
+        feedback.className = "feedback error";
+        feedback.innerHTML = `נסו לצייר את כל האות — עוד לא סיימתם.<span class="metrics">${metrics}</span>`;
+        return;
+      }
+      if (s.precision < MIN_PRECISION) {
+        feedback.className = "feedback error";
+        feedback.innerHTML = `חרגתם מהמסגרת. נסו שוב — עקבו אחרי קווי המתאר של האות.<span class="metrics">${metrics}</span>`;
+        return;
+      }
+      if (s.coverage < MIN_COVERAGE) {
+        feedback.className = "feedback error";
+        feedback.innerHTML = `כתבתם בתוך הקווים, אבל לא כיסיתם מספיק מהאות. נסו לעבות.<span class="metrics">${metrics}</span>`;
+        return;
+      }
+      feedback.className = "feedback success";
+      feedback.innerHTML = `יפה מאוד! האות בתוך הקווים ✓<span class="metrics">${metrics}</span>`;
+    });
+
+    // ── Debug view ─────────────────────────────────────────
+    debugToggle.addEventListener("change", () => {
+      debugMasks.classList.toggle("visible", debugToggle.checked);
+      updateDebug();
+    });
+    function updateDebug() {
+      if (!debugToggle.checked) return;
+      ["dbgTarget", "dbgTolerance", "dbgUser"].forEach((id, i) => {
+        const dst = document.getElementById(id);
+        dst.width = 160; dst.height = 100;
+        const dctx = dst.getContext("2d");
+        dctx.fillStyle = "#222";
+        dctx.fillRect(0, 0, 160, 100);
+        const src = [targetCanvas, toleranceCanvas, inkCanvas][i];
+        dctx.drawImage(src, 0, 0, 160, 100);
+      });
+    }
+
+    // ── Init ───────────────────────────────────────────────
+    // Fonts may not be ready on first render — retry once.
+    function init() {
+      buildMasks();
+      buildGuide();
+      repaint();
+    }
+    init();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { init(); });
+    } else {
+      setTimeout(init, 400);
+    }
+  </script>
+</body>
+</html>

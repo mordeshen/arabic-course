@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור – קורס ערבית</title>
+<link rel="stylesheet" href="/css/lesson-shell.css">
+</head>
+<body>
+
+<div class="bg-arabic">א</div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+<a href="/index.html" class="back-link">← חזרה לקורס</a>
+
+<div id="app">
+  <div id="loading" class="state-msg">טוען שיעור…</div>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav" id="nav" style="display:none">
+  <button class="nav-btn" id="prevBtn" disabled>→ הקודם</button>
+  <span class="slide-counter" id="slideCounter">1 / 1</span>
+  <button class="nav-btn" id="nextBtn">הבא ←</button>
+</div>
+
+<script type="module" src="/js/lesson-renderer.js"></script>
+</body>
+</html>

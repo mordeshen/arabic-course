@@ -4,3 +4,8 @@ node_modules/
 *.log
 .DS_Store
 .claude/
+
+# Credentials — never commit
+client_secret_*.json
+*.pem
+*.key
