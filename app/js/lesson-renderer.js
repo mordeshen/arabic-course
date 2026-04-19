@@ -394,7 +394,7 @@ function initLetterTrace(visibleCanvas) {
   const timerArc = wrap.querySelector(".trace-timer-arc");
   const timerText = wrap.querySelector(".trace-timer-text");
   const REPS = Math.max(1, parseInt(wrap.dataset.traceReps || "4", 10));
-  const TIMER_SECONDS = 8;
+  const TIMER_SECONDS = 6;
   const ARC_LEN = 2 * Math.PI * 22; // circumference for r=22
   let completedReps = 0;
   let timerId = null;
@@ -537,7 +537,7 @@ function initLetterTrace(visibleCanvas) {
     clearInk();
     stopTimer();
     feedback.className = "trace-feedback";
-    feedback.textContent = 'ציירו את האות בתוך המסגרת. הבדיקה תתבצע אוטומטית אחרי 8 שניות.';
+    feedback.textContent = 'ציירו את האות בתוך המסגרת. הבדיקה תתבצע אוטומטית אחרי 6 שניות.';
   });
 
   function computeScores() {
@@ -902,10 +902,10 @@ const TEMPLATES = {
                 <circle class="trace-timer-track" cx="25" cy="25" r="22"></circle>
                 <circle class="trace-timer-arc"   cx="25" cy="25" r="22"></circle>
               </svg>
-              <div class="trace-timer-text">8</div>
+              <div class="trace-timer-text">6</div>
             </div>
           </div>
-          <div class="trace-feedback">ציירו את האות בתוך המסגרת. הבדיקה תתבצע אוטומטית אחרי 8 שניות.</div>
+          <div class="trace-feedback">ציירו את האות בתוך המסגרת. הבדיקה תתבצע אוטומטית אחרי 6 שניות.</div>
         </div>
         ${c.note ? `<div class="rule-card" style="margin-top:16px;border-right-color:var(--teal);"><p class="rule-text">${c.note}</p></div>` : ""}
       </div>`;
