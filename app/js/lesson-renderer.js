@@ -884,7 +884,7 @@ const TEMPLATES = {
           <div class="section-tag">תרגול כתיבה</div>
           <h2>${esc(title)}</h2>
         </div>
-        ${c.intro ? `<p class="lt-intro">${esc(c.intro)}</p>` : ""}
+        ${c.intro ? `<div class="rule-card" style="margin-bottom:16px;"><p class="rule-text">${c.intro}</p></div>` : ""}
         <div class="letter-trace-wrap" data-trace-reps="${esc(c.repetitions || 4)}">
           <div class="lt-info">
             <div class="lt-letter">${esc(letter)}</div>
